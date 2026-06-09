@@ -254,10 +254,10 @@ const exploreCourses = [
 function Card({ children, className = "" }) {
   return (
     <div
-      className={`reveal group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] shadow-[0_24px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-[0_32px_100px_rgba(0,0,0,0.48)] ${className}`}
+      className={`reveal group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0b1017]/80 shadow-[0_24px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#00b7ff]/22 hover:bg-[#101826] hover:shadow-[0_32px_100px_rgba(0,183,255,0.12)] ${className}`}
       data-scroll
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(45,212,191,0.12),transparent_38%),linear-gradient(135deg,rgba(255,255,255,0.05),transparent_55%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,183,255,0.12),transparent_38%),linear-gradient(135deg,rgba(255,255,255,0.04),transparent_55%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       <div className="relative z-10">{children}</div>
     </div>
   );
@@ -279,7 +279,7 @@ function Reveal({ children, className = "", delay = 0, side = "right" }) {
 function SectionTitle({ kicker, title, text, center = false }) {
   return (
     <div className={center ? "reveal mx-auto max-w-3xl text-center" : "reveal max-w-3xl"} data-scroll>
-      <p className="text-xs font-semibold uppercase tracking-[0.38em] text-teal-300/90">{kicker}</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.38em] text-[#7fd2ff]/90">{kicker}</p>
       <h2 className="mt-4 font-saira text-[clamp(2rem,4vw,3.6rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-white">
         {title}
       </h2>
@@ -296,14 +296,14 @@ function HeroStat({ title, subtitle, image, alt, icon, align = "left", className
       data-side={align === "right" ? "right" : "left"}
     >
       <div className={`flex ${align === "right" ? "justify-end" : "justify-start"}`}>
-        <div className="w-[158px] rounded-[18px] border border-black/10 bg-white px-3 py-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition duration-300 ease-out group-hover:border-black/15 group-hover:shadow-[0_14px_34px_rgba(0,0,0,0.12)]">
+        <div className="w-[158px] rounded-[18px] border border-white/10 bg-[#0b1017]/90 px-3 py-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.26)] backdrop-blur-md transition duration-300 ease-out group-hover:border-[#00b7ff]/25 group-hover:shadow-[0_18px_42px_rgba(0,183,255,0.14)]">
           <div className="flex items-center gap-3">
-            <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-black/10 text-black/70 transition duration-300 ease-out group-hover:scale-105">
+            <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-white/10 text-white/75 transition duration-300 ease-out group-hover:scale-105">
               {icon}
             </div>
             <div className="min-w-0">
-              <div className="text-[12px] font-semibold leading-tight text-black">{title}</div>
-              <div className="text-[12px] leading-tight text-black/60">{subtitle}</div>
+              <div className="text-[12px] font-semibold leading-tight text-white">{title}</div>
+              <div className="text-[12px] leading-tight text-white/58">{subtitle}</div>
             </div>
           </div>
         </div>
@@ -326,7 +326,7 @@ function HeroStat({ title, subtitle, image, alt, icon, align = "left", className
 function HeroShowcaseCard({ image, alt, title, subtitle, className = "", coverClassName = "", play = false }) {
   return (
     <div
-      className={`reveal group relative min-h-[260px] overflow-hidden rounded-[28px] bg-black shadow-[0_30px_70px_rgba(0,0,0,0.16)] transition duration-300 ease-out md:min-h-[340px] lg:min-h-[388px] hover:-translate-y-1 hover:shadow-[0_38px_90px_rgba(0,0,0,0.22)] ${className}`}
+      className={`reveal group relative min-h-[260px] overflow-hidden rounded-[28px] bg-[#090d12] shadow-[0_30px_70px_rgba(0,0,0,0.28)] transition duration-300 ease-out md:min-h-[340px] lg:min-h-[388px] hover:-translate-y-1 hover:shadow-[0_38px_90px_rgba(0,183,255,0.12)] ${className}`}
       data-scroll
       data-side="right"
     >
@@ -335,8 +335,8 @@ function HeroShowcaseCard({ image, alt, title, subtitle, className = "", coverCl
         alt={alt}
         className={`absolute inset-0 h-full w-full object-cover transition duration-500 ease-out group-hover:scale-[1.03] ${coverClassName}`}
       />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.14)_48%,rgba(0,0,0,0.8)_100%)]" />
-      <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.72)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.18)_48%,rgba(5,6,8,0.86)_100%)]" />
+      <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,transparent_0%,rgba(5,6,8,0.84)_100%)]" />
 
       <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
         <div className="max-w-[12ch] text-left text-white">
@@ -352,7 +352,7 @@ function HeroShowcaseCard({ image, alt, title, subtitle, className = "", coverCl
           <button
             type="button"
             aria-label="Play video"
-            className="grid h-12 w-12 place-items-center rounded-full bg-white text-[16px] text-black shadow-[0_12px_25px_rgba(0,0,0,0.22)] transition duration-300 ease-out group-hover:scale-105 group-hover:bg-teal-50"
+            className="grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#00b7ff] text-[16px] text-white shadow-[0_0_22px_rgba(0,183,255,0.32)] transition duration-300 ease-out group-hover:scale-105 group-hover:shadow-[0_0_30px_rgba(0,183,255,0.45)]"
           >
             ►
           </button>
@@ -365,7 +365,7 @@ function HeroShowcaseCard({ image, alt, title, subtitle, className = "", coverCl
 function MetaIcon({ type }) {
   if (type === "clock") {
     return (
-      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-black/58" aria-hidden="true">
+      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-white/60" aria-hidden="true">
         <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.6" />
         <path d="M12 8v4l2.5 1.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
@@ -374,7 +374,7 @@ function MetaIcon({ type }) {
 
   if (type === "lessons") {
     return (
-      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-black/58" aria-hidden="true">
+      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-white/60" aria-hidden="true">
         <path
           d="M5 7.5A2.5 2.5 0 0 1 7.5 5H19v11.5A2.5 2.5 0 0 1 16.5 19H7.5A2.5 2.5 0 0 1 5 16.5V7.5Z"
           fill="none"
@@ -388,7 +388,7 @@ function MetaIcon({ type }) {
   }
 
   return (
-    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-amber-500" aria-hidden="true">
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-[#00b7ff]" aria-hidden="true">
       <path d="m12 4 1.7 4.9h5.2l-4.2 3 1.6 5L12 14.9 7.7 16.9l1.6-5-4.2-3h5.2L12 4Z" fill="currentColor" />
     </svg>
   );
@@ -397,14 +397,14 @@ function MetaIcon({ type }) {
 function CourseCard({ course }) {
   return (
     <div
-      className={`reveal group overflow-hidden rounded-[18px] border border-black/10 bg-white shadow-[0_14px_34px_rgba(0,0,0,0.08)] transition duration-300 ease-out hover:-translate-y-1 hover:border-black/15 hover:shadow-[0_22px_44px_rgba(0,0,0,0.12)] ${
-        course.featured ? "ring-1 ring-black/95" : ""
+      className={`reveal group overflow-hidden rounded-[18px] border border-white/10 bg-[#0b1017] shadow-[0_14px_34px_rgba(0,0,0,0.22)] transition duration-300 ease-out hover:-translate-y-1 hover:border-[#00b7ff]/25 hover:shadow-[0_22px_44px_rgba(0,183,255,0.1)] ${
+        course.featured ? "ring-1 ring-[#00b7ff]/55" : ""
       }`}
       data-scroll
       data-side="right"
     >
       <div className="p-2.5 pb-0">
-        <div className="relative overflow-hidden rounded-[14px] bg-[#d8ddd8]">
+        <div className="relative overflow-hidden rounded-[14px] bg-[#101723]">
           <img
             src={course.image}
             alt={course.title}
@@ -414,7 +414,7 @@ function CourseCard({ course }) {
       </div>
 
       <div className="px-4 pb-4 pt-2.5">
-        <div className="flex items-center justify-between gap-3 text-[11px] text-black/58">
+        <div className="flex items-center justify-between gap-3 text-[11px] text-white/50">
           <div className="flex items-center gap-2">
             <MetaIcon type="clock" />
             <span>{course.duration}</span>
@@ -423,29 +423,29 @@ function CourseCard({ course }) {
             <MetaIcon type="lessons" />
             <span>{course.lessons}</span>
           </div>
-          <div className="flex items-center gap-1 text-amber-500">
+          <div className="flex items-center gap-1 text-[#00b7ff]">
             <MetaIcon type="star" />
-            <span className="text-black/68">5.0</span>
+            <span className="text-white/68">5.0</span>
           </div>
         </div>
 
-        <h3 className="mt-3 text-[18px] font-semibold leading-tight tracking-[-0.03em] text-black">
+        <h3 className="mt-3 text-[18px] font-semibold leading-tight tracking-[-0.03em] text-white">
           {course.title}
         </h3>
 
         <div className="mt-2 flex flex-wrap items-end gap-2">
-          <span className="text-[18px] font-semibold tracking-[-0.03em] text-black">
+          <span className="text-[18px] font-semibold tracking-[-0.03em] text-white">
             {course.price}
           </span>
-          <span className="pb-0.5 text-[12px] text-black/42 line-through">{course.oldPrice}</span>
+          <span className="pb-0.5 text-[12px] text-white/34 line-through">{course.oldPrice}</span>
         </div>
 
         <a
           href="#cta"
           className={`mt-4 flex h-10 w-full items-center justify-center rounded-full border text-[11px] font-semibold tracking-[0.06em] transition duration-300 ease-out ${
             course.featured
-              ? "border-black bg-black text-white"
-              : "border-black/10 bg-white text-black hover:border-black/20 hover:bg-black/5"
+              ? "border-[#00b7ff]/45 bg-gradient-to-r from-[#1d4ed8] to-[#00b7ff] text-white shadow-[0_0_20px_rgba(0,183,255,0.18)]"
+              : "border-white/10 bg-[#0f1520] text-white hover:border-[#00b7ff]/35 hover:bg-[#111a27]"
           }`}
         >
           VIEW COURSE
@@ -458,12 +458,12 @@ function CourseCard({ course }) {
 function ExploreCourseCard({ course }) {
   return (
     <div
-      className="reveal group overflow-hidden rounded-[14px] border border-black/10 bg-white shadow-[0_10px_26px_rgba(0,0,0,0.06)] transition duration-300 ease-out hover:-translate-y-1 hover:border-black/15 hover:shadow-[0_18px_36px_rgba(0,0,0,0.1)]"
+      className="reveal group overflow-hidden rounded-[14px] border border-white/10 bg-[#0b1017] shadow-[0_10px_26px_rgba(0,0,0,0.18)] transition duration-300 ease-out hover:-translate-y-1 hover:border-[#00b7ff]/25 hover:shadow-[0_18px_36px_rgba(0,183,255,0.08)]"
       data-scroll
       data-side="right"
     >
       <div className="p-2.5 pb-0">
-        <div className="relative overflow-hidden rounded-[12px] bg-[#d8ddd8]">
+        <div className="relative overflow-hidden rounded-[12px] bg-[#101723]">
           <img
             src={course.image}
             alt={course.title}
@@ -473,7 +473,7 @@ function ExploreCourseCard({ course }) {
       </div>
 
       <div className="px-4 pb-4 pt-2.5">
-        <div className="flex items-center justify-between gap-3 text-[11px] text-black/58">
+        <div className="flex items-center justify-between gap-3 text-[11px] text-white/50">
           <div className="flex items-center gap-2">
             <MetaIcon type="clock" />
             <span>{course.duration}</span>
@@ -482,29 +482,29 @@ function ExploreCourseCard({ course }) {
             <MetaIcon type="lessons" />
             <span>{course.lessons}</span>
           </div>
-          <div className="flex items-center gap-1 text-amber-500">
+          <div className="flex items-center gap-1 text-[#00b7ff]">
             <MetaIcon type="star" />
-            <span className="text-black/68">5.0</span>
+            <span className="text-white/68">5.0</span>
           </div>
         </div>
 
-        <h3 className="mt-3 text-[17px] font-semibold leading-tight tracking-[-0.03em] text-black">
+        <h3 className="mt-3 text-[17px] font-semibold leading-tight tracking-[-0.03em] text-white">
           {course.title}
         </h3>
 
         <div className="mt-3 flex flex-wrap items-end gap-2">
-          <span className="text-[18px] font-semibold tracking-[-0.03em] text-black">
+          <span className="text-[18px] font-semibold tracking-[-0.03em] text-white">
             {course.price}
           </span>
-          <span className="pb-0.5 text-[12px] text-black/42 line-through">{course.oldPrice}</span>
+          <span className="pb-0.5 text-[12px] text-white/34 line-through">{course.oldPrice}</span>
         </div>
 
         <a
           href="#cta"
           className={`mt-4 flex h-10 w-full items-center justify-center rounded-full border text-[11px] font-semibold tracking-[0.06em] transition duration-300 ease-out ${
             course.featured
-              ? "border-black bg-black text-white"
-              : "border-black/10 bg-white text-black hover:border-black/20 hover:bg-black/5"
+              ? "border-[#00b7ff]/45 bg-gradient-to-r from-[#1d4ed8] to-[#00b7ff] text-white shadow-[0_0_20px_rgba(0,183,255,0.18)]"
+              : "border-white/10 bg-[#0f1520] text-white hover:border-[#00b7ff]/35 hover:bg-[#111a27]"
           }`}
         >
           VIEW COURSE
@@ -516,9 +516,9 @@ function ExploreCourseCard({ course }) {
 
 function ExploreCoursesSection() {
   return (
-    <section id="courses" className="bg-[#f5f5f5] px-4 py-16 text-black md:px-6 lg:px-8 lg:py-18">
+    <section id="courses" className="bg-[#050608] px-4 py-16 text-white md:px-6 lg:px-8 lg:py-18">
       <div className="mx-auto max-w-[1120px]">
-        <h2 className="text-center text-[clamp(2rem,3vw,2.95rem)] font-semibold tracking-[-0.05em] text-black">
+        <h2 className="text-center text-[clamp(2rem,3vw,2.95rem)] font-semibold tracking-[-0.05em] text-white">
           Explore our courses
         </h2>
 
@@ -531,8 +531,8 @@ function ExploreCoursesSection() {
                 type="button"
                 className={`h-10 rounded-full px-5 text-[11px] font-semibold tracking-[0.08em] transition ${
                   active
-                    ? "bg-black text-white shadow-[0_10px_24px_rgba(0,0,0,0.18)]"
-                    : "border border-black/10 bg-white text-black/68 hover:border-black/20"
+                    ? "bg-gradient-to-r from-[#1d4ed8] to-[#00b7ff] text-white shadow-[0_0_20px_rgba(0,183,255,0.18)]"
+                    : "border border-white/10 bg-[#0b1118] text-white/68 hover:border-[#00b7ff]/25"
                 }`}
               >
                 {filter}
@@ -550,7 +550,7 @@ function ExploreCoursesSection() {
         <div className="mt-10 flex justify-center">
           <a
             href="#cta"
-            className="inline-flex items-center gap-3 rounded-full bg-black px-5 py-2 text-[11px] font-semibold tracking-[0.08em] text-white shadow-[0_10px_24px_rgba(0,0,0,0.18)]"
+            className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#1d4ed8] to-[#00b7ff] px-5 py-2 text-[11px] font-semibold tracking-[0.08em] text-white shadow-[0_0_20px_rgba(0,183,255,0.18)]"
           >
             <span>VIEW ALL COURSE</span>
             <span className="grid h-7 w-7 place-items-center rounded-full bg-white text-black">→</span>
@@ -569,24 +569,24 @@ function FooterSection() {
   };
 
   return (
-    <footer id="cta" className="w-full bg-white text-black">
-      <div className="w-full border-t border-black/8">
+    <footer id="cta" className="w-full bg-[#050608] text-white">
+      <div className="w-full border-t border-white/10">
         <div className="mx-auto w-full max-w-none px-5 py-8 md:px-8 md:py-10">
           <div className="grid gap-8 lg:grid-cols-[1.05fr_1.25fr] lg:items-start">
             <div>
               <div className="flex items-center gap-3">
-                <div className="grid h-11 w-11 place-items-center rounded-full bg-black text-white shadow-[0_10px_22px_rgba(0,0,0,0.18)]">
+                <div className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#00b7ff] text-white shadow-[0_0_24px_rgba(0,183,255,0.28)]">
                   <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white" aria-hidden="true">
                     <path d="M13.1 1.6 4.8 12.1h5.2L8.9 22.4 19.2 9.9h-5.3L13.1 1.6Z" />
                   </svg>
                 </div>
                 <div>
                   <div className="text-[18px] font-semibold tracking-[-0.04em]">Tutorlv</div>
-                  <div className="text-[12px] text-black/55">Learning that feels clean and premium.</div>
+                  <div className="text-[12px] text-white/55">Learning that feels clean and premium.</div>
                 </div>
               </div>
 
-              <p className="mt-5 max-w-md text-[14px] leading-7 text-black/62">
+              <p className="mt-5 max-w-md text-[14px] leading-7 text-white/62">
                 A simple, modern learning experience built to help students move faster,
                 learn better and choose the right course without friction.
               </p>
@@ -595,7 +595,7 @@ function FooterSection() {
                 {["ALL COURSE", "UI/UX DESIGN", "MARKETING"].map((pill) => (
                   <span
                     key={pill}
-                    className="rounded-full border border-black/10 bg-[#f8f8f8] px-4 py-2 text-[11px] font-semibold tracking-[0.08em] text-black/68"
+                    className="rounded-full border border-white/10 bg-[#0c1118] px-4 py-2 text-[11px] font-semibold tracking-[0.08em] text-white/68"
                   >
                     {pill}
                   </span>
@@ -606,13 +606,13 @@ function FooterSection() {
             <div className="grid gap-6 sm:grid-cols-3">
               {Object.entries(footerLinks).map(([group, items]) => (
                 <div key={group}>
-                  <h3 className="text-[12px] font-semibold uppercase tracking-[0.18em] text-black/42">
+                  <h3 className="text-[12px] font-semibold uppercase tracking-[0.18em] text-white/42">
                     {group}
                   </h3>
-                  <ul className="mt-4 space-y-3 text-[14px] text-black/74">
+                  <ul className="mt-4 space-y-3 text-[14px] text-white/74">
                     {items.map((item) => (
                       <li key={item}>
-                        <a href="#top" className="transition hover:text-black">
+                        <a href="#top" className="transition hover:text-white">
                           {item}
                         </a>
                       </li>
@@ -623,29 +623,29 @@ function FooterSection() {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col gap-4 border-t border-black/8 pt-5 md:flex-row md:items-center md:justify-between">
-            <div className="text-[12px] text-black/52">
+          <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-5 md:flex-row md:items-center md:justify-between">
+            <div className="text-[12px] text-white/52">
               © 2026 Tutorlv. All rights reserved.
             </div>
 
             <div className="flex items-center gap-3">
               <a
                 href="#top"
-                className="grid h-10 w-10 place-items-center rounded-full border border-black/10 bg-white text-black transition hover:border-black/20"
+                className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-[#0c1118] text-white transition hover:border-[#00b7ff]/35 hover:bg-[#101826]"
                 aria-label="Instagram"
               >
                 IG
               </a>
               <a
                 href="#top"
-                className="grid h-10 w-10 place-items-center rounded-full border border-black/10 bg-white text-black transition hover:border-black/20"
+                className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-[#0c1118] text-white transition hover:border-[#00b7ff]/35 hover:bg-[#101826]"
                 aria-label="X"
               >
                 X
               </a>
               <a
                 href="#top"
-                className="grid h-10 w-10 place-items-center rounded-full border border-black/10 bg-white text-black transition hover:border-black/20"
+                className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-[#0c1118] text-white transition hover:border-[#00b7ff]/35 hover:bg-[#101826]"
                 aria-label="YouTube"
               >
                 YT
@@ -722,35 +722,33 @@ function WhyFeatureCard({ title, text, icon, dark = false }) {
   return (
     <div
       className={`reveal group rounded-[18px] p-6 shadow-[0_10px_24px_rgba(0,0,0,0.06)] transition duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(0,0,0,0.1)] ${
-        dark ? "bg-black text-white" : "border border-black/6 bg-white text-black"
+        dark ? "border border-[#00b7ff]/22 bg-[#070b10] text-white" : "border border-white/10 bg-[#0b1118] text-white"
       }`}
       data-scroll
       data-side="right"
     >
       <div
         className={`grid h-9 w-9 place-items-center rounded-full transition duration-300 ease-out group-hover:scale-105 ${
-          dark ? "bg-white/10 text-white/85" : "bg-black/5 text-black/65"
+          dark ? "bg-[#00b7ff]/12 text-[#7fd2ff]" : "bg-[#00b7ff]/10 text-[#7fd2ff]"
         }`}
       >
         <WhyIcon type={icon} />
       </div>
       <h3 className="mt-8 text-[17px] font-semibold tracking-[-0.03em]">{title}</h3>
-      <p className={`mt-3 max-w-[22ch] text-[13px] leading-6 ${dark ? "text-white/62" : "text-black/60"}`}>
-        {text}
-      </p>
+      <p className="mt-3 max-w-[22ch] text-[13px] leading-6 text-white/60">{text}</p>
     </div>
   );
 }
 
 function WhyChooseSection() {
   return (
-    <section className="bg-[#f5f5f5] px-4 py-16 text-black md:px-6 lg:px-8 lg:py-18">
+    <section className="bg-[#050608] px-4 py-16 text-white md:px-6 lg:px-8 lg:py-18">
       <div className="mx-auto max-w-[1120px]">
         <div className="mx-auto max-w-[620px] text-center">
-          <h2 className="text-[clamp(2rem,3.3vw,3rem)] font-semibold tracking-[-0.05em] text-black">
+          <h2 className="text-[clamp(2rem,3.3vw,3rem)] font-semibold tracking-[-0.05em] text-white">
             Why choose Tutorlv
           </h2>
-          <p className="mx-auto mt-4 max-w-[420px] text-[13px] leading-6 text-black/62">
+          <p className="mx-auto mt-4 max-w-[420px] text-[13px] leading-6 text-white/62">
             Designed for better learning. Built for real success.Designed
             for better learning. Built for real success.
           </p>
@@ -771,7 +769,7 @@ function WhyChooseSection() {
             />
           </div>
 
-          <div className="overflow-hidden rounded-[18px] bg-[#d6d9d3] shadow-[0_12px_28px_rgba(0,0,0,0.08)]">
+          <div className="overflow-hidden rounded-[18px] border border-white/10 bg-[#0b1017] shadow-[0_12px_28px_rgba(0,0,0,0.22)]">
             <img
               src={heroCenterCard.image}
               alt="Student working on a laptop"
@@ -799,17 +797,17 @@ function WhyChooseSection() {
 
 function TutorHero() {
   return (
-    <section className="relative isolate overflow-hidden bg-white text-black">
-      <div className="absolute inset-0 bg-white" />
-      <div className="absolute inset-0 opacity-[0.8] [background-image:linear-gradient(rgba(16,16,16,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(16,16,16,0.05)_1px,transparent_1px)] [background-size:74px_74px]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_42%,rgba(255,255,255,0.96)_100%)]" />
+    <section className="relative isolate overflow-hidden bg-[#050608] text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_12%,rgba(37,99,235,0.24),transparent_28%),radial-gradient(circle_at_82%_22%,rgba(0,183,255,0.12),transparent_26%),linear-gradient(180deg,#050608_0%,#070b11_100%)]" />
+      <div className="absolute inset-0 opacity-[0.75] [background-image:linear-gradient(rgba(96,165,250,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.06)_1px,transparent_1px)] [background-size:74px_74px]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_42%,rgba(5,6,8,0.92)_100%)]" />
 
       <div className="relative mx-auto flex min-h-screen max-w-[1240px] flex-col px-4 pb-10 pt-4 md:px-6 lg:px-8">
-        <div className="mx-auto w-full max-w-[586px] rounded-full border border-black/10 bg-white shadow-[0_8px_22px_rgba(0,0,0,0.08)]">
+        <div className="mx-auto w-full max-w-[586px] rounded-full border border-white/10 bg-[#0a0d12]/90 shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-xl">
           <div className="flex h-[54px] items-center justify-between gap-3 px-3 sm:px-4">
             <a
               href="#top"
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-black text-white shadow-[0_8px_18px_rgba(0,0,0,0.18)]"
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#00b7ff] text-white shadow-[0_0_26px_rgba(0,183,255,0.35)]"
               aria-label="Home"
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white" aria-hidden="true">
@@ -817,25 +815,25 @@ function TutorHero() {
               </svg>
             </a>
 
-            <nav className="hidden flex-1 items-center justify-center gap-6 text-[12px] font-medium tracking-[0.01em] text-black/82 md:flex md:gap-7 md:text-[13px]">
+            <nav className="hidden flex-1 items-center justify-center gap-6 text-[12px] font-medium tracking-[0.01em] text-white/72 md:flex md:gap-7 md:text-[13px]">
               {heroNavItems.map((item) => (
                 <a
                   key={item}
                   href="#top"
-                  className="group relative py-1 transition duration-300 ease-out hover:-translate-y-0.5 hover:text-black"
+                  className="group relative py-1 transition duration-300 ease-out hover:-translate-y-0.5 hover:text-white"
                 >
                   {item}
-                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-black transition-transform duration-300 ease-out group-hover:scale-x-100" />
+                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-[#00b7ff] transition-transform duration-300 ease-out group-hover:scale-x-100" />
                 </a>
               ))}
             </nav>
 
             <a
               href="#cta"
-              className="group inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-black pl-5 pr-1.5 text-[12px] font-medium tracking-[0.01em] text-white shadow-[0_8px_18px_rgba(0,0,0,0.18)] transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-black/90 hover:shadow-[0_12px_28px_rgba(0,0,0,0.24)] md:text-[13px]"
+              className="group inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#00b7ff] pl-5 pr-1.5 text-[12px] font-medium tracking-[0.01em] text-white shadow-[0_0_24px_rgba(0,183,255,0.28)] transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_0_36px_rgba(0,183,255,0.42)] md:text-[13px]"
             >
               <span>SIGN UP</span>
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-[18px] text-black transition duration-300 ease-out group-hover:scale-105 group-hover:rotate-[-8deg] group-hover:bg-teal-100">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-[18px] text-[#0b1220] transition duration-300 ease-out group-hover:scale-105 group-hover:rotate-[-8deg] group-hover:bg-[#dff6ff]">
                 →
               </span>
             </a>
@@ -844,24 +842,24 @@ function TutorHero() {
 
         <div className="relative flex flex-1 flex-col">
           <div className="relative z-10 mx-auto mt-16 w-full max-w-[780px] text-center md:mt-20 lg:mt-24">
-            <div className="reveal inline-flex items-center rounded-full border border-black/10 bg-white px-4 py-2 shadow-[0_8px_22px_rgba(0,0,0,0.06)]" data-scroll>
+            <div className="reveal inline-flex items-center rounded-full border border-white/10 bg-[#0a0d12]/80 px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-md" data-scroll>
               <div className="flex -space-x-2">
                 {heroAvatars.map((avatar, index) => (
                   <img
                     key={avatar}
                     src={avatar}
                     alt={`Student ${index + 1}`}
-                    className="h-7 w-7 rounded-full border border-white object-cover"
+                    className="h-7 w-7 rounded-full border border-[#050608] object-cover"
                   />
                 ))}
               </div>
-              <span className="ml-3 text-[13px] font-medium text-black/75 md:text-[15px]">
+              <span className="ml-3 text-[13px] font-medium text-white/76 md:text-[15px]">
                 125k+ student reviews
               </span>
             </div>
 
             <h1
-              className="reveal mt-6 font-sans text-[clamp(3.15rem,7vw,5.6rem)] font-black leading-[0.9] tracking-[-0.08em] text-black md:mt-8"
+              className="reveal mt-6 font-sans text-[clamp(3.15rem,7vw,5.6rem)] font-black leading-[0.9] tracking-[-0.08em] text-white md:mt-8"
               data-scroll
             >
               Build skills
@@ -870,7 +868,7 @@ function TutorHero() {
             </h1>
 
             <p
-              className="reveal mx-auto mt-6 max-w-[780px] text-[15px] leading-7 text-black/70 md:text-[17px] md:leading-8"
+              className="reveal mx-auto mt-6 max-w-[780px] text-[15px] leading-7 text-white/68 md:text-[17px] md:leading-8"
               data-scroll
             >
               Tutorlv gives you a complete learning experience that helps you gain real,
@@ -879,11 +877,11 @@ function TutorHero() {
 
             <a
               href="#courses"
-              className="reveal mt-8 inline-flex items-center gap-4 rounded-full bg-black px-5 py-2.5 text-[11px] font-medium tracking-[0.04em] text-white shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 md:px-6 md:py-3 md:text-[13px]"
+              className="reveal mt-8 inline-flex items-center gap-4 rounded-full bg-gradient-to-r from-[#1d4ed8] to-[#00b7ff] px-5 py-2.5 text-[11px] font-medium tracking-[0.04em] text-white shadow-[0_0_26px_rgba(0,183,255,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_0_38px_rgba(0,183,255,0.34)] md:px-6 md:py-3 md:text-[13px]"
               data-scroll
             >
               <span className="pl-1">EXPLORE OUR COURSES</span>
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-[18px] text-black">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-[18px] text-[#0b1220]">
                 →
               </span>
             </a>
@@ -1240,19 +1238,19 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#060808] text-white">
+    <div className="min-h-screen bg-[#050608] text-white">
       <div className="fixed left-0 top-0 z-[70] h-[3px] w-full bg-black/5">
         <div
-          className="h-full bg-gradient-to-r from-teal-300 via-cyan-400 to-blue-500 transition-[width] duration-150 ease-out"
+          className="h-full bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#00b7ff] transition-[width] duration-150 ease-out"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-[-8%] top-[-10%] h-[34rem] w-[34rem] rounded-full bg-cyan-400/10 blur-3xl" />
-        <div className="absolute right-[-10%] top-[16%] h-[38rem] w-[38rem] rounded-full bg-teal-400/10 blur-3xl" />
-        <div className="absolute left-0 top-[45%] h-[26rem] w-[26rem] rounded-full bg-[#0d3f45]/25 blur-3xl" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:120px_120px] opacity-[0.08]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(6,8,8,0.28)_58%,rgba(6,8,8,0.76)_100%)]" />
+        <div className="absolute left-[-8%] top-[-10%] h-[34rem] w-[34rem] rounded-full bg-[#1d4ed8]/12 blur-3xl" />
+        <div className="absolute right-[-10%] top-[16%] h-[38rem] w-[38rem] rounded-full bg-[#00b7ff]/10 blur-3xl" />
+        <div className="absolute left-0 top-[45%] h-[26rem] w-[26rem] rounded-full bg-[#0c274d]/40 blur-3xl" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(96,165,250,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.05)_1px,transparent_1px)] bg-[size:120px_120px] opacity-[0.08]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,6,8,0.28)_58%,rgba(5,6,8,0.8)_100%)]" />
       </div>
 
       <header className="hidden sticky top-0 z-40 border-b border-white/5 bg-black/70 backdrop-blur-xl">
