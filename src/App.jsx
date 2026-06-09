@@ -291,14 +291,14 @@ function SectionTitle({ kicker, title, text, center = false }) {
 function HeroStat({ title, subtitle, image, alt, icon, align = "left", className = "" }) {
   return (
     <div
-      className={`reveal absolute hidden lg:block ${className}`}
+      className={`reveal group absolute hidden lg:block transition duration-300 ease-out hover:-translate-y-1 ${className}`}
       data-scroll
       data-side={align === "right" ? "right" : "left"}
     >
       <div className={`flex ${align === "right" ? "justify-end" : "justify-start"}`}>
-        <div className="w-[158px] rounded-[18px] border border-black/10 bg-white px-3 py-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
+        <div className="w-[158px] rounded-[18px] border border-black/10 bg-white px-3 py-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition duration-300 ease-out group-hover:border-black/15 group-hover:shadow-[0_14px_34px_rgba(0,0,0,0.12)]">
           <div className="flex items-center gap-3">
-            <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-black/10 text-black/70">
+            <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-black/10 text-black/70 transition duration-300 ease-out group-hover:scale-105">
               {icon}
             </div>
             <div className="min-w-0">
@@ -313,7 +313,11 @@ function HeroStat({ title, subtitle, image, alt, icon, align = "left", className
           align === "right" ? "ml-auto" : "ml-[86px]"
         }`}
       >
-        <img src={image} alt={alt} className="h-full w-full object-cover object-center" />
+        <img
+          src={image}
+          alt={alt}
+          className="h-full w-full object-cover object-center transition duration-300 ease-out group-hover:scale-105"
+        />
       </div>
     </div>
   );
@@ -322,14 +326,14 @@ function HeroStat({ title, subtitle, image, alt, icon, align = "left", className
 function HeroShowcaseCard({ image, alt, title, subtitle, className = "", coverClassName = "", play = false }) {
   return (
     <div
-      className={`reveal relative min-h-[260px] overflow-hidden rounded-[28px] bg-black shadow-[0_30px_70px_rgba(0,0,0,0.16)] md:min-h-[340px] lg:min-h-[388px] ${className}`}
+      className={`reveal group relative min-h-[260px] overflow-hidden rounded-[28px] bg-black shadow-[0_30px_70px_rgba(0,0,0,0.16)] transition duration-300 ease-out md:min-h-[340px] lg:min-h-[388px] hover:-translate-y-1 hover:shadow-[0_38px_90px_rgba(0,0,0,0.22)] ${className}`}
       data-scroll
       data-side="right"
     >
       <img
         src={image}
         alt={alt}
-        className={`absolute inset-0 h-full w-full object-cover ${coverClassName}`}
+        className={`absolute inset-0 h-full w-full object-cover transition duration-500 ease-out group-hover:scale-[1.03] ${coverClassName}`}
       />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.14)_48%,rgba(0,0,0,0.8)_100%)]" />
       <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.72)_100%)]" />
@@ -348,7 +352,7 @@ function HeroShowcaseCard({ image, alt, title, subtitle, className = "", coverCl
           <button
             type="button"
             aria-label="Play video"
-            className="grid h-12 w-12 place-items-center rounded-full bg-white text-[16px] text-black shadow-[0_12px_25px_rgba(0,0,0,0.22)]"
+            className="grid h-12 w-12 place-items-center rounded-full bg-white text-[16px] text-black shadow-[0_12px_25px_rgba(0,0,0,0.22)] transition duration-300 ease-out group-hover:scale-105 group-hover:bg-teal-50"
           >
             ►
           </button>
@@ -393,7 +397,7 @@ function MetaIcon({ type }) {
 function CourseCard({ course }) {
   return (
     <div
-      className={`reveal overflow-hidden rounded-[18px] border border-black/10 bg-white shadow-[0_14px_34px_rgba(0,0,0,0.08)] ${
+      className={`reveal group overflow-hidden rounded-[18px] border border-black/10 bg-white shadow-[0_14px_34px_rgba(0,0,0,0.08)] transition duration-300 ease-out hover:-translate-y-1 hover:border-black/15 hover:shadow-[0_22px_44px_rgba(0,0,0,0.12)] ${
         course.featured ? "ring-1 ring-black/95" : ""
       }`}
       data-scroll
@@ -404,7 +408,7 @@ function CourseCard({ course }) {
           <img
             src={course.image}
             alt={course.title}
-            className={`h-[204px] w-full object-cover ${course.crop}`}
+            className={`h-[204px] w-full object-cover transition duration-500 ease-out group-hover:scale-[1.03] ${course.crop}`}
           />
         </div>
       </div>
@@ -438,10 +442,10 @@ function CourseCard({ course }) {
 
         <a
           href="#cta"
-          className={`mt-4 flex h-10 w-full items-center justify-center rounded-full border text-[11px] font-semibold tracking-[0.06em] transition ${
+          className={`mt-4 flex h-10 w-full items-center justify-center rounded-full border text-[11px] font-semibold tracking-[0.06em] transition duration-300 ease-out ${
             course.featured
               ? "border-black bg-black text-white"
-              : "border-black/10 bg-white text-black hover:border-black/20"
+              : "border-black/10 bg-white text-black hover:border-black/20 hover:bg-black/5"
           }`}
         >
           VIEW COURSE
@@ -454,7 +458,7 @@ function CourseCard({ course }) {
 function ExploreCourseCard({ course }) {
   return (
     <div
-      className="reveal overflow-hidden rounded-[14px] border border-black/10 bg-white shadow-[0_10px_26px_rgba(0,0,0,0.06)]"
+      className="reveal group overflow-hidden rounded-[14px] border border-black/10 bg-white shadow-[0_10px_26px_rgba(0,0,0,0.06)] transition duration-300 ease-out hover:-translate-y-1 hover:border-black/15 hover:shadow-[0_18px_36px_rgba(0,0,0,0.1)]"
       data-scroll
       data-side="right"
     >
@@ -463,7 +467,7 @@ function ExploreCourseCard({ course }) {
           <img
             src={course.image}
             alt={course.title}
-            className={`h-[194px] w-full object-cover ${course.crop}`}
+            className={`h-[194px] w-full object-cover transition duration-500 ease-out group-hover:scale-[1.03] ${course.crop}`}
           />
         </div>
       </div>
@@ -497,10 +501,10 @@ function ExploreCourseCard({ course }) {
 
         <a
           href="#cta"
-          className={`mt-4 flex h-10 w-full items-center justify-center rounded-full border text-[11px] font-semibold tracking-[0.06em] transition ${
+          className={`mt-4 flex h-10 w-full items-center justify-center rounded-full border text-[11px] font-semibold tracking-[0.06em] transition duration-300 ease-out ${
             course.featured
               ? "border-black bg-black text-white"
-              : "border-black/10 bg-white text-black hover:border-black/20"
+              : "border-black/10 bg-white text-black hover:border-black/20 hover:bg-black/5"
           }`}
         >
           VIEW COURSE
@@ -717,14 +721,14 @@ function WhyIcon({ type }) {
 function WhyFeatureCard({ title, text, icon, dark = false }) {
   return (
     <div
-      className={`reveal rounded-[18px] p-6 shadow-[0_10px_24px_rgba(0,0,0,0.06)] ${
+      className={`reveal group rounded-[18px] p-6 shadow-[0_10px_24px_rgba(0,0,0,0.06)] transition duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(0,0,0,0.1)] ${
         dark ? "bg-black text-white" : "border border-black/6 bg-white text-black"
       }`}
       data-scroll
       data-side="right"
     >
       <div
-        className={`grid h-9 w-9 place-items-center rounded-full ${
+        className={`grid h-9 w-9 place-items-center rounded-full transition duration-300 ease-out group-hover:scale-105 ${
           dark ? "bg-white/10 text-white/85" : "bg-black/5 text-black/65"
         }`}
       >
@@ -771,7 +775,7 @@ function WhyChooseSection() {
             <img
               src={heroCenterCard.image}
               alt="Student working on a laptop"
-              className="h-full min-h-[340px] w-full object-cover object-[center_26%]"
+              className="h-full min-h-[340px] w-full object-cover object-[center_26%] transition duration-500 ease-out hover:scale-[1.02]"
             />
           </div>
 
