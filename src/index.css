@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Saira:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 120px 120px;
+    opacity: 0.08;
+    mix-blend-mode: screen;
+    z-index: 0;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 0%, rgba(6, 8, 8, 0.28) 58%, rgba(6, 8, 8, 0.76) 100%);
+    z-index: 0;
+  }
+
+  body {
+    @apply bg-ink-950 font-sans text-sand antialiased;
+    background: linear-gradient(180deg, #071017 0%, #09141b 48%, #050b10 100%);
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: rgba(255, 159, 107, 0.35);
+    color: #fff7ef;
+  }
+
+  a {
+    @apply no-underline;
+  }
+}
+
+@layer components {
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 700ms ease,
+      transform 700ms ease;
+    will-change: transform, opacity;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
