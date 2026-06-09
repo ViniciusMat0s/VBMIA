@@ -539,6 +539,103 @@ function ExploreCoursesSection() {
   );
 }
 
+function FooterSection() {
+  const footerLinks = {
+    Platform: ["Explore courses", "Why choose us", "Student reviews", "Pricing"],
+    Company: ["About", "Careers", "Blog", "Contact"],
+    Resources: ["Help center", "Guides", "Community", "Privacy policy"],
+  };
+
+  return (
+    <footer id="cta" className="bg-[#f5f5f5] px-4 pb-6 pt-10 text-black md:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1120px]">
+        <div className="rounded-[28px] border border-black/8 bg-white px-5 py-6 shadow-[0_14px_34px_rgba(0,0,0,0.06)] md:px-7 md:py-7">
+          <div className="grid gap-8 lg:grid-cols-[1.05fr_1.25fr] lg:items-start">
+            <div>
+              <div className="flex items-center gap-3">
+                <div className="grid h-11 w-11 place-items-center rounded-full bg-black text-white shadow-[0_10px_22px_rgba(0,0,0,0.18)]">
+                  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white" aria-hidden="true">
+                    <path d="M13.1 1.6 4.8 12.1h5.2L8.9 22.4 19.2 9.9h-5.3L13.1 1.6Z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-[18px] font-semibold tracking-[-0.04em]">Tutorlv</div>
+                  <div className="text-[12px] text-black/55">Learning that feels clean and premium.</div>
+                </div>
+              </div>
+
+              <p className="mt-5 max-w-md text-[14px] leading-7 text-black/62">
+                A simple, modern learning experience built to help students move faster,
+                learn better and choose the right course without friction.
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-3">
+                {["ALL COURSE", "UI/UX DESIGN", "MARKETING"].map((pill) => (
+                  <span
+                    key={pill}
+                    className="rounded-full border border-black/10 bg-[#f8f8f8] px-4 py-2 text-[11px] font-semibold tracking-[0.08em] text-black/68"
+                  >
+                    {pill}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-3">
+              {Object.entries(footerLinks).map(([group, items]) => (
+                <div key={group}>
+                  <h3 className="text-[12px] font-semibold uppercase tracking-[0.18em] text-black/42">
+                    {group}
+                  </h3>
+                  <ul className="mt-4 space-y-3 text-[14px] text-black/74">
+                    {items.map((item) => (
+                      <li key={item}>
+                        <a href="#top" className="transition hover:text-black">
+                          {item}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-8 flex flex-col gap-4 border-t border-black/8 pt-5 md:flex-row md:items-center md:justify-between">
+            <div className="text-[12px] text-black/52">
+              © 2026 Tutorlv. All rights reserved.
+            </div>
+
+            <div className="flex items-center gap-3">
+              <a
+                href="#top"
+                className="grid h-10 w-10 place-items-center rounded-full border border-black/10 bg-white text-black transition hover:border-black/20"
+                aria-label="Instagram"
+              >
+                IG
+              </a>
+              <a
+                href="#top"
+                className="grid h-10 w-10 place-items-center rounded-full border border-black/10 bg-white text-black transition hover:border-black/20"
+                aria-label="X"
+              >
+                X
+              </a>
+              <a
+                href="#top"
+                className="grid h-10 w-10 place-items-center rounded-full border border-black/10 bg-white text-black transition hover:border-black/20"
+                aria-label="YouTube"
+              >
+                YT
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
 function WhyIcon({ type }) {
   if (type === "user") {
     return (
@@ -1522,7 +1619,11 @@ function App() {
         </Reveal>
 
         <Reveal delay={280}>
-          <section id="cta" className="mt-10">
+          <FooterSection />
+        </Reveal>
+
+        <Reveal delay={280}>
+          <section id="cta" className="hidden mt-10">
             <div className="mx-auto max-w-7xl px-5 pb-0 md:px-8">
               <div className="rounded-t-[2rem] bg-gradient-to-r from-[#08313b] via-[#138b84] to-[#2a8dc0] px-5 py-5 text-center text-sm text-white/80 md:px-8">
                 <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
