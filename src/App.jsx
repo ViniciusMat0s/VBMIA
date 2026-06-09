@@ -136,6 +136,44 @@ const heroRightCard = {
   alt: "Portrait of an experienced tutor",
 };
 
+const companyLogos = ["Raonadle", "Mondole", "Hanhlod", "Wondrot", "Raonadle", "Bonraow"];
+
+const featuredCourses = [
+  {
+    title: "UI/UX design crash course",
+    image:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80",
+    duration: "20 hours 30 min",
+    lessons: "23 Lessons",
+    price: "$ 250.50 USD",
+    oldPrice: "$ 280.50 USD",
+    featured: false,
+    crop: "object-[center_28%]",
+  },
+  {
+    title: "Full-stack web development",
+    image:
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
+    duration: "26 hours 30 min",
+    lessons: "20 Lessons",
+    price: "$ 350.50 USD",
+    oldPrice: "$ 380.50 USD",
+    featured: true,
+    crop: "object-[center_28%]",
+  },
+  {
+    title: "Data analytics professional",
+    image:
+      "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80",
+    duration: "20 hours 30 min",
+    lessons: "24 Lessons",
+    price: "$ 450.50 USD",
+    oldPrice: "$ 680.50 USD",
+    featured: false,
+    crop: "object-[center_22%]",
+  },
+];
+
 function Card({ children, className = "" }) {
   return (
     <div
@@ -226,6 +264,97 @@ function HeroShowcaseCard({ image, alt, title, subtitle, className = "", coverCl
             ►
           </button>
         ) : null}
+      </div>
+    </div>
+  );
+}
+
+function MetaIcon({ type }) {
+  if (type === "clock") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-black/58" aria-hidden="true">
+        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M12 8v4l2.5 1.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+
+  if (type === "lessons") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-black/58" aria-hidden="true">
+        <path
+          d="M5 7.5A2.5 2.5 0 0 1 7.5 5H19v11.5A2.5 2.5 0 0 1 16.5 19H7.5A2.5 2.5 0 0 1 5 16.5V7.5Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+        />
+        <path d="M8 8.5h8M8 12h6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-amber-500" aria-hidden="true">
+      <path d="m12 4 1.7 4.9h5.2l-4.2 3 1.6 5L12 14.9 7.7 16.9l1.6-5-4.2-3h5.2L12 4Z" fill="currentColor" />
+    </svg>
+  );
+}
+
+function CourseCard({ course }) {
+  return (
+    <div
+      className={`overflow-hidden rounded-[18px] border border-black/10 bg-white shadow-[0_14px_34px_rgba(0,0,0,0.08)] ${
+        course.featured ? "ring-1 ring-black/95" : ""
+      }`}
+    >
+      <div className="p-2.5 pb-0">
+        <div className="relative overflow-hidden rounded-[14px] bg-[#d8ddd8]">
+          <img
+            src={course.image}
+            alt={course.title}
+            className={`h-[204px] w-full object-cover ${course.crop}`}
+          />
+        </div>
+      </div>
+
+      <div className="px-4 pb-4 pt-2.5">
+        <div className="flex items-center justify-between gap-3 text-[11px] text-black/58">
+          <div className="flex items-center gap-2">
+            <MetaIcon type="clock" />
+            <span>{course.duration}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <MetaIcon type="lessons" />
+            <span>{course.lessons}</span>
+          </div>
+          <div className="flex items-center gap-1 text-amber-500">
+            <MetaIcon type="star" />
+            <span className="text-black/68">5.0</span>
+          </div>
+        </div>
+
+        <h3 className="mt-3 text-[18px] font-semibold leading-tight tracking-[-0.03em] text-black">
+          {course.title}
+        </h3>
+
+        <div className="mt-2 flex flex-wrap items-end gap-2">
+          <span className="text-[18px] font-semibold tracking-[-0.03em] text-black">
+            {course.price}
+          </span>
+          <span className="pb-0.5 text-[12px] text-black/42 line-through">{course.oldPrice}</span>
+        </div>
+
+        <a
+          href="#cta"
+          className={`mt-4 flex h-10 w-full items-center justify-center rounded-full border text-[11px] font-semibold tracking-[0.06em] transition ${
+            course.featured
+              ? "border-black bg-black text-white"
+              : "border-black/10 bg-white text-black hover:border-black/20"
+          }`}
+        >
+          VIEW COURSE
+        </a>
       </div>
     </div>
   );
@@ -742,22 +871,29 @@ function App() {
         </Reveal>
 
         <Reveal delay={90}>
-          <section id="courses" className="mx-auto max-w-7xl px-5 pb-4 md:px-8">
-            <div className="rounded-[1.8rem] border border-white/10 bg-white/[0.04] px-5 py-4 shadow-[0_24px_70px_rgba(0,0,0,0.26)] backdrop-blur-xl">
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="text-xs uppercase tracking-[0.34em] text-white/45">
-                  Trusted by creators, studios and indie brands
-                </div>
-                <div className="flex flex-wrap items-center gap-3">
-                  {trustedLogos.map((logo) => (
-                    <span
-                      key={logo}
-                      className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[12px] font-semibold tracking-[0.12em] text-white/65"
-                    >
-                      {logo}
-                    </span>
-                  ))}
-                </div>
+          <section id="courses" className="bg-[#f5f5f5] px-4 py-14 text-black md:px-6 lg:px-8 lg:py-16">
+            <div className="mx-auto max-w-[1120px]">
+              <p className="text-center text-[12px] font-medium tracking-[-0.01em] text-black/72">
+                Tutorlv fetured in more than 50+ companies
+              </p>
+
+              <div className="mt-7 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-[#8d8d8d]">
+                {companyLogos.map((logo, index) => (
+                  <div key={`${logo}-${index}`} className="flex items-center gap-2 text-[22px] font-semibold">
+                    <span className="opacity-75">◌</span>
+                    <span className="text-[18px] font-bold tracking-[-0.04em]">{logo}</span>
+                  </div>
+                ))}
+              </div>
+
+              <h2 className="mt-20 text-center text-[clamp(2rem,3vw,2.9rem)] font-semibold tracking-[-0.05em] text-black">
+                Our featured courses
+              </h2>
+
+              <div className="mt-12 grid gap-5 md:grid-cols-3">
+                {featuredCourses.map((course) => (
+                  <CourseCard key={course.title} course={course} />
+                ))}
               </div>
             </div>
           </section>
