@@ -360,6 +360,143 @@ function CourseCard({ course }) {
   );
 }
 
+function WhyIcon({ type }) {
+  if (type === "user") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+        <path
+          d="M20 19.5c0-3-3.4-5.5-8-5.5s-8 2.5-8 5.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+        <circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      </svg>
+    );
+  }
+
+  if (type === "money") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+        <path
+          d="M7 9.5c0-2 2.2-3.5 5-3.5s5 1.5 5 3.5-2.2 3.5-5 3.5-5 1.5-5 3.5 2.2 3.5 5 3.5 5-1.5 5-3.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+        <path d="M12 4.5v15" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  if (type === "award") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+        <path
+          d="M8.5 14.5 7.2 20l4.8-2.7L17 20l-1.3-5.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <circle cx="12" cy="9.5" r="4.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+      <path
+        d="M12 4.5l2.1 4.3 4.8.7-3.5 3.4.8 4.8-4.2-2.2-4.2 2.2.8-4.8-3.5-3.4 4.8-.7L12 4.5z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function WhyFeatureCard({ title, text, icon, dark = false }) {
+  return (
+    <div
+      className={`rounded-[18px] p-6 shadow-[0_10px_24px_rgba(0,0,0,0.06)] ${
+        dark ? "bg-black text-white" : "border border-black/6 bg-white text-black"
+      }`}
+    >
+      <div
+        className={`grid h-9 w-9 place-items-center rounded-full ${
+          dark ? "bg-white/10 text-white/85" : "bg-black/5 text-black/65"
+        }`}
+      >
+        <WhyIcon type={icon} />
+      </div>
+      <h3 className="mt-8 text-[17px] font-semibold tracking-[-0.03em]">{title}</h3>
+      <p className={`mt-3 max-w-[22ch] text-[13px] leading-6 ${dark ? "text-white/62" : "text-black/60"}`}>
+        {text}
+      </p>
+    </div>
+  );
+}
+
+function WhyChooseSection() {
+  return (
+    <section className="bg-[#f5f5f5] px-4 py-16 text-black md:px-6 lg:px-8 lg:py-18">
+      <div className="mx-auto max-w-[1120px]">
+        <div className="mx-auto max-w-[620px] text-center">
+          <h2 className="text-[clamp(2rem,3.3vw,3rem)] font-semibold tracking-[-0.05em] text-black">
+            Why choose Tutorlv
+          </h2>
+          <p className="mx-auto mt-4 max-w-[420px] text-[13px] leading-6 text-black/62">
+            Designed for better learning. Built for real success.Designed
+            for better learning. Built for real success.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-4 lg:grid-cols-[0.86fr_1.22fr_0.86fr] lg:items-stretch">
+          <div className="grid gap-4">
+            <WhyFeatureCard
+              dark
+              icon="user"
+              title="Expert instructors"
+              text="Our instructors are creative minds and strategic thinkers."
+            />
+            <WhyFeatureCard
+              icon="money"
+              title="Affordable pricing"
+              text="We're a team of creative minds and strategic thinkers."
+            />
+          </div>
+
+          <div className="overflow-hidden rounded-[18px] bg-[#d6d9d3] shadow-[0_12px_28px_rgba(0,0,0,0.08)]">
+            <img
+              src={heroCenterCard.image}
+              alt="Student working on a laptop"
+              className="h-full min-h-[340px] w-full object-cover object-[center_26%]"
+            />
+          </div>
+
+          <div className="grid gap-4">
+            <WhyFeatureCard
+              icon="award"
+              title="Awards"
+              text="But along the way, our work has been honored."
+            />
+            <WhyFeatureCard
+              icon="star"
+              title="Reviews"
+              text="Strategic placements for testimonials, student success."
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function TutorHero() {
   return (
     <section className="relative isolate overflow-hidden bg-white text-black">
@@ -868,6 +1005,10 @@ function App() {
               <PromptHeroArt />
             </div>
           </section>
+        </Reveal>
+
+        <Reveal delay={120}>
+          <WhyChooseSection />
         </Reveal>
 
         <Reveal delay={90}>
