@@ -174,6 +174,83 @@ const featuredCourses = [
   },
 ];
 
+const exploreCourseFilters = [
+  "ALL COURSE",
+  "UI/UX DESIGN",
+  "MARKETING",
+  "EMAIL MARKETING",
+  "CONTENT & SEO",
+];
+
+const exploreCourses = [
+  {
+    title: "Digital marketing mastery",
+    image:
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
+    duration: "20 hours 30 min",
+    lessons: "27 Lessons",
+    price: "$ 150.50 USD",
+    oldPrice: "$ 240.50 USD",
+    featured: false,
+    crop: "object-[center_22%]",
+  },
+  {
+    title: "UI/UX design essentials",
+    image:
+      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80",
+    duration: "20 hours 30 min",
+    lessons: "25 Lessons",
+    price: "$ 450.50 USD",
+    oldPrice: "$ 580.50 USD",
+    featured: true,
+    crop: "object-[center_24%]",
+  },
+  {
+    title: "Python for beginners",
+    image:
+      "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=900&q=80",
+    duration: "20 hours 30 min",
+    lessons: "28 Lessons",
+    price: "$ 550.50 USD",
+    oldPrice: "$ 680.50 USD",
+    featured: false,
+    crop: "object-[center_20%]",
+  },
+  {
+    title: "Front-end development",
+    image:
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
+    duration: "20 hours 30 min",
+    lessons: "29 Lessons",
+    price: "$ 550.50 USD",
+    oldPrice: "$ 680.50 USD",
+    featured: false,
+    crop: "object-[center_28%]",
+  },
+  {
+    title: "Excel & business reporting",
+    image:
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80",
+    duration: "20 hours 30 min",
+    lessons: "27 Lessons",
+    price: "$ 250.50 USD",
+    oldPrice: "$ 280.50 USD",
+    featured: false,
+    crop: "object-[center_24%]",
+  },
+  {
+    title: "Project management course",
+    image:
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80",
+    duration: "20 hours 30 min",
+    lessons: "26 Lessons",
+    price: "$ 350.50 USD",
+    oldPrice: "$ 460.50 USD",
+    featured: false,
+    crop: "object-[center_26%]",
+  },
+];
+
 function Card({ children, className = "" }) {
   return (
     <div
@@ -357,6 +434,108 @@ function CourseCard({ course }) {
         </a>
       </div>
     </div>
+  );
+}
+
+function ExploreCourseCard({ course }) {
+  return (
+    <div className="overflow-hidden rounded-[14px] border border-black/10 bg-white shadow-[0_10px_26px_rgba(0,0,0,0.06)]">
+      <div className="p-2.5 pb-0">
+        <div className="relative overflow-hidden rounded-[12px] bg-[#d8ddd8]">
+          <img
+            src={course.image}
+            alt={course.title}
+            className={`h-[194px] w-full object-cover ${course.crop}`}
+          />
+        </div>
+      </div>
+
+      <div className="px-4 pb-4 pt-2.5">
+        <div className="flex items-center justify-between gap-3 text-[11px] text-black/58">
+          <div className="flex items-center gap-2">
+            <MetaIcon type="clock" />
+            <span>{course.duration}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <MetaIcon type="lessons" />
+            <span>{course.lessons}</span>
+          </div>
+          <div className="flex items-center gap-1 text-amber-500">
+            <MetaIcon type="star" />
+            <span className="text-black/68">5.0</span>
+          </div>
+        </div>
+
+        <h3 className="mt-3 text-[17px] font-semibold leading-tight tracking-[-0.03em] text-black">
+          {course.title}
+        </h3>
+
+        <div className="mt-3 flex flex-wrap items-end gap-2">
+          <span className="text-[18px] font-semibold tracking-[-0.03em] text-black">
+            {course.price}
+          </span>
+          <span className="pb-0.5 text-[12px] text-black/42 line-through">{course.oldPrice}</span>
+        </div>
+
+        <a
+          href="#cta"
+          className={`mt-4 flex h-10 w-full items-center justify-center rounded-full border text-[11px] font-semibold tracking-[0.06em] transition ${
+            course.featured
+              ? "border-black bg-black text-white"
+              : "border-black/10 bg-white text-black hover:border-black/20"
+          }`}
+        >
+          VIEW COURSE
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function ExploreCoursesSection() {
+  return (
+    <section id="courses" className="bg-[#f5f5f5] px-4 py-16 text-black md:px-6 lg:px-8 lg:py-18">
+      <div className="mx-auto max-w-[1120px]">
+        <h2 className="text-center text-[clamp(2rem,3vw,2.95rem)] font-semibold tracking-[-0.05em] text-black">
+          Explore our courses
+        </h2>
+
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+          {exploreCourseFilters.map((filter, index) => {
+            const active = index === 0;
+            return (
+              <button
+                key={filter}
+                type="button"
+                className={`h-10 rounded-full px-5 text-[11px] font-semibold tracking-[0.08em] transition ${
+                  active
+                    ? "bg-black text-white shadow-[0_10px_24px_rgba(0,0,0,0.18)]"
+                    : "border border-black/10 bg-white text-black/68 hover:border-black/20"
+                }`}
+              >
+                {filter}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {exploreCourses.map((course) => (
+            <ExploreCourseCard key={course.title} course={course} />
+          ))}
+        </div>
+
+        <div className="mt-10 flex justify-center">
+          <a
+            href="#cta"
+            className="inline-flex items-center gap-3 rounded-full bg-black px-5 py-2 text-[11px] font-semibold tracking-[0.08em] text-white shadow-[0_10px_24px_rgba(0,0,0,0.18)]"
+          >
+            <span>VIEW ALL COURSE</span>
+            <span className="grid h-7 w-7 place-items-center rounded-full bg-white text-black">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -1012,7 +1191,11 @@ function App() {
         </Reveal>
 
         <Reveal delay={90}>
-          <section id="courses" className="bg-[#f5f5f5] px-4 py-14 text-black md:px-6 lg:px-8 lg:py-16">
+          <ExploreCoursesSection />
+        </Reveal>
+
+        <Reveal delay={90}>
+          <section className="hidden bg-[#f5f5f5] px-4 py-14 text-black md:px-6 lg:px-8 lg:py-16">
             <div className="mx-auto max-w-[1120px]">
               <p className="text-center text-[12px] font-medium tracking-[-0.01em] text-black/72">
                 Tutorlv fetured in more than 50+ companies
