@@ -815,18 +815,23 @@ function TutorHero() {
 
             <nav className="hidden flex-1 items-center justify-center gap-6 text-[12px] font-medium tracking-[0.01em] text-black/82 md:flex md:gap-7 md:text-[13px]">
               {heroNavItems.map((item) => (
-                <a key={item} href="#top" className="transition hover:text-black">
+                <a
+                  key={item}
+                  href="#top"
+                  className="group relative py-1 transition duration-300 ease-out hover:-translate-y-0.5 hover:text-black"
+                >
                   {item}
+                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-black transition-transform duration-300 ease-out group-hover:scale-x-100" />
                 </a>
               ))}
             </nav>
 
             <a
               href="#cta"
-              className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-black pl-5 pr-1.5 text-[12px] font-medium tracking-[0.01em] text-white shadow-[0_8px_18px_rgba(0,0,0,0.18)] md:text-[13px]"
+              className="group inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-black pl-5 pr-1.5 text-[12px] font-medium tracking-[0.01em] text-white shadow-[0_8px_18px_rgba(0,0,0,0.18)] transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-black/90 hover:shadow-[0_12px_28px_rgba(0,0,0,0.24)] md:text-[13px]"
             >
               <span>SIGN UP</span>
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-[18px] text-black">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-[18px] text-black transition duration-300 ease-out group-hover:scale-105 group-hover:rotate-[-8deg] group-hover:bg-teal-100">
                 →
               </span>
             </a>
