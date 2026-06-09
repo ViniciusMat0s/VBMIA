@@ -547,9 +547,9 @@ function FooterSection() {
   };
 
   return (
-    <footer id="cta" className="bg-[#f5f5f5] px-4 pb-6 pt-10 text-black md:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1120px]">
-        <div className="rounded-[28px] border border-black/8 bg-white px-5 py-6 shadow-[0_14px_34px_rgba(0,0,0,0.06)] md:px-7 md:py-7">
+    <footer id="cta" className="w-full bg-[#f5f5f5] px-0 pb-0 pt-0 text-black">
+      <div className="w-full">
+        <div className="w-full rounded-none border border-black/8 bg-white px-5 py-6 shadow-none md:px-8 md:py-8">
           <div className="grid gap-8 lg:grid-cols-[1.05fr_1.25fr] lg:items-start">
             <div>
               <div className="flex items-center gap-3">
@@ -1291,6 +1291,7 @@ function App() {
           <ExploreCoursesSection />
         </Reveal>
 
+        <div className="hidden">
         <Reveal delay={90}>
           <section className="hidden bg-[#f5f5f5] px-4 py-14 text-black md:px-6 lg:px-8 lg:py-16">
             <div className="mx-auto max-w-[1120px]">
@@ -1617,6 +1618,7 @@ function App() {
             </div>
           </section>
         </Reveal>
+        </div>
 
         <Reveal delay={280}>
           <FooterSection />
