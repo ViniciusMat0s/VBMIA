@@ -238,18 +238,20 @@ function TutorHero() {
       <div className="absolute inset-0 opacity-[0.8] [background-image:linear-gradient(rgba(16,16,16,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(16,16,16,0.05)_1px,transparent_1px)] [background-size:74px_74px]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_42%,rgba(255,255,255,0.96)_100%)]" />
 
-      <div className="relative mx-auto flex min-h-screen max-w-[1240px] flex-col px-4 pb-10 pt-5 md:px-6 lg:px-8">
-        <div className="mx-auto w-full max-w-[560px] rounded-full border border-black/10 bg-white/90 shadow-[0_10px_30px_rgba(0,0,0,0.08)] backdrop-blur-md">
-          <div className="flex items-center justify-between gap-3 px-3 py-2.5 sm:px-4">
+      <div className="relative mx-auto flex min-h-screen max-w-[1240px] flex-col px-4 pb-10 pt-4 md:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-[586px] rounded-full border border-black/10 bg-white shadow-[0_8px_22px_rgba(0,0,0,0.08)]">
+          <div className="flex h-[54px] items-center justify-between gap-3 px-3 sm:px-4">
             <a
               href="#top"
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-black text-white shadow-[0_8px_20px_rgba(0,0,0,0.18)]"
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-black text-white shadow-[0_8px_18px_rgba(0,0,0,0.18)]"
               aria-label="Home"
             >
-              <span className="text-lg leading-none">⚡</span>
+              <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white" aria-hidden="true">
+                <path d="M13.1 1.6 4.8 12.1h5.2L8.9 22.4 19.2 9.9h-5.3L13.1 1.6Z" />
+              </svg>
             </a>
 
-            <nav className="hidden flex-1 items-center justify-center gap-6 text-[11px] font-medium tracking-[0.02em] text-black/82 sm:flex sm:gap-5 md:gap-7 md:text-[13px]">
+            <nav className="hidden flex-1 items-center justify-center gap-6 text-[12px] font-medium tracking-[0.01em] text-black/82 md:flex md:gap-7 md:text-[13px]">
               {heroNavItems.map((item) => (
                 <a key={item} href="#top" className="transition hover:text-black">
                   {item}
@@ -259,10 +261,10 @@ function TutorHero() {
 
             <a
               href="#cta"
-              className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-black pl-5 pr-1.5 text-[11px] font-medium tracking-[0.02em] text-white shadow-[0_8px_20px_rgba(0,0,0,0.18)] md:text-[13px]"
+              className="inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-black pl-5 pr-1.5 text-[12px] font-medium tracking-[0.01em] text-white shadow-[0_8px_18px_rgba(0,0,0,0.18)] md:text-[13px]"
             >
               <span>SIGN UP</span>
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-base text-black">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-[18px] text-black">
                 →
               </span>
             </a>
