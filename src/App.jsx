@@ -254,7 +254,8 @@ const exploreCourses = [
 function Card({ children, className = "" }) {
   return (
     <div
-      className={`group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] shadow-[0_24px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-[0_32px_100px_rgba(0,0,0,0.48)] ${className}`}
+      className={`reveal group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] shadow-[0_24px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-[0_32px_100px_rgba(0,0,0,0.48)] ${className}`}
+      data-scroll
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(45,212,191,0.12),transparent_38%),linear-gradient(135deg,rgba(255,255,255,0.05),transparent_55%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       <div className="relative z-10">{children}</div>
@@ -262,9 +263,14 @@ function Card({ children, className = "" }) {
   );
 }
 
-function Reveal({ children, className = "", delay = 0 }) {
+function Reveal({ children, className = "", delay = 0, side = "right" }) {
   return (
-    <div className={`reveal ${className}`} style={{ transitionDelay: `${delay}ms` }} data-reveal>
+    <div
+      className={`reveal ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+      data-reveal
+      data-side={side}
+    >
       {children}
     </div>
   );
@@ -272,7 +278,7 @@ function Reveal({ children, className = "", delay = 0 }) {
 
 function SectionTitle({ kicker, title, text, center = false }) {
   return (
-    <div className={center ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
+    <div className={center ? "reveal mx-auto max-w-3xl text-center" : "reveal max-w-3xl"} data-scroll>
       <p className="text-xs font-semibold uppercase tracking-[0.38em] text-teal-300/90">{kicker}</p>
       <h2 className="mt-4 font-saira text-[clamp(2rem,4vw,3.6rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-white">
         {title}
@@ -284,7 +290,11 @@ function SectionTitle({ kicker, title, text, center = false }) {
 
 function HeroStat({ title, subtitle, image, alt, icon, align = "left", className = "" }) {
   return (
-    <div className={`absolute hidden lg:block ${className}`}>
+    <div
+      className={`reveal absolute hidden lg:block ${className}`}
+      data-scroll
+      data-side={align === "right" ? "right" : "left"}
+    >
       <div className={`flex ${align === "right" ? "justify-end" : "justify-start"}`}>
         <div className="w-[158px] rounded-[18px] border border-black/10 bg-white px-3 py-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
           <div className="flex items-center gap-3">
@@ -312,7 +322,9 @@ function HeroStat({ title, subtitle, image, alt, icon, align = "left", className
 function HeroShowcaseCard({ image, alt, title, subtitle, className = "", coverClassName = "", play = false }) {
   return (
     <div
-      className={`relative min-h-[260px] overflow-hidden rounded-[28px] bg-black shadow-[0_30px_70px_rgba(0,0,0,0.16)] md:min-h-[340px] lg:min-h-[388px] ${className}`}
+      className={`reveal relative min-h-[260px] overflow-hidden rounded-[28px] bg-black shadow-[0_30px_70px_rgba(0,0,0,0.16)] md:min-h-[340px] lg:min-h-[388px] ${className}`}
+      data-scroll
+      data-side="right"
     >
       <img
         src={image}
@@ -381,9 +393,11 @@ function MetaIcon({ type }) {
 function CourseCard({ course }) {
   return (
     <div
-      className={`overflow-hidden rounded-[18px] border border-black/10 bg-white shadow-[0_14px_34px_rgba(0,0,0,0.08)] ${
+      className={`reveal overflow-hidden rounded-[18px] border border-black/10 bg-white shadow-[0_14px_34px_rgba(0,0,0,0.08)] ${
         course.featured ? "ring-1 ring-black/95" : ""
       }`}
+      data-scroll
+      data-side="right"
     >
       <div className="p-2.5 pb-0">
         <div className="relative overflow-hidden rounded-[14px] bg-[#d8ddd8]">
@@ -439,7 +453,11 @@ function CourseCard({ course }) {
 
 function ExploreCourseCard({ course }) {
   return (
-    <div className="overflow-hidden rounded-[14px] border border-black/10 bg-white shadow-[0_10px_26px_rgba(0,0,0,0.06)]">
+    <div
+      className="reveal overflow-hidden rounded-[14px] border border-black/10 bg-white shadow-[0_10px_26px_rgba(0,0,0,0.06)]"
+      data-scroll
+      data-side="right"
+    >
       <div className="p-2.5 pb-0">
         <div className="relative overflow-hidden rounded-[12px] bg-[#d8ddd8]">
           <img
@@ -547,9 +565,9 @@ function FooterSection() {
   };
 
   return (
-    <footer id="cta" className="w-full bg-[#f5f5f5] px-0 pb-0 pt-0 text-black">
-      <div className="w-full">
-        <div className="w-full rounded-none border border-black/8 bg-white px-5 py-6 shadow-none md:px-8 md:py-8">
+    <footer id="cta" className="w-full bg-white text-black">
+      <div className="w-full border-t border-black/8">
+        <div className="mx-auto w-full max-w-none px-5 py-8 md:px-8 md:py-10">
           <div className="grid gap-8 lg:grid-cols-[1.05fr_1.25fr] lg:items-start">
             <div>
               <div className="flex items-center gap-3">
@@ -699,9 +717,11 @@ function WhyIcon({ type }) {
 function WhyFeatureCard({ title, text, icon, dark = false }) {
   return (
     <div
-      className={`rounded-[18px] p-6 shadow-[0_10px_24px_rgba(0,0,0,0.06)] ${
+      className={`reveal rounded-[18px] p-6 shadow-[0_10px_24px_rgba(0,0,0,0.06)] ${
         dark ? "bg-black text-white" : "border border-black/6 bg-white text-black"
       }`}
+      data-scroll
+      data-side="right"
     >
       <div
         className={`grid h-9 w-9 place-items-center rounded-full ${
@@ -815,7 +835,7 @@ function TutorHero() {
 
         <div className="relative flex flex-1 flex-col">
           <div className="relative z-10 mx-auto mt-16 w-full max-w-[780px] text-center md:mt-20 lg:mt-24">
-            <div className="inline-flex items-center rounded-full border border-black/10 bg-white px-4 py-2 shadow-[0_8px_22px_rgba(0,0,0,0.06)]">
+            <div className="reveal inline-flex items-center rounded-full border border-black/10 bg-white px-4 py-2 shadow-[0_8px_22px_rgba(0,0,0,0.06)]" data-scroll>
               <div className="flex -space-x-2">
                 {heroAvatars.map((avatar, index) => (
                   <img
@@ -831,20 +851,27 @@ function TutorHero() {
               </span>
             </div>
 
-            <h1 className="mt-6 font-sans text-[clamp(3.15rem,7vw,5.6rem)] font-black leading-[0.9] tracking-[-0.08em] text-black md:mt-8">
+            <h1
+              className="reveal mt-6 font-sans text-[clamp(3.15rem,7vw,5.6rem)] font-black leading-[0.9] tracking-[-0.08em] text-black md:mt-8"
+              data-scroll
+            >
               Build skills
               <br />
               New opportunities.
             </h1>
 
-            <p className="mx-auto mt-6 max-w-[780px] text-[15px] leading-7 text-black/70 md:text-[17px] md:leading-8">
+            <p
+              className="reveal mx-auto mt-6 max-w-[780px] text-[15px] leading-7 text-black/70 md:text-[17px] md:leading-8"
+              data-scroll
+            >
               Tutorlv gives you a complete learning experience that helps you gain real,
               job-ready skills and take the next step in your career.
             </p>
 
             <a
               href="#courses"
-              className="mt-8 inline-flex items-center gap-4 rounded-full bg-black px-5 py-2.5 text-[11px] font-medium tracking-[0.04em] text-white shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 md:px-6 md:py-3 md:text-[13px]"
+              className="reveal mt-8 inline-flex items-center gap-4 rounded-full bg-black px-5 py-2.5 text-[11px] font-medium tracking-[0.04em] text-white shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 md:px-6 md:py-3 md:text-[13px]"
+              data-scroll
             >
               <span className="pl-1">EXPLORE OUR COURSES</span>
               <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-[18px] text-black">
@@ -1156,9 +1183,10 @@ function PawnIllustration() {
 
 function App() {
   const [openFaq, setOpenFaq] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
-    const elements = document.querySelectorAll("[data-reveal]");
+    const elements = document.querySelectorAll("[data-reveal], [data-scroll]");
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -1168,16 +1196,48 @@ function App() {
           }
         });
       },
-      { threshold: 0.16 },
+      { threshold: 0.14, rootMargin: "0px 0px -8% 0px" },
     );
 
     elements.forEach((element) => observer.observe(element));
 
-    return () => observer.disconnect();
+    const updateScrollProgress = () => {
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollHeight > 0 ? (window.scrollY / scrollHeight) * 100 : 0;
+      setScrollProgress(Math.max(0, Math.min(100, progress)));
+    };
+
+    let rafId = 0;
+    const onScroll = () => {
+      if (rafId) return;
+      rafId = window.requestAnimationFrame(() => {
+        updateScrollProgress();
+        rafId = 0;
+      });
+    };
+
+    updateScrollProgress();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", updateScrollProgress);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", updateScrollProgress);
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+      }
+    };
   }, []);
 
   return (
     <div className="min-h-screen bg-[#060808] text-white">
+      <div className="fixed left-0 top-0 z-[70] h-[3px] w-full bg-black/5">
+        <div
+          className="h-full bg-gradient-to-r from-teal-300 via-cyan-400 to-blue-500 transition-[width] duration-150 ease-out"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute left-[-8%] top-[-10%] h-[34rem] w-[34rem] rounded-full bg-cyan-400/10 blur-3xl" />
         <div className="absolute right-[-10%] top-[16%] h-[38rem] w-[38rem] rounded-full bg-teal-400/10 blur-3xl" />
@@ -1283,13 +1343,9 @@ function App() {
           </section>
         </Reveal>
 
-        <Reveal delay={120}>
-          <WhyChooseSection />
-        </Reveal>
+        <WhyChooseSection />
 
-        <Reveal delay={90}>
-          <ExploreCoursesSection />
-        </Reveal>
+        <ExploreCoursesSection />
 
         <div className="hidden">
         <Reveal delay={90}>
@@ -1620,9 +1676,7 @@ function App() {
         </Reveal>
         </div>
 
-        <Reveal delay={280}>
-          <FooterSection />
-        </Reveal>
+        <FooterSection />
 
         <Reveal delay={280}>
           <section id="cta" className="hidden mt-10">
