@@ -515,12 +515,12 @@ function CoursesSection() {
 
 function TestimonialsSection() {
   return (
-    <section className="bg-[#d9e5ff] px-4 py-18 md:px-6 md:py-22 lg:px-8 lg:py-26">
+    <section className="bg-[#d9e5ff] px-4 py-24 md:px-6 md:py-28 lg:px-8 lg:py-32">
       <div className="mx-auto max-w-[1260px]">
-        <div className="relative overflow-hidden rounded-[28px] bg-[#d9e5ff] px-4 py-14 md:px-6 lg:px-8 lg:py-18">
-          <div className="pointer-events-none absolute inset-x-0 top-2 flex justify-center">
+        <div className="relative overflow-hidden rounded-[28px] bg-[#d9e5ff] px-4 py-20 md:px-6 lg:px-8 lg:py-24">
+          <div className="pointer-events-none absolute inset-x-0 top-6 flex justify-center">
             <h2
-              className="font-display text-center text-[clamp(4rem,10vw,8.4rem)] leading-[0.82] tracking-[-0.08em] text-[#101828]"
+              className="font-display text-center text-[clamp(4rem,10vw,8.4rem)] leading-[0.95] tracking-[0.04em] text-[#101828]"
               data-direction-reveal
               data-direction-reveal-base="left"
             >
@@ -530,7 +530,7 @@ function TestimonialsSection() {
             </h2>
           </div>
 
-          <div className="relative z-10 mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="relative z-10 mt-32 grid gap-4 sm:grid-cols-2 md:mt-40 lg:mt-72 lg:grid-cols-4">
             {testimonials.map((testimonial, index) => (
               <TestimonialCard
                 key={testimonial.name}
