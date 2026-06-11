@@ -7,6 +7,33 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: #2f60ff #e6edff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: linear-gradient(180deg, #eef4ff 0%, #dfe9ff 100%);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid rgba(247, 249, 255, 0.95);
+    border-radius: 999px;
+    background: linear-gradient(180deg, #87e4ff 0%, #5d9bff 50%, #2f60ff 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #5d9bff 0%, #2f60ff 100%);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: #dfe9ff;
   }
 
   :root {

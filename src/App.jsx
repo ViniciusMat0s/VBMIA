@@ -80,43 +80,6 @@ const testimonials = [
   },
 ];
 
-const pixelBlocks = [
-  "#090e19",
-  "#0a101d",
-  "#0c1422",
-  "#0d1a2b",
-  "#13243f",
-  "#214f8d",
-  "#1f6eff",
-  "#7de8ff",
-  "#d5f5ff",
-  "#b7ff3c",
-  "#6cdb4d",
-  "#203042",
-  "#090e19",
-  "#0b111d",
-  "#13243f",
-  "#1f6eff",
-  "#7de8ff",
-  "#b7ff3c",
-  "#6cdb4d",
-  "#0b111d",
-  "#090e19",
-  "#13243f",
-  "#1f6eff",
-  "#7de8ff",
-  "#b7ff3c",
-  "#6cdb4d",
-  "#0c1422",
-  "#111827",
-  "#0a101d",
-  "#13243f",
-  "#1f6eff",
-  "#7de8ff",
-];
-
-const pixelHeights = [14, 18, 24, 16, 30, 34, 42, 24, 18, 14, 18, 28, 14, 20, 30, 38, 22, 14, 18, 24, 14, 30, 38, 20, 14, 20, 28, 16, 14, 22, 34, 18];
-
 function App() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f7f9ff] text-[#0e1730]">
@@ -133,6 +96,34 @@ function HeroSection() {
   return (
     <section className="relative flex min-h-screen flex-col overflow-hidden bg-[linear-gradient(180deg,#fbfdff_0%,#eef4ff_36%,#dfe9ff_72%,#c7daff_100%)]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_12%,rgba(255,255,255,0.95),transparent_28%),radial-gradient(circle_at_48%_28%,rgba(90,130,255,0.18),transparent_34%),radial-gradient(circle_at_50%_92%,rgba(0,0,0,0.12),transparent_18%)]" />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: [
+            "linear-gradient(rgba(120,145,190,0.16) 1px, transparent 1px)",
+            "linear-gradient(90deg, rgba(120,145,190,0.16) 1px, transparent 1px)",
+            "radial-gradient(circle, rgba(255,255,255,0.42) 1.4px, transparent 1.9px)",
+          ].join(", "),
+          backgroundSize: "76px 76px, 76px 76px, 24px 24px",
+          opacity: 0.42,
+          WebkitMaskImage: "radial-gradient(circle at center, black 68%, transparent 100%)",
+          maskImage: "radial-gradient(circle at center, black 68%, transparent 100%)",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(135deg, rgba(63,100,216,0.09) 0 2px, transparent 2px 34px)",
+          opacity: 0.28,
+          mixBlendMode: "multiply",
+          WebkitMaskImage: "radial-gradient(circle at center, black 62%, transparent 100%)",
+          maskImage: "radial-gradient(circle at center, black 62%, transparent 100%)",
+        }}
+      />
+      <div className="pointer-events-none absolute -left-24 top-[12%] h-72 w-72 rounded-full bg-[#5f8dff]/14 blur-3xl" />
+      <div className="pointer-events-none absolute right-[-6rem] top-[18%] h-80 w-80 rounded-full bg-[#8de5ff]/12 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-[18%] left-[18%] h-48 w-48 rounded-full bg-white/35 blur-3xl" />
       <div className="relative z-10 mx-auto flex w-full max-w-[1360px] flex-1 flex-col px-4 pt-5 md:px-6 lg:px-8">
         <header className="relative z-10 mx-auto flex w-full max-w-[1240px] items-center justify-between gap-4 rounded-full border border-white/70 bg-white/75 px-4 py-3 shadow-[0_10px_30px_rgba(31,41,55,0.08)] backdrop-blur-md md:px-5">
           <a href="#top" className="flex items-center gap-2.5">
@@ -192,9 +183,6 @@ function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 z-10 w-full">
-        <PixelStrip />
-      </div>
     </section>
   );
 }
@@ -471,34 +459,14 @@ function Footer() {
 
 function FloatingPill({ label, small = false }) {
   return (
-    <div
-      className={`inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-[#16233d] shadow-[0_10px_28px_rgba(18,32,58,0.12)] ${
+    <button
+      type="button"
+      className={`inline-flex cursor-pointer items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-[#16233d] shadow-[0_10px_28px_rgba(18,32,58,0.12)] ${
         small ? "text-[11px] font-medium" : "text-[12px] font-medium"
       }`}
     >
       {label}
-    </div>
-  );
-}
-
-function PixelStrip() {
-  return (
-    <div className="w-full bg-[#0b1220]">
-      <div className="mx-auto max-w-[1600px] px-0">
-        <div
-          className="grid h-24 w-full items-end gap-0 overflow-hidden"
-          style={{ gridTemplateColumns: "repeat(32, minmax(0, 1fr))" }}
-        >
-          {pixelBlocks.map((color, index) => (
-            <span
-              key={`${color}-${index}`}
-              className="w-full"
-              style={{ backgroundColor: color, height: `${pixelHeights[index]}px` }}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
+    </button>
   );
 }
 
