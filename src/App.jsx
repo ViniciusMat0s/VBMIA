@@ -3,19 +3,19 @@ import { useEffect, useState } from "react";
 const stats = [
   { value: "30+", label: "prompts por pack" },
   { value: "100+", label: "variações prontas" },
-  { value: "50+", label: "estilos visuais" },
-  { value: "500k", label: "potencial de alcance" },
+  { value: "50+", label: "estilos visuales" },
+  { value: "500k", label: "alcance potencial" },
 ];
 
 const featureCards = [
   {
     title: "Posicionamento nas buscas e no feed",
     text:
-      "Prompts pensados para gerar imagens com cara de campanha, produto e creator, prontos para postar e vender.",
+      "Prompts pensados para crear piezas con aspecto de campa?a, producto y creador, listas para publicar y vender.",
     icon: "A",
   },
   {
-    title: "Meta Ads, Instagram e Pinterest",
+    title: "Meta Ads, Instagram y Pinterest",
     text:
       "Estruturas visuais que funcionam em conteúdo orgânico, anúncio, landing page e oferta direta.",
     icon: "∞",
@@ -32,15 +32,15 @@ const steps = [
   {
     title: "Escolha o cenário",
     text:
-      "Use o pack certo para o tipo de imagem que quer criar: editorial, lifestyle, produto, creator ou campanha.",
+      "Selecciona el pack adecuado para el tipo de pieza: editorial, lifestyle, producto, creador o campa?a.",
   },
   {
-    title: "Personalize o prompt",
+    title: "Personaliza el prompt",
     text:
       "Troque nicho, pose, fundo, luz e styling sem perder a estrutura que mantém a qualidade do resultado.",
   },
   {
-    title: "Gere e publique",
+    title: "Genera y publica",
     text:
       "O resultado já sai com linguagem visual consistente para usar no feed, anúncio ou página de venda.",
   },
@@ -50,12 +50,12 @@ const steps = [
       "Crie diferentes ângulos e aplicações com o mesmo padrão visual, sem começar do zero toda vez.",
   },
   {
-    title: "Escale por nicho",
+    title: "Escala por nicho",
     text:
       "Vá de creator para beauty, de e-commerce para business, com uma oferta fácil de entender.",
   },
   {
-    title: "Monetize em camadas",
+    title: "Monetiza en capas",
     text:
       "Venda o pack principal, depois adicione bônus, upsell e novos bundles para aumentar o ticket.",
   },
@@ -63,20 +63,20 @@ const steps = [
 
 const testimonials = [
   {
-    name: "Joana Vilela",
-    role: "Creator",
+    name: "Laura Mart?n",
+    role: "Creadora",
     text:
       "Com os prompts, eu parei de perder tempo tentando acertar estilo. A página já me ajudou a vender como algo premium.",
   },
   {
-    name: "Lucas Moreira",
+    name: "Miguel Serrano",
     role: "Social Media",
     text:
       "O pack ficou com cara de produto de alto valor. A estrutura da landing convence rápido e deixa a oferta mais forte.",
   },
   {
-    name: "Ana Souza",
-    role: "E-commerce",
+    name: "Nuria G?mez",
+    role: "Ecommerce",
     text:
       "Consistência visual foi o diferencial. Passei a gerar imagens muito mais confiáveis para campanhas e produtos.",
   },
@@ -104,7 +104,7 @@ const faqs = [
   },
 ];
 
-const heroNavItems = ["HOME", "ABOUT US", "COURSE", "BLOG", "LOG IN"];
+const heroNavItems = ["INICIO", "PACKS", "BENEFICIOS", "CASOS", "FAQ"];
 
 const heroAvatars = [
   "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&q=80",
@@ -113,139 +113,198 @@ const heroAvatars = [
 ];
 
 const heroLeftCard = {
-  title: "92% Career Outcome",
-  subtitle: "Success",
+  title: "100+ prompts",
+  subtitle: "Listos para usar",
   image:
     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
-  alt: "Portrait of a smiling tutor",
+  alt: "Persona creando prompts con estilo premium",
 };
 
 const heroCenterCard = {
-  title: "Mark Jhongson",
-  subtitle: "CEO at Tutorlv",
+  title: "Sistema de prompts",
+  subtitle: "Pensado para vender",
   image:
     "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=1200&q=80",
-  alt: "Tutor working on a laptop",
+  alt: "Creador trabajando con su port?til",
 };
 
 const heroRightCard = {
-  title: "100+",
-  subtitle: "Experienced tutor",
+  title: "50+ estilos",
+  subtitle: "Para distintos nichos",
   image:
     "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=900&q=80",
-  alt: "Portrait of an experienced tutor",
+  alt: "Persona con una imagen de marca premium",
 };
+
+const whyPackImage = "/images/ai-prompt-packs-hero.png";
 
 const companyLogos = ["Raonadle", "Mondole", "Hanhlod", "Wondrot", "Raonadle", "Bonraow"];
 
+const promptRailItems = [
+  {
+    title: "Pack de prompts",
+    subtitle: "Curado para convertir",
+    icon: "cube",
+    active: true,
+  },
+  {
+    title: "Hooks",
+    subtitle: "Ganchos que frenan el scroll",
+    icon: "bolt",
+  },
+  {
+    title: "Variantes visuales",
+    subtitle: "Opciones creativas sin l?mite",
+    icon: "layers",
+  },
+  {
+    title: "?ngulos de venta",
+    subtitle: "Prueba. Aprende. Convierte.",
+    icon: "target",
+  },
+  {
+    title: "Listo para publicar",
+    subtitle: "Copys, CTA y m?s",
+    icon: "send",
+  },
+  {
+    title: "Estilo consistente",
+    subtitle: "Siempre alineado con tu marca",
+    icon: "spark",
+  },
+];
+
+const promptWorkflowItems = [
+  { title: "Entender", subtitle: "Analizando el brief" },
+  { title: "Idear", subtitle: "Buscando ?ngulos" },
+  { title: "Crear", subtitle: "Generando variantes" },
+  { title: "Refinar", subtitle: "Ajustando resultados" },
+  { title: "Entregar", subtitle: "Listo para publicar" },
+];
+
+const promptOutputItems = [
+  { title: "Gancho que detiene.\nVenta que avanza.", tag: "GANCHO", tone: "blue" },
+  { title: "Estética premium.\nMarca más fuerte.", tag: "BENEFICIO", tone: "amber" },
+  { title: "Creatividades que parecen\ncampaña de alto nivel.", tag: "ESTILO", tone: "violet" },
+  { title: "Prueba social.\nDecisión más rápida.", tag: "PRUEBA", tone: "sand" },
+  { title: "Urgencia clara.\nMás conversiones.", tag: "URGENCIA", tone: "slate" },
+];
+
+const promptMetricItems = [
+  "5 variantes",
+  "100% de marca",
+  "Mayor engagement",
+  "Listo para publicar",
+];
+
 const featuredCourses = [
   {
-    title: "UI/UX design crash course",
+    title: "Pack de anuncios para eCommerce",
     image:
       "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80",
-    duration: "20 hours 30 min",
-    lessons: "23 Lessons",
-    price: "$ 250.50 USD",
-    oldPrice: "$ 280.50 USD",
+    duration: "30 prompts",
+    lessons: "4 bloques",
+    price: "149 ?",
+    oldPrice: "199 ?",
     featured: false,
     crop: "object-[center_28%]",
   },
   {
-    title: "Full-stack web development",
+    title: "Pack de lanzamientos para beauty",
     image:
       "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
-    duration: "26 hours 30 min",
-    lessons: "20 Lessons",
-    price: "$ 350.50 USD",
-    oldPrice: "$ 380.50 USD",
+    duration: "26 prompts",
+    lessons: "3 ?ngulos",
+    price: "179 ?",
+    oldPrice: "229 ?",
     featured: true,
     crop: "object-[center_28%]",
   },
   {
-    title: "Data analytics professional",
+    title: "Pack UGC para creadores",
     image:
       "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80",
-    duration: "20 hours 30 min",
-    lessons: "24 Lessons",
-    price: "$ 450.50 USD",
-    oldPrice: "$ 680.50 USD",
+    duration: "24 prompts",
+    lessons: "6 formatos",
+    price: "129 ?",
+    oldPrice: "169 ?",
     featured: false,
     crop: "object-[center_22%]",
   },
 ];
 
 const exploreCourseFilters = [
-  "ALL COURSE",
-  "UI/UX DESIGN",
-  "MARKETING",
-  "EMAIL MARKETING",
-  "CONTENT & SEO",
+  "TODO",
+  "ANUNCIOS",
+  "BEAUTY",
+  "CREADORES",
+  "CONTENIDO",
 ];
 
 const exploreCourses = [
   {
-    title: "Digital marketing mastery",
+    title: "Pack de hooks para anuncios",
     image:
       "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
-    duration: "20 hours 30 min",
-    lessons: "27 Lessons",
-    price: "$ 150.50 USD",
-    oldPrice: "$ 240.50 USD",
+    duration: "28 prompts",
+    lessons: "7 hooks",
+    price: "119 ?",
+    oldPrice: "149 ?",
     featured: false,
     crop: "object-[center_22%]",
   },
   {
-    title: "UI/UX design essentials",
+    title: "Pack de creatividades para Meta Ads",
     image:
       "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80",
-    duration: "20 hours 30 min",
-    lessons: "25 Lessons",
-    price: "$ 450.50 USD",
-    oldPrice: "$ 580.50 USD",
+    duration: "25 prompts",
+    lessons: "5 variantes",
+    price: "159 ?",
+    oldPrice: "199 ?",
     featured: true,
     crop: "object-[center_24%]",
   },
   {
-    title: "Python for beginners",
+    title: "Pack de im?genes producto",
     image:
       "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=900&q=80",
-    duration: "20 hours 30 min",
-    lessons: "28 Lessons",
-    price: "$ 550.50 USD",
-    oldPrice: "$ 680.50 USD",
+    duration: "22 prompts",
+    lessons: "4 estilos",
+    price: "129 ?",
+    oldPrice: "169 ?",
     featured: false,
     crop: "object-[center_20%]",
   },
   {
-    title: "Front-end development",
+    title: "Pack de landing pages",
     image:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
-    duration: "20 hours 30 min",
-    lessons: "29 Lessons",
-    price: "$ 550.50 USD",
-    oldPrice: "$ 680.50 USD",
+    duration: "20 prompts",
+    lessons: "3 estructuras",
+    price: "149 ?",
+    oldPrice: "189 ?",
     featured: false,
     crop: "object-[center_28%]",
   },
   {
-    title: "Excel & business reporting",
+    title: "Pack de storytelling visual",
     image:
       "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80",
-    duration: "20 hours 30 min",
-    lessons: "27 Lessons",
-    price: "$ 250.50 USD",
-    oldPrice: "$ 280.50 USD",
+    duration: "18 prompts",
+    lessons: "5 narrativas",
+    price: "99 ?",
+    oldPrice: "129 ?",
     featured: false,
     crop: "object-[center_24%]",
   },
   {
-    title: "Project management course",
+    title: "Pack bundle por nicho",
     image:
       "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80",
-    duration: "20 hours 30 min",
-    lessons: "26 Lessons",
-    price: "$ 350.50 USD",
-    oldPrice: "$ 460.50 USD",
+    duration: "16 prompts",
+    lessons: "8 nichos",
+    price: "89 ?",
+    oldPrice: "119 ?",
     featured: false,
     crop: "object-[center_26%]",
   },
@@ -448,7 +507,7 @@ function CourseCard({ course }) {
               : "border-white/10 bg-[#0f1520] text-white hover:border-[#00b7ff]/35 hover:bg-[#111a27]"
           }`}
         >
-          VIEW COURSE
+          VER PACK
         </a>
       </div>
     </div>
@@ -507,7 +566,7 @@ function ExploreCourseCard({ course }) {
               : "border-white/10 bg-[#0f1520] text-white hover:border-[#00b7ff]/35 hover:bg-[#111a27]"
           }`}
         >
-          VIEW COURSE
+          VER PACK
         </a>
       </div>
     </div>
@@ -519,7 +578,7 @@ function ExploreCoursesSection() {
     <section id="courses" className="bg-[#050608] px-4 py-16 text-white md:px-6 lg:px-8 lg:py-18">
       <div className="mx-auto max-w-[1120px]">
         <h2 className="text-center text-[clamp(2rem,3vw,2.95rem)] font-semibold tracking-[-0.05em] text-white">
-          Explore our courses
+          Explora los packs
         </h2>
 
         <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
@@ -552,7 +611,7 @@ function ExploreCoursesSection() {
             href="#cta"
             className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#1d4ed8] to-[#00b7ff] px-5 py-2 text-[11px] font-semibold tracking-[0.08em] text-white shadow-[0_0_20px_rgba(0,183,255,0.18)]"
           >
-            <span>VIEW ALL COURSE</span>
+            <span>VER TODOS LOS PACKS</span>
             <span className="grid h-7 w-7 place-items-center rounded-full bg-white text-black">→</span>
           </a>
         </div>
@@ -563,9 +622,9 @@ function ExploreCoursesSection() {
 
 function FooterSection() {
   const footerLinks = {
-    Platform: ["Explore courses", "Why choose us", "Student reviews", "Pricing"],
-    Company: ["About", "Careers", "Blog", "Contact"],
-    Resources: ["Help center", "Guides", "Community", "Privacy policy"],
+    Producto: ["Packs de prompts", "Qu? incluye", "Resultados", "Precios"],
+    Marca: ["Sobre VBM IA", "Casos", "Blog", "Contact"],
+    Recursos: ["Centro de ayuda", "Gu?as", "Comunidad", "Privacidad"],
   };
 
   return (
@@ -581,18 +640,18 @@ function FooterSection() {
                   </svg>
                 </div>
                 <div>
-                  <div className="text-[18px] font-semibold tracking-[-0.04em]">Tutorlv</div>
-                  <div className="text-[12px] text-white/55">Learning that feels clean and premium.</div>
+                  <div className="text-[18px] font-semibold tracking-[-0.04em]">VBM IA</div>
+                  <div className="text-[12px] text-white/55">Packs de prompts para vender con IA.</div>
                 </div>
               </div>
 
               <p className="mt-5 max-w-md text-[14px] leading-7 text-white/62">
-                A simple, modern learning experience built to help students move faster,
-                learn better and choose the right course without friction.
+                Una experiencia simple y moderna para crear prompts que se ven premium, ahorran tiempo
+                y elevan la percepci?n de tu oferta.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                {["ALL COURSE", "UI/UX DESIGN", "MARKETING"].map((pill) => (
+                {["TODO", "ANUNCIOS", "BEAUTY"].map((pill) => (
                   <span
                     key={pill}
                     className="rounded-full border border-white/10 bg-[#0c1118] px-4 py-2 text-[11px] font-semibold tracking-[0.08em] text-white/68"
@@ -625,7 +684,7 @@ function FooterSection() {
 
           <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-5 md:flex-row md:items-center md:justify-between">
             <div className="text-[12px] text-white/52">
-              © 2026 Tutorlv. All rights reserved.
+              © 2026 VBM IA. All rights reserved.
             </div>
 
             <div className="flex items-center gap-3">
@@ -659,6 +718,57 @@ function FooterSection() {
 }
 
 function WhyIcon({ type }) {
+  if (type === "spark") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+        <path
+          d="M12 2.8 13.9 9l6.2 1.9-6.2 1.9L12 19l-1.9-6.2L3.9 10.9 10.1 9 12 2.8Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (type === "bolt") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+        <path
+          d="M13 2.8 6.5 13h4.8L10 21.2 17.5 11H12.7L13 2.8Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (type === "layers") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+        <path
+          d="m12 4 7 4-7 4-7-4 7-4Zm0 8 7 4-7 4-7-4 7-4Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (type === "target") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+        <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+        <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      </svg>
+    );
+  }
+
   if (type === "user") {
     return (
       <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
@@ -718,18 +828,435 @@ function WhyIcon({ type }) {
   );
 }
 
+function PackIcon({ type }) {
+  if (type === "cube") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
+        <path
+          d="m12 3.2 7 4v9.6l-7 4-7-4V7.2l7-4Zm0 0v8.8m0-8.8-7 4m7-4 7 4M5 7.2l7 4 7-4M12 12v8.8"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+      </svg>
+    );
+  }
+
+  if (type === "bolt") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
+        <path
+          d="M13 2.8 6.5 13h4.7L10 21.2 17.5 11h-4.7L13 2.8Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (type === "layers") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
+        <path
+          d="m12 4 7 4-7 4-7-4 7-4Zm0 8 7 4-7 4-7-4 7-4Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (type === "target") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
+        <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+        <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      </svg>
+    );
+  }
+
+  if (type === "send") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
+        <path
+          d="m4 11.8 15.8-7.2-6.1 15.8-2.7-6.1-7-2.5Zm7 2.1 4.4-4.4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (type === "spark") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
+        <path
+          d="M12 2.8 13.9 9l6.2 1.9-6.2 1.9L12 19l-1.9-6.2L3.9 10.9 10.1 9 12 2.8Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
+      <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
+  );
+}
+
+function PromptGlyph({ type, className = "h-6 w-6" }) {
+  if (type === "user") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+        <path
+          d="M20 19.5c0-3-3.4-5.5-8-5.5s-8 2.5-8 5.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.02"
+          strokeLinecap="round"
+        />
+        <circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" strokeWidth="1.02" />
+      </svg>
+    );
+  }
+
+  if (type === "target") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+        <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" strokeWidth="1.02" />
+        <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="1.02" />
+      </svg>
+    );
+  }
+
+  if (type === "cube") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+        <path
+          d="M12.2 2.8 6.2 11.8h4.4l-1 9.4 7.8-10.8h-4.7L12.2 2.8Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.05"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          strokeMiterlimit="2"
+        />
+      </svg>
+    );
+  }
+
+  if (type === "layers") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+        <path
+          d="m12 4 7 4-7 4-7-4 7-4Zm0 8 7 4-7 4-7-4 7-4Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.02"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (type === "send") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+        <path
+          d="m4 11.8 15.8-7.2-6.1 15.8-2.7-6.1-7-2.5Zm7 2.1 4.4-4.4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.02"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeMiterlimit="2"
+        />
+      </svg>
+    );
+  }
+
+  if (type === "spark") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+        <path
+          d="M12 2.8 13.9 9l6.2 1.9-6.2 1.9L12 19l-1.9-6.2L3.9 10.9 10.1 9 12 2.8Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.02"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path
+        d="M13 2.8 6.5 13h4.7L10 21.2 17.5 11h-4.7L13 2.8Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.02"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function PackRailCard({ item, index }) {
+  const shift = index * 2;
+  return (
+    <div
+      className="group relative w-full max-w-[128px] transition duration-300 ease-out"
+      style={{
+        zIndex: 20 - index,
+        marginLeft: `${shift}px`,
+        marginTop: index === 0 ? "0px" : "-8px",
+      }}
+    >
+      <div
+        className={`relative overflow-hidden rounded-[20px] border px-3 py-3 transition duration-300 ease-out hover:-translate-y-1 hover:border-white/16 ${
+          item.active
+            ? "border-white/14 bg-[linear-gradient(180deg,rgba(13,18,28,0.96),rgba(6,9,14,0.92))] shadow-[0_18px_50px_rgba(0,0,0,0.26)]"
+            : "border-white/8 bg-[linear-gradient(180deg,rgba(10,14,20,0.9),rgba(5,7,11,0.88))]"
+        }`}
+        style={{ animationDelay: `${index * 140}ms` }}
+      >
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,183,255,0.11),transparent_52%)] opacity-0 transition duration-300 group-hover:opacity-100" />
+        <div className="pointer-events-none absolute inset-x-3 top-3 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-35" />
+        <PromptGlyph
+          type={item.icon}
+          className="h-6 w-6 text-[#d9ecff] drop-shadow-[0_0_1px_rgba(0,183,255,0.04)] transition duration-300 ease-out group-hover:scale-[1.02]"
+        />
+        <div className="mt-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/92">
+          {item.title}
+        </div>
+        <div className="mt-1 text-[9px] leading-4 text-white/46">{item.subtitle}</div>
+      </div>
+    </div>
+  );
+}
+
+function WorkflowDot({ active = false }) {
+  return (
+    <div
+      className={`relative flex h-5 w-5 items-center justify-center rounded-full border transition duration-300 ease-out ${
+        active ? "border-[#00b7ff]/45 bg-[#00b7ff]/10" : "border-white/14 bg-white/[0.03]"
+      }`}
+    >
+      <div className={`h-2 w-2 rounded-full ${active ? "bg-[#00b7ff]" : "bg-white/42"}`} />
+    </div>
+  );
+}
+
+function WorkflowItem({ item, index }) {
+  const active = index < 4;
+  const glyphType = ["user", "target", "bolt", "spark", "send"][index] ?? "target";
+
+  return (
+    <div
+      className={`group relative overflow-hidden rounded-[22px] border px-4 py-4 transition duration-300 ease-out hover:-translate-y-1 hover:border-white/16 ${
+        active
+          ? "border-white/12 bg-[linear-gradient(180deg,rgba(11,16,24,0.96),rgba(6,9,13,0.92))] shadow-[0_18px_48px_rgba(0,0,0,0.22)]"
+          : "border-white/10 bg-[linear-gradient(180deg,rgba(10,14,20,0.92),rgba(5,7,11,0.9))]"
+      }`}
+    >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,183,255,0.12),transparent_55%)] opacity-0 transition duration-300 group-hover:opacity-100" />
+      <div className="pointer-events-none absolute inset-px rounded-[21px] border border-white/4" />
+      <div className="relative flex items-start gap-3">
+        <PromptGlyph
+          type={glyphType}
+          className="h-6 w-6 shrink-0 text-[#d9ecff] drop-shadow-[0_0_1px_rgba(0,183,255,0.04)] transition duration-300 ease-out group-hover:scale-[1.02]"
+        />
+        <div className="min-w-0 pb-2">
+          <div className="text-[15px] font-semibold tracking-[-0.03em] text-white">{item.title}</div>
+          <div className="mt-1 text-[12px] leading-5 text-white/50">{item.subtitle}</div>
+        </div>
+      </div>
+      {index !== promptWorkflowItems.length - 1 ? (
+        <div className="absolute bottom-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent" />
+      ) : null}
+    </div>
+  );
+}
+
+function PromptCubeArt() {
+  return (
+    <div className="relative flex h-full min-h-[228px] items-center justify-center [perspective:1200px]">
+      <div
+        className="relative h-28 w-28 [transform-style:preserve-3d]"
+        style={{ transform: "rotateX(4deg) rotateY(-10deg)" }}
+      >
+        <div className="absolute inset-0 rounded-[20px] border border-[#00b7ff]/14 bg-[linear-gradient(180deg,rgba(10,15,22,0.92),rgba(5,8,12,0.96))]" />
+        <div
+          className="absolute left-[16%] top-[16%] h-[68%] w-[68%] rounded-[18px] border border-white/10 bg-[#09111a]"
+          style={{ transform: "translateZ(10px)" }}
+        />
+        <div
+          className="absolute left-[30%] top-[30%] h-[40%] w-[40%] rounded-[14px] border border-[#00b7ff]/16 bg-[#0d1621]"
+          style={{ transform: "translateZ(16px)" }}
+        />
+        <div
+          className="absolute left-[38%] top-[38%] h-[24%] w-[24%] rounded-[10px] bg-[#00b7ff]/14"
+          style={{ transform: "translateZ(22px)" }}
+        >
+          <div className="absolute inset-x-2 top-2 h-px bg-white/60" />
+          <div className="absolute inset-x-2 bottom-2 h-px bg-white/20" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function OutputArt({ tone }) {
+  const palette =
+    tone === "amber"
+      ? "from-[#1a150d] via-[#2d2013] to-[#7b5b2b]"
+      : tone === "violet"
+        ? "from-[#110f1d] via-[#1d1631] to-[#4d347e]"
+        : tone === "sand"
+          ? "from-[#17130f] via-[#2b241c] to-[#78604a]"
+          : tone === "slate"
+            ? "from-[#0d1017] via-[#131922] to-[#30384a]"
+            : "from-[#08131f] via-[#0d203a] to-[#224d95]";
+
+  return (
+    <div className="relative h-[110px] overflow-hidden rounded-[16px] border border-white/10 bg-[#070b10]">
+      <div className={`absolute inset-0 bg-gradient-to-br ${palette} opacity-95`} />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),transparent_40%)]" />
+      <div className="absolute left-1/2 top-1/2 h-20 w-12 -translate-x-1/2 -translate-y-1/2 rounded-[18px] border border-white/12 bg-white/8 shadow-[0_0_26px_rgba(0,0,0,0.25)]" />
+      <div className="absolute bottom-4 left-4 h-2.5 w-20 rounded-full bg-white/12" />
+      <div className="absolute top-4 right-4 rounded-full border border-white/14 bg-black/30 px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.22em] text-white/70">
+        {tone}
+      </div>
+      <div className="absolute inset-x-0 bottom-0 h-14 bg-[linear-gradient(180deg,transparent_0%,rgba(5,6,8,0.72)_100%)]" />
+    </div>
+  );
+}
+
+function PromptOutputTile({ item, index }) {
+  return (
+    <div
+      className="group overflow-hidden rounded-[20px] border border-white/10 bg-[linear-gradient(180deg,rgba(12,16,23,0.96),rgba(6,8,12,0.94))] p-3 transition duration-300 ease-out hover:-translate-y-0.5 hover:border-white/16"
+      style={{ animationDelay: `${index * 120}ms` }}
+    >
+      <div className="text-[12px] font-medium leading-[1.2] tracking-[-0.03em] text-white">
+        {item.title.split("\n").map((line) => (
+          <div key={line}>{line}</div>
+        ))}
+      </div>
+      <div className="mt-3">
+        <OutputArt tone={item.tone} />
+      </div>
+      <div className="mt-3 flex items-center justify-between">
+        <div className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.24em] text-white/58">
+          {item.tag}
+        </div>
+        <div className="grid h-7 w-7 place-items-center rounded-full border border-[#00b7ff]/10 bg-[#00b7ff]/6 text-[#d9ecff]">
+          <span className="text-[13px] leading-none">✓</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PromptPacksSection() {
+  return (
+    <section className="relative bg-[#050608] py-16 text-white md:py-20 lg:py-24">
+      <div className="w-full overflow-hidden border border-x-0 border-white/10 bg-[radial-gradient(circle_at_top,rgba(0,183,255,0.08),transparent_28%),linear-gradient(180deg,#040608_0%,#05070a_100%)] px-4 py-10 shadow-[0_28px_90px_rgba(0,0,0,0.4)] md:px-8 lg:px-10 lg:py-14">
+        <div className="mx-auto max-w-4xl text-center">
+          <div
+            className="reveal hidden inline-flex items-center rounded-full border border-white/10 bg-black/45 px-5 py-2 text-[10px] font-semibold uppercase tracking-[0.32em] text-white/76 backdrop-blur-md"
+            data-scroll
+          >
+            <span className="mr-2 text-[#7fd2ff]">✦</span>
+            PACKS DE PROMPTS IA
+          </div>
+
+          <h2
+            className="reveal mt-7 text-[clamp(2.8rem,7vw,5.4rem)] font-black leading-[0.9] tracking-[-0.085em] text-white md:mt-9"
+            data-scroll
+          >
+            Prompts que convierten.
+            <br />
+            <span className="text-[#2d7bff]">Resultados</span> premium.
+          </h2>
+
+          <p
+            className="reveal mx-auto mt-6 max-w-[760px] text-[15px] leading-7 text-white/58 md:text-[16px]"
+            data-scroll
+          >
+            Conecta. Genera. Publica. Todo alineado con tu marca.
+          </p>
+        </div>
+
+        <div className="mt-14 grid gap-0 overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(7,11,16,0.98),rgba(5,7,10,0.96))] shadow-[0_22px_70px_rgba(0,0,0,0.38)] lg:grid-cols-3">
+          {[
+            {
+              icon: "bolt",
+              title: "Respuesta instantánea. Siempre.",
+              text: "Prompts listos para usar, con estructura clara y sin perder tiempo en pruebas innecesarias.",
+            },
+            {
+              icon: "user",
+              title: "Soporte que habla tu idioma.",
+              text: "Pensados para equipos, creadores y marcas que necesitan coherencia en cada salida.",
+            },
+            {
+              icon: "target",
+              title: "Escala sin romper tu sistema.",
+              text: "Crea nuevas variantes, nichos y campañas manteniendo el mismo estándar visual y comercial.",
+            },
+          ].map((card, index) => (
+            <div
+              key={card.title}
+              className={`reveal group relative min-h-[240px] overflow-hidden border-white/10 px-6 py-6 transition duration-300 ease-out hover:-translate-y-1 hover:bg-white/[0.015] md:px-7 md:py-7 ${
+                index < 2 ? "border-b lg:border-b-0 lg:border-r" : ""
+              }`}
+              data-scroll
+              data-side={index % 2 === 0 ? "left" : "right"}
+            >
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,183,255,0.08),transparent_60%)] opacity-0 transition duration-300 group-hover:opacity-100" />
+              <PromptGlyph
+                type={card.icon}
+                className="h-7 w-7 text-[#d9ecff] drop-shadow-[0_0_1px_rgba(0,183,255,0.04)] transition duration-300 ease-out group-hover:scale-[1.02]"
+              />
+              <h3 className="mt-10 max-w-[12ch] text-[22px] font-semibold tracking-[-0.06em] text-white">
+                {card.title}
+              </h3>
+              <p className="mt-3 max-w-[22ch] text-[13px] leading-6 text-white/52">{card.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function WhyFeatureCard({ title, text, icon, dark = false }) {
   return (
     <div
       className={`reveal group rounded-[18px] p-6 shadow-[0_10px_24px_rgba(0,0,0,0.06)] transition duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(0,0,0,0.1)] ${
-        dark ? "border border-[#00b7ff]/22 bg-[#070b10] text-white" : "border border-white/10 bg-[#0b1118] text-white"
+        dark ? "border border-[#00b7ff]/28 bg-[#070b10] text-white" : "border border-white/10 bg-[#0b1118] text-white"
       }`}
       data-scroll
       data-side="right"
     >
       <div
         className={`grid h-9 w-9 place-items-center rounded-full transition duration-300 ease-out group-hover:scale-105 ${
-          dark ? "bg-[#00b7ff]/12 text-[#7fd2ff]" : "bg-[#00b7ff]/10 text-[#7fd2ff]"
+          dark ? "bg-[#00b7ff]/14 text-[#7fd2ff]" : "bg-[#00b7ff]/10 text-[#7fd2ff]"
         }`}
       >
         <WhyIcon type={icon} />
@@ -746,11 +1273,10 @@ function WhyChooseSection() {
       <div className="mx-auto max-w-[1120px]">
         <div className="mx-auto max-w-[620px] text-center">
           <h2 className="text-[clamp(2rem,3.3vw,3rem)] font-semibold tracking-[-0.05em] text-white">
-            Why choose Tutorlv
+            Why choose VBM IA
           </h2>
           <p className="mx-auto mt-4 max-w-[420px] text-[13px] leading-6 text-white/62">
-            Designed for better learning. Built for real success.Designed
-            for better learning. Built for real success.
+            Feito para transformar prompts em oferta premium, com direção clara, velocidade e consistência.
           </p>
         </div>
 
@@ -758,35 +1284,35 @@ function WhyChooseSection() {
           <div className="grid gap-4">
             <WhyFeatureCard
               dark
-              icon="user"
-              title="Expert instructors"
-              text="Our instructors are creative minds and strategic thinkers."
+              icon="spark"
+              title="Prompts que convertem"
+              text="Estruturas prontas para anúncios, landing pages e conteúdos com cara de produto premium."
             />
             <WhyFeatureCard
-              icon="money"
-              title="Affordable pricing"
-              text="We're a team of creative minds and strategic thinkers."
+              icon="bolt"
+              title="Velocidade de produção"
+              text="Menos tentativa e erro. Mais variações, mais consistência e mais output em menos tempo."
             />
           </div>
 
           <div className="overflow-hidden rounded-[18px] border border-white/10 bg-[#0b1017] shadow-[0_12px_28px_rgba(0,0,0,0.22)]">
             <img
-              src={heroCenterCard.image}
-              alt="Student working on a laptop"
-              className="h-full min-h-[340px] w-full object-cover object-[center_26%] transition duration-500 ease-out hover:scale-[1.02]"
+              src={whyPackImage}
+              alt="AI prompt packs visual preview"
+              className="h-full min-h-[340px] w-full object-contain p-3 md:p-4 transition duration-500 ease-out hover:scale-[1.01]"
             />
           </div>
 
           <div className="grid gap-4">
             <WhyFeatureCard
-              icon="award"
-              title="Awards"
-              text="But along the way, our work has been honored."
+              icon="layers"
+              title="Pronto para escalar"
+              text="Você adapta o mesmo sistema para novas campanhas, nichos e formatos sem recomeçar do zero."
             />
             <WhyFeatureCard
-              icon="star"
-              title="Reviews"
-              text="Strategic placements for testimonials, student success."
+              icon="target"
+              title="Entrega on-brand"
+              text="Cada pack mantém direção visual, tom e repetição para a marca parecer sólida em qualquer canal."
             />
           </div>
         </div>
@@ -808,7 +1334,7 @@ function TutorHero() {
             <a
               href="#top"
               className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#00b7ff] text-white shadow-[0_0_26px_rgba(0,183,255,0.35)]"
-              aria-label="Home"
+              aria-label="Inicio"
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white" aria-hidden="true">
                 <path d="M13.1 1.6 4.8 12.1h5.2L8.9 22.4 19.2 9.9h-5.3L13.1 1.6Z" />
@@ -832,7 +1358,7 @@ function TutorHero() {
               href="#cta"
               className="group inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#00b7ff] pl-5 pr-1.5 text-[12px] font-medium tracking-[0.01em] text-white shadow-[0_0_24px_rgba(0,183,255,0.28)] transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_0_36px_rgba(0,183,255,0.42)] md:text-[13px]"
             >
-              <span>SIGN UP</span>
+              <span>VER PACKS</span>
               <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-[18px] text-[#0b1220] transition duration-300 ease-out group-hover:scale-105 group-hover:rotate-[-8deg] group-hover:bg-[#dff6ff]">
                 →
               </span>
@@ -854,7 +1380,7 @@ function TutorHero() {
                 ))}
               </div>
               <span className="ml-3 text-[13px] font-medium text-white/76 md:text-[15px]">
-                125k+ student reviews
+                Clientes que ya lo aplican
               </span>
             </div>
 
@@ -862,17 +1388,17 @@ function TutorHero() {
               className="reveal mt-6 font-sans text-[clamp(3.15rem,7vw,5.6rem)] font-black leading-[0.9] tracking-[-0.08em] text-white md:mt-8"
               data-scroll
             >
-              Build skills
+              Crea prompts
               <br />
-              New opportunities.
+              que venden de verdad.
             </h1>
 
             <p
               className="reveal mx-auto mt-6 max-w-[780px] text-[15px] leading-7 text-white/68 md:text-[17px] md:leading-8"
               data-scroll
             >
-              Tutorlv gives you a complete learning experience that helps you gain real,
-              job-ready skills and take the next step in your career.
+              Packs de prompts en espa?ol para anuncios, creatividades y contenido con est?tica premium.
+              Menos prueba y error. M?s velocidad. M?s ventas.
             </p>
 
             <a
@@ -880,7 +1406,7 @@ function TutorHero() {
               className="reveal mt-8 inline-flex items-center gap-4 rounded-full bg-gradient-to-r from-[#1d4ed8] to-[#00b7ff] px-5 py-2.5 text-[11px] font-medium tracking-[0.04em] text-white shadow-[0_0_26px_rgba(0,183,255,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_0_38px_rgba(0,183,255,0.34)] md:px-6 md:py-3 md:text-[13px]"
               data-scroll
             >
-              <span className="pl-1">EXPLORE OUR COURSES</span>
+              <span className="pl-1">EXPLORAR PACKS</span>
               <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-[18px] text-[#0b1220]">
                 →
               </span>
@@ -892,7 +1418,7 @@ function TutorHero() {
             align="left"
             icon={<span className="text-lg leading-none">◌</span>}
             title="100+"
-            subtitle="Expert tutor"
+            subtitle="Prompts listos"
             image={heroLeftCard.image}
             alt={heroLeftCard.alt}
           />
@@ -901,8 +1427,8 @@ function TutorHero() {
             className="right-0 top-[33%]"
             align="right"
             icon={<span className="text-lg leading-none">▢</span>}
-            title="120+"
-            subtitle="Video courses"
+            title="30+"
+            subtitle="Packs premium"
             image={heroRightCard.image}
             alt={heroRightCard.alt}
           />
@@ -974,7 +1500,7 @@ function PromptHeroArt() {
       <div className="absolute bottom-[10%] left-[8%] rotate-[4deg]">
         <Card className="w-60 p-4">
           <div className="flex items-center justify-between">
-            <div className="text-xs text-white/55">Estrutura completa</div>
+            <div className="text-xs text-white/55">Estructura completa</div>
             <div className="h-3 w-3 rounded-full bg-teal-300 shadow-[0_0_20px_rgba(45,212,191,0.8)]" />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2">
@@ -1322,18 +1848,18 @@ function App() {
                   href="#cta"
                   className="rounded-full bg-gradient-to-r from-teal-400 to-blue-500 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
                 >
-                  Comprar agora
+                  Ver packs
                 </a>
                 <a
                   href="#sobre"
                   className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/90 transition hover:border-white/20 hover:bg-white/10"
                 >
-                  Conhecer os packs
+                  Ver demo
                 </a>
               </div>
 
               <div className="mt-10">
-                <div className="text-xs uppercase tracking-[0.3em] text-white/45">Estrutura completa</div>
+                <div className="text-xs uppercase tracking-[0.3em] text-white/45">Estructura completa</div>
                 <div className="mt-4 flex flex-wrap gap-3">
                   {["Prompt base", "Estilos", "Variações", "Upsell"].map((item) => (
                     <Card key={item} className="px-5 py-3 text-sm text-white/85">
@@ -1350,7 +1876,7 @@ function App() {
           </section>
         </Reveal>
 
-        <WhyChooseSection />
+        <PromptPacksSection />
 
         <ExploreCoursesSection />
 
@@ -1359,7 +1885,7 @@ function App() {
           <section className="hidden bg-[#f5f5f5] px-4 py-14 text-black md:px-6 lg:px-8 lg:py-16">
             <div className="mx-auto max-w-[1120px]">
               <p className="text-center text-[12px] font-medium tracking-[-0.01em] text-black/72">
-                Tutorlv fetured in more than 50+ companies
+                VBM IA fetured in more than 50+ companies
               </p>
 
               <div className="mt-7 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-[#8d8d8d]">
@@ -1407,7 +1933,7 @@ function App() {
                     href="#servicos"
                     className="inline-flex rounded-full bg-gradient-to-r from-teal-400 to-blue-500 px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
                   >
-                    Falar com especialista
+                    Hablar con un experto
                   </a>
                 </div>
               </div>
@@ -1416,17 +1942,67 @@ function App() {
         </Reveal>
 
         <Reveal delay={140}>
-          <section id="servicos" className="mx-auto max-w-7xl px-5 py-12 md:px-8">
-            <div className="grid gap-4 md:grid-cols-3">
-              {featureCards.map((card) => (
-                <Card key={card.title} className="px-6 py-6">
-                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-teal-300/10 text-teal-200">
-                    {card.icon}
-                  </div>
-                  <h3 className="text-lg font-semibold tracking-[-0.03em] text-white">{card.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-white/66">{card.text}</p>
-                </Card>
-              ))}
+          <section id="servicos" className="bg-[#050608] px-4 py-16 text-white md:px-6 md:py-20 lg:px-8">
+            <div className="mx-auto max-w-[1120px]">
+              <div className="mx-auto max-w-[760px] text-center">
+                <div className="reveal inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.26em] text-white/58" data-scroll>
+                  WHY VBM IA?
+                </div>
+                <h2
+                  className="reveal mt-5 text-[clamp(2.2rem,4vw,3.4rem)] font-medium tracking-[-0.05em] text-white md:mt-6"
+                  data-scroll
+                >
+                  Nunca pierdas una venta por prompts flojos.
+                </h2>
+                <p
+                  className="reveal mx-auto mt-4 max-w-[620px] text-[14px] leading-7 text-white/58 md:text-[15px]"
+                  data-scroll
+                >
+                  Tres razones por las que marcas y creadores eligen VBM IA para crear más rápido,
+                  mantener coherencia y convertir con menos fricción.
+                </p>
+              </div>
+
+              <div className="mt-12 overflow-hidden rounded-[20px] border border-white/10 bg-[#060b0f] shadow-[0_24px_70px_rgba(0,0,0,0.32)]">
+                <div className="grid lg:grid-cols-3">
+                  {[
+                    {
+                      icon: "bolt",
+                      title: "Respuesta instantánea",
+                      text: "Prompts listos para anuncios, creatividades y landings sin arrancar desde cero.",
+                    },
+                    {
+                      icon: "user",
+                      title: "Soporte creativo",
+                      text: "Hooks, ángulos y variantes para moverte rápido sin sacrificar calidad ni coherencia.",
+                    },
+                    {
+                      icon: "target",
+                      title: "Escala sin fricción",
+                      text: "Aplica el mismo sistema a nuevos nichos y campañas manteniendo una marca sólida.",
+                    },
+                  ].map((card, index) => (
+                    <div
+                      key={card.title}
+                      className={`reveal p-7 md:p-8 ${
+                        index < 2 ? "border-b border-white/10 lg:border-b-0 lg:border-r lg:border-white/10" : ""
+                      }`}
+                      data-scroll
+                      data-side={index % 2 === 0 ? "left" : "right"}
+                    >
+                      <div className="grid h-12 w-12 place-items-center rounded-[14px] border border-[#9eea6d]/35 bg-[#101b12] text-[#c9ff93] shadow-[0_0_0_1px_rgba(0,0,0,0.12)]">
+                        <WhyIcon type={card.icon} />
+                      </div>
+                      <h3 className="mt-8 text-[18px] font-semibold tracking-[-0.03em] text-white">
+                        {card.title}
+                      </h3>
+                      <p className="mt-3 max-w-[22ch] text-[13px] leading-6 text-white/58">
+                        {card.text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
         </Reveal>
