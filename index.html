@@ -7,6 +7,27 @@
       name="description"
       content="Landing premium em React + Tailwind para vender packs de prompts de fotos com IA."
     />
+    <script>
+      (() => {
+        const storageKey = "vbm-theme";
+
+        try {
+          const storedTheme = localStorage.getItem(storageKey);
+          const preferredTheme =
+            storedTheme === "dark" || storedTheme === "light"
+              ? storedTheme
+              : window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
+
+          document.documentElement.dataset.theme = preferredTheme;
+          document.documentElement.style.colorScheme = preferredTheme;
+        } catch (error) {
+          document.documentElement.dataset.theme = "light";
+          document.documentElement.style.colorScheme = "light";
+        }
+      })();
+    </script>
     <title>VBM IA | Packs de Prompts para Fotos com IA</title>
   </head>
   <body>

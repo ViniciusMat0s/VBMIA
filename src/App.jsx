@@ -1,10 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 
 const topNavItems = ["Course", "About Us", "Benefits", "Pricing", "Teams"];
 
 const discoveryFilters = ["All Courses", "Design", "Media", "Creativity"];
 
 const courseFilters = ["All Courses", "Design", "Development", "Business", "Lifestyle", "Filter"];
+
+const footerColumns = [
+  {
+    title: "Product",
+    links: [
+      "Prompt Packs",
+      "AI Prompt Systems",
+      "Custom Bundles",
+      "New Releases",
+    ],
+  },
+  {
+    title: "Company",
+    links: ["About", "Testimonials", "Pricing", "Contact"],
+  },
+  {
+    title: "Resources",
+    links: ["Help Center", "FAQ", "Blog", "Terms"],
+  },
+];
 
 const courses = [
   {
@@ -189,32 +210,96 @@ function useDirectionalScrollReveal() {
   }, []);
 }
 
+function useThemeMode() {
+  const getInitialTheme = () => {
+    if (typeof window === "undefined") {
+      return "light";
+    }
+
+    let storedTheme = null;
+
+    try {
+      storedTheme = window.localStorage.getItem("vbm-theme");
+    } catch (error) {
+      storedTheme = null;
+    }
+
+    if (storedTheme === "dark" || storedTheme === "light") {
+      return storedTheme;
+    }
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  };
+
+  const [theme, setTheme] = useState(getInitialTheme);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+
+    try {
+      window.localStorage.setItem("vbm-theme", theme);
+    } catch (error) {
+      // Ignore storage errors and keep the in-memory theme active.
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+
+    if (typeof document !== "undefined" && "startViewTransition" in document) {
+      document.startViewTransition(() => {
+        flushSync(() => {
+          setTheme(nextTheme);
+        });
+      });
+      return;
+    }
+
+    setTheme(nextTheme);
+  };
+
+  return {
+    isDark: theme === "dark",
+    toggleTheme,
+  };
+}
+
 function App() {
   useScrollReveal();
   useDirectionalScrollReveal();
+  const { isDark, toggleTheme } = useThemeMode();
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#f7f9ff] text-[#0e1730]">
+    <div className="theme-transition min-h-screen overflow-x-hidden bg-[var(--page-bg)] text-[var(--page-text)]">
       <HeroSection />
       <DiscoverySection />
       <CoursesSection />
       <TestimonialsSection />
       <Footer />
+      <ThemeToggleButton isDark={isDark} onToggle={toggleTheme} />
     </div>
   );
 }
 
 function HeroSection() {
   return (
-    <section className="relative flex min-h-screen flex-col overflow-hidden bg-[linear-gradient(180deg,#fbfdff_0%,#eef4ff_36%,#dfe9ff_72%,#c7daff_100%)]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_12%,rgba(255,255,255,0.95),transparent_28%),radial-gradient(circle_at_48%_28%,rgba(90,130,255,0.18),transparent_34%),radial-gradient(circle_at_50%_92%,rgba(0,0,0,0.12),transparent_18%)]" />
+    <section className="theme-hero relative flex min-h-screen flex-col overflow-hidden">
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 50% 12%, var(--hero-glow-1), transparent 28%), radial-gradient(circle at 48% 28%, var(--hero-glow-2), transparent 34%), radial-gradient(circle at 50% 92%, var(--hero-glow-3), transparent 18%)",
+        }}
+      />
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage: [
-            "linear-gradient(rgba(120,145,190,0.16) 1px, transparent 1px)",
-            "linear-gradient(90deg, rgba(120,145,190,0.16) 1px, transparent 1px)",
-            "radial-gradient(circle, rgba(255,255,255,0.42) 1.4px, transparent 1.9px)",
+            "linear-gradient(var(--hero-grid-line) 1px, transparent 1px)",
+            "linear-gradient(90deg, var(--hero-grid-line) 1px, transparent 1px)",
+            "radial-gradient(circle, var(--hero-dot) 1.4px, transparent 1.9px)",
           ].join(", "),
           backgroundSize: "76px 76px, 76px 76px, 24px 24px",
           opacity: 0.42,
@@ -226,16 +311,25 @@ function HeroSection() {
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage:
-            "repeating-linear-gradient(135deg, rgba(63,100,216,0.09) 0 2px, transparent 2px 34px)",
+            "repeating-linear-gradient(135deg, var(--hero-grid-diagonal) 0 2px, transparent 2px 34px)",
           opacity: 0.28,
           mixBlendMode: "multiply",
           WebkitMaskImage: "radial-gradient(circle at center, black 62%, transparent 100%)",
           maskImage: "radial-gradient(circle at center, black 62%, transparent 100%)",
         }}
       />
-      <div className="pointer-events-none absolute -left-24 top-[12%] h-72 w-72 rounded-full bg-[#5f8dff]/14 blur-3xl" />
-      <div className="pointer-events-none absolute right-[-6rem] top-[18%] h-80 w-80 rounded-full bg-[#8de5ff]/12 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-[18%] left-[18%] h-48 w-48 rounded-full bg-white/35 blur-3xl" />
+      <div
+        className="pointer-events-none absolute -left-24 top-[12%] h-72 w-72 rounded-full blur-3xl"
+        style={{ backgroundColor: "var(--hero-orb-1)" }}
+      />
+      <div
+        className="pointer-events-none absolute right-[-6rem] top-[18%] h-80 w-80 rounded-full blur-3xl"
+        style={{ backgroundColor: "var(--hero-orb-2)" }}
+      />
+      <div
+        className="pointer-events-none absolute bottom-[18%] left-[18%] h-48 w-48 rounded-full blur-3xl"
+        style={{ backgroundColor: "var(--hero-orb-3)" }}
+      />
       <div className="relative z-10 mx-auto flex w-full max-w-[1360px] flex-1 flex-col px-4 pt-5 md:px-6 lg:px-8">
         <header className="relative z-10 mx-auto flex w-full max-w-[1240px] items-center justify-between gap-4 rounded-full border border-white/70 bg-white/75 px-4 py-3 shadow-[0_10px_30px_rgba(31,41,55,0.08)] backdrop-blur-md md:px-5">
           <a href="#top" className="flex items-center gap-2.5">
@@ -439,7 +533,7 @@ function DiscoverySection() {
 
 function CoursesSection() {
   return (
-    <section id="courses" className="bg-[#ffffff] px-4 pb-18 pt-8 md:px-6 md:pb-22 lg:px-8 lg:pt-10">
+    <section id="courses" className="bg-[#ffffff] px-4 pb-28 pt-8 md:px-6 md:pb-32 lg:px-8 lg:pb-36 lg:pt-10">
       <div className="mx-auto max-w-[1260px]">
         <div className="mx-auto max-w-[760px] text-center">
           <h2
@@ -515,9 +609,9 @@ function CoursesSection() {
 
 function TestimonialsSection() {
   return (
-    <section className="bg-[#d9e5ff] px-4 py-24 md:px-6 md:py-28 lg:px-8 lg:py-32">
+    <section className="theme-testimonials px-4 py-24 md:px-6 md:py-28 lg:px-8 lg:py-32">
       <div className="mx-auto max-w-[1260px]">
-        <div className="relative overflow-hidden rounded-[28px] bg-[#d9e5ff] px-4 py-20 md:px-6 lg:px-8 lg:py-24">
+        <div className="theme-testimonials-panel relative overflow-hidden rounded-[28px] px-4 py-20 md:px-6 lg:px-8 lg:py-24">
           <div className="pointer-events-none absolute inset-x-0 top-6 flex justify-center">
             <h2
               className="font-display text-center text-[clamp(4rem,10vw,8.4rem)] leading-[0.95] tracking-[0.04em] text-[#101828]"
@@ -556,10 +650,13 @@ function TestimonialsSection() {
 
 function Footer() {
   return (
-    <footer className="bg-[#ffffff] px-4 pb-10 pt-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1260px] border-t border-slate-200 pt-8" data-reveal>
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
-          <div>
+    <footer className="bg-[var(--page-bg)] pb-10 pt-8">
+      <div
+        className="w-full border border-slate-200 bg-white/80 p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)] backdrop-blur-md md:p-8 lg:p-10"
+        data-reveal
+      >
+        <div className="grid gap-10 xl:grid-cols-[1.05fr_1.2fr] xl:gap-12">
+          <div className="space-y-6">
             <a href="#top" className="flex items-center gap-2.5">
               <div className="grid h-8 w-8 place-items-center rounded-lg bg-[linear-gradient(135deg,#87e4ff_0%,#5d9bff_50%,#2f60ff_100%)] shadow-[0_10px_20px_rgba(73,120,255,0.24)]">
                 <span className="block h-3 w-3 rotate-45 rounded-[2px] border-r border-t border-white/90" />
@@ -568,33 +665,124 @@ function Footer() {
                 CLASTRO
               </span>
             </a>
-            <p className="mt-4 max-w-[320px] text-[13px] leading-7 text-[#677082]">
+
+            <p className="max-w-[360px] text-[13px] leading-7 text-[#677082]">
               A clean learning platform with a premium feel, designed for modern students and
               creators.
             </p>
+
+            <div className="flex flex-wrap gap-2">
+              <span className="inline-flex h-9 items-center rounded-full bg-[#edf3ff] px-4 text-[11px] font-semibold text-[#101828]">
+                100+ prompts
+              </span>
+              <span className="inline-flex h-9 items-center rounded-full bg-[#f1f4f9] px-4 text-[11px] font-semibold text-[#5f687b]">
+                Premium systems
+              </span>
+              <span className="inline-flex h-9 items-center rounded-full bg-[#f1f4f9] px-4 text-[11px] font-semibold text-[#5f687b]">
+                Instant access
+              </span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex gap-3">
+                <SocialButton label="F" />
+                <SocialButton label="X" />
+                <SocialButton label="IG" />
+              </div>
+              <a
+                href="#top"
+                className="inline-flex h-10 items-center rounded-full border border-slate-200 bg-white px-4 text-[12px] font-semibold text-[#101828] shadow-[0_8px_18px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5 hover:border-[#1f57ff]/30"
+              >
+                Back to top
+              </a>
+            </div>
           </div>
 
-          <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:gap-10">
-            <div className="flex gap-3">
-              <SocialButton label="F" />
-              <SocialButton label="X" />
-              <SocialButton label="IG" />
+          <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+            {footerColumns.map((group) => (
+              <div key={group.title}>
+                <div className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[#1a2842]">
+                  {group.title}
+                </div>
+                <div className="mt-4 flex flex-col gap-3 text-[13px] text-[#5f687b]">
+                  {group.links.map((link) => (
+                    <a key={link} href="#top" className="transition hover:text-[#101828]">
+                      {link}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            <div className="sm:col-span-2 xl:col-span-3">
+              <div className="flex flex-col gap-4 rounded-[24px] border border-slate-200 bg-[#edf3ff] p-5 shadow-[0_12px_28px_rgba(31,87,255,0.08)] md:flex-row md:items-center md:justify-between">
+                <div>
+                  <div className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[#1a2842]">
+                    Need something custom?
+                  </div>
+                  <p className="mt-2 max-w-[42ch] text-[13px] leading-6 text-[#677082]">
+                    We can help you build a tailored prompt pack with the right structure for your
+                    workflow.
+                  </p>
+                </div>
+                <a
+                  href="#courses"
+                  className="inline-flex h-11 items-center rounded-full bg-[#1f57ff] px-5 text-[12px] font-semibold text-white shadow-[0_10px_20px_rgba(31,87,255,0.18)] transition hover:-translate-y-0.5"
+                >
+                  Talk to us
+                </a>
+              </div>
             </div>
-            <nav className="flex flex-wrap gap-8 text-[13px] text-[#5f687b]">
-              <a href="#courses" className="transition hover:text-[#101828]">
-                Contact
-              </a>
-              <a href="#courses" className="transition hover:text-[#101828]">
-                Resources
-              </a>
-              <a href="#courses" className="transition hover:text-[#101828]">
-                About
-              </a>
-            </nav>
+          </div>
+        </div>
+
+        <div className="mt-10 flex flex-col gap-4 border-t border-slate-200 pt-6 md:flex-row md:items-center md:justify-between">
+          <p className="text-[12px] leading-6 text-[#677082]">
+            © 2026 CLASTRO. All rights reserved. Built for creators who want premium AI prompts
+            and a clean learning experience.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4 text-[12px] text-[#5f687b]">
+            <a href="#courses" className="transition hover:text-[#101828]">
+              Courses
+            </a>
+            <a href="#top" className="transition hover:text-[#101828]">
+              Top
+            </a>
+            <a href="mailto:hello@clastro.ai" className="transition hover:text-[#101828]">
+              hello@clastro.ai
+            </a>
           </div>
         </div>
       </div>
     </footer>
+  );
+}
+
+function ThemeToggleButton({ isDark, onToggle }) {
+  return (
+    <button
+      type="button"
+      aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
+      aria-pressed={isDark}
+      onClick={onToggle}
+      className="theme-toggle fixed bottom-5 right-5 z-50 grid h-14 w-14 place-items-center rounded-full transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f57ff]/35 focus-visible:ring-offset-4 focus-visible:ring-offset-transparent md:bottom-6 md:right-6"
+    >
+      <span
+        className={`pointer-events-none absolute grid h-14 w-14 place-items-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          isDark ? "scale-50 rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"
+        }`}
+      >
+        <MoonIcon />
+      </span>
+      <span
+        className={`pointer-events-none absolute grid h-14 w-14 place-items-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          isDark ? "scale-100 rotate-0 opacity-100" : "scale-50 -rotate-90 opacity-0"
+        }`}
+      >
+        <SunIcon />
+      </span>
+    </button>
   );
 }
 
@@ -714,6 +902,40 @@ function SparkIcon() {
         d="M12 3.2 13.9 9l6.1 1.9-6.1 1.9L12 18.8l-1.9-6-6.1-1.9L10.1 9 12 3.2Z"
         fill="currentColor"
       />
+    </svg>
+  );
+}
+
+function MoonIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
+      <path
+        d="M20 15.2A8.2 8.2 0 0 1 8.8 4a7.8 7.8 0 1 0 11.2 11.2Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function SunIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
+      <circle cx="12" cy="12" r="4.2" fill="currentColor" />
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.8"
+      >
+        <path d="M12 2.5v2.1" />
+        <path d="M12 19.4v2.1" />
+        <path d="M4.6 4.6 6 6" />
+        <path d="M18 18l1.4 1.4" />
+        <path d="M2.5 12h2.1" />
+        <path d="M19.4 12h2.1" />
+        <path d="m4.6 19.4 1.4-1.4" />
+        <path d="m18 6 1.4-1.4" />
+      </g>
     </svg>
   );
 }
