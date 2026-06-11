@@ -80,31 +80,6 @@ const testimonials = [
   },
 ];
 
-const heroCards = [
-  {
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
-    alt: "Man portrait",
-    className: "md:mt-14 md:-rotate-1",
-    accent: "from-[#f0f4ff] via-[#dfe8ff] to-[#bbcffd]",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=1100&q=80",
-    alt: "Man portrait",
-    className: "md:-mt-3 md:scale-[1.03]",
-    accent: "from-[#eef7ff] via-[#d6e4ff] to-[#b8ccff]",
-    featured: true,
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=900&q=80",
-    alt: "Man portrait with dark sweater",
-    className: "md:mt-16 md:rotate-1",
-    accent: "from-[#eef2ff] via-[#d7e0ff] to-[#b2c4ff]",
-  },
-];
-
 const pixelBlocks = [
   "#090e19",
   "#0a101d",
@@ -156,10 +131,10 @@ function App() {
 
 function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#fbfdff_0%,#eef4ff_36%,#dfe9ff_72%,#c7daff_100%)]">
+    <section className="relative flex min-h-screen flex-col overflow-hidden bg-[linear-gradient(180deg,#fbfdff_0%,#eef4ff_36%,#dfe9ff_72%,#c7daff_100%)]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_12%,rgba(255,255,255,0.95),transparent_28%),radial-gradient(circle_at_48%_28%,rgba(90,130,255,0.18),transparent_34%),radial-gradient(circle_at_50%_92%,rgba(0,0,0,0.12),transparent_18%)]" />
-      <div className="mx-auto max-w-[1360px] px-4 pb-0 pt-5 md:px-6 lg:px-8">
-        <header className="relative z-10 mx-auto flex max-w-[1240px] items-center justify-between gap-4 rounded-full border border-white/70 bg-white/75 px-4 py-3 shadow-[0_10px_30px_rgba(31,41,55,0.08)] backdrop-blur-md md:px-5">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1360px] flex-1 flex-col px-4 pt-5 md:px-6 lg:px-8">
+        <header className="relative z-10 mx-auto flex w-full max-w-[1240px] items-center justify-between gap-4 rounded-full border border-white/70 bg-white/75 px-4 py-3 shadow-[0_10px_30px_rgba(31,41,55,0.08)] backdrop-blur-md md:px-5">
           <a href="#top" className="flex items-center gap-2.5">
             <div className="grid h-8 w-8 place-items-center rounded-lg bg-[linear-gradient(135deg,#87e4ff_0%,#5d9bff_50%,#2f60ff_100%)] shadow-[0_10px_20px_rgba(73,120,255,0.26)]">
               <span className="block h-3 w-3 rotate-45 rounded-[2px] border-r border-t border-white/90" />
@@ -201,34 +176,23 @@ function HeroSection() {
           </div>
         </header>
 
-        <div className="relative mx-auto flex max-w-[1280px] flex-col items-center pb-14 pt-8 md:pb-20 md:pt-12 lg:pb-24">
-          <div className="pointer-events-none absolute left-[16%] top-[28%] hidden md:block">
-            <FloatingPill label="Get Started Now" />
-          </div>
-
-          <div className="pointer-events-none absolute right-[18%] top-[24%] hidden md:block">
-            <FloatingPill label="Discover" small />
-          </div>
-
+        <div className="relative mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pb-24 pt-8 md:pb-24 md:pt-12 lg:pb-28">
           <div className="relative z-10 mx-auto max-w-[1050px] text-center">
-            <h1 className="font-display text-[clamp(2.95rem,6.6vw,6.8rem)] leading-[0.94] tracking-[-0.08em] text-[#111a33] md:leading-[0.9]">
+            <h1 className="font-display text-[clamp(2.95rem,6.6vw,6.8rem)] leading-[0.94] tracking-[-0.05em] text-[#111a33] md:leading-[0.9]">
               ENHANCE YOUR
               <br />
               EXPERTISE TODAY.
             </h1>
           </div>
 
-          <div className="relative z-10 mt-8 w-full max-w-[950px] md:mt-10">
-            <div className="grid gap-4 md:grid-cols-[1fr_1.22fr_1fr] md:items-end md:gap-5">
-              {heroCards.map((card, index) => (
-                <HeroPhotoCard key={card.alt} {...card} index={index} />
-              ))}
-            </div>
+          <div className="relative z-10 mt-8 flex w-full items-center justify-center gap-3 px-4 md:mt-10">
+            <FloatingPill label="Get Started Now" />
+            <FloatingPill label="Discover" small />
           </div>
         </div>
       </div>
 
-      <div className="relative z-10">
+      <div className="absolute bottom-0 left-0 z-10 w-full">
         <PixelStrip />
       </div>
     </section>
@@ -502,33 +466,6 @@ function Footer() {
         </div>
       </div>
     </footer>
-  );
-}
-
-function HeroPhotoCard({ image, alt, className = "", featured = false, accent = "" }) {
-  return (
-    <div
-      className={`relative overflow-hidden rounded-[22px] border-[4px] border-white bg-white shadow-[0_18px_46px_rgba(24,38,72,0.16)] ${className} ${
-        featured ? "z-10" : ""
-      }`}
-    >
-      <div
-        className={`absolute inset-x-0 top-0 h-10 bg-gradient-to-b ${accent} opacity-95`}
-      />
-      <div className="absolute left-3 top-3 z-10 flex gap-1.5">
-        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5b5b]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#ffc94d]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#53d86f]" />
-      </div>
-      <img
-        src={image}
-        alt={alt}
-        className={`h-[280px] w-full object-cover md:h-[360px] ${
-          featured ? "object-[center_24%]" : "object-[center_18%]"
-        }`}
-      />
-      <div className="absolute inset-x-0 bottom-0 h-16 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.18)_16%,rgba(11,18,32,0.34)_100%)]" />
-    </div>
   );
 }
 
