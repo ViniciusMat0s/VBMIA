@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const topNavItems = ["Course", "About Us", "Benefits", "Pricing", "Teams"];
 
@@ -80,7 +80,61 @@ const testimonials = [
   },
 ];
 
+function useScrollReveal() {
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll("[data-reveal]"));
+
+    if (elements.length === 0) {
+      return undefined;
+    }
+
+    const markVisible = (element) => {
+      const delay = element.dataset.revealDelay;
+
+      if (delay) {
+        element.style.transitionDelay = `${delay}ms`;
+      }
+
+      element.classList.add("is-visible");
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      elements.forEach(markVisible);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            markVisible(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.18,
+        rootMargin: "0px 0px -8% 0px",
+      },
+    );
+
+    elements.forEach((element) => {
+      const delay = element.dataset.revealDelay;
+
+      if (delay) {
+        element.style.transitionDelay = `${delay}ms`;
+      }
+
+      observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+}
+
 function App() {
+  useScrollReveal();
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f7f9ff] text-[#0e1730]">
       <HeroSection />
@@ -168,7 +222,7 @@ function HeroSection() {
         </header>
 
         <div className="relative mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pb-24 pt-8 md:pb-24 md:pt-12 lg:pb-28">
-          <div className="relative z-10 mx-auto max-w-[1050px] text-center">
+          <div className="relative z-10 mx-auto max-w-[1050px] text-center" data-reveal data-reveal-side="up">
             <h1 className="font-display text-[clamp(2.95rem,6.6vw,6.8rem)] leading-[0.94] tracking-[-0.05em] text-[#111a33] md:leading-[0.9]">
               ENHANCE YOUR
               <br />
@@ -176,7 +230,11 @@ function HeroSection() {
             </h1>
           </div>
 
-          <div className="relative z-10 mt-8 flex w-full items-center justify-center gap-3 px-4 md:mt-10">
+          <div
+            className="relative z-10 mt-8 flex w-full items-center justify-center gap-3 px-4 md:mt-10"
+            data-reveal
+            data-reveal-delay="120"
+          >
             <FloatingPill label="Get Started Now" />
             <FloatingPill label="Discover" small />
           </div>
@@ -191,7 +249,7 @@ function DiscoverySection() {
   return (
     <section className="bg-[#ffffff] px-4 py-18 text-[#101828] md:px-6 md:py-22 lg:px-8 lg:py-24">
       <div className="mx-auto max-w-[1260px]">
-        <div className="mx-auto max-w-[820px] text-center">
+        <div className="mx-auto max-w-[820px] text-center" data-reveal>
           <h2 className="text-[clamp(2.25rem,4vw,4.25rem)] font-medium leading-[0.92] tracking-[-0.06em] text-[#101828]">
             Discover the Freedom
             <br className="hidden sm:block" />
@@ -203,7 +261,7 @@ function DiscoverySection() {
           </p>
         </div>
 
-        <div className="mt-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mt-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between" data-reveal data-reveal-delay="100">
           <div className="flex flex-wrap gap-3">
             <a
               href="#courses"
@@ -239,7 +297,11 @@ function DiscoverySection() {
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1.26fr_0.94fr]">
-          <div className="relative overflow-hidden rounded-[24px] bg-[#0f1116] p-3 shadow-[0_18px_50px_rgba(14,23,48,0.16)]">
+          <div
+            className="relative overflow-hidden rounded-[24px] bg-[#0f1116] p-3 shadow-[0_18px_50px_rgba(14,23,48,0.16)]"
+            data-reveal
+            data-reveal-side="left"
+          >
             <div className="relative overflow-hidden rounded-[18px]">
               <img
                 src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80"
@@ -249,7 +311,7 @@ function DiscoverySection() {
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.12)_48%,rgba(0,0,0,0.26)_100%)]" />
             </div>
 
-            <div className="absolute bottom-4 left-4 w-[225px] rounded-[18px] bg-white p-4 shadow-[0_16px_38px_rgba(0,0,0,0.18)]">
+            <div className="absolute bottom-4 left-4 w-[225px] rounded-[18px] bg-white p-4 shadow-[0_16px_38px_rgba(0,0,0,0.18)]" data-reveal data-reveal-delay="180">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="text-[34px] font-semibold leading-none tracking-[-0.08em] text-[#0f172a]">
@@ -277,7 +339,7 @@ function DiscoverySection() {
           </div>
 
           <div className="grid gap-4">
-            <div className="rounded-[24px] bg-[#171311] p-6 text-white shadow-[0_18px_50px_rgba(14,23,48,0.12)]">
+            <div className="rounded-[24px] bg-[#171311] p-6 text-white shadow-[0_18px_50px_rgba(14,23,48,0.12)]" data-reveal data-reveal-delay="120">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f0df66] text-[#171311]">
                 01
               </div>
@@ -290,7 +352,7 @@ function DiscoverySection() {
               </p>
             </div>
 
-            <div className="rounded-[24px] bg-white p-6 shadow-[0_18px_50px_rgba(14,23,48,0.12)]">
+            <div className="rounded-[24px] bg-white p-6 shadow-[0_18px_50px_rgba(14,23,48,0.12)]" data-reveal data-reveal-delay="220">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f0df66] text-[#171311]">
                 02
               </div>
@@ -313,7 +375,7 @@ function CoursesSection() {
   return (
     <section id="courses" className="bg-[#ffffff] px-4 pb-18 pt-8 md:px-6 md:pb-22 lg:px-8 lg:pt-10">
       <div className="mx-auto max-w-[1260px]">
-        <div className="mx-auto max-w-[760px] text-center">
+        <div className="mx-auto max-w-[760px] text-center" data-reveal>
           <h2 className="text-[clamp(2.1rem,3.8vw,3.45rem)] font-medium leading-[0.92] tracking-[-0.06em] text-[#101828]">
             Browse Our Courses
           </h2>
@@ -323,7 +385,7 @@ function CoursesSection() {
         </div>
 
         <div className="mt-8 flex flex-col gap-4">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between" data-reveal data-reveal-delay="80">
             <div className="flex items-center gap-3">
               <label className="flex h-11 w-[220px] items-center gap-3 rounded-full border border-slate-200 bg-white px-4 text-[12px] text-[#6c7485] shadow-[0_6px_18px_rgba(15,23,42,0.06)]">
                 <SearchIcon />
@@ -349,8 +411,8 @@ function CoursesSection() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {courses.map((course) => (
-              <CourseCard key={course.title} course={course} />
+            {courses.map((course, index) => (
+              <CourseCard key={course.title} course={course} revealDelay={index * 110} />
             ))}
           </div>
 
@@ -383,7 +445,7 @@ function TestimonialsSection() {
       <div className="mx-auto max-w-[1260px]">
         <div className="relative overflow-hidden rounded-[28px] bg-[#d9e5ff] px-4 py-14 md:px-6 lg:px-8 lg:py-18">
           <div className="pointer-events-none absolute inset-x-0 top-2 flex justify-center">
-            <h2 className="font-display text-center text-[clamp(4rem,10vw,8.4rem)] leading-[0.82] tracking-[-0.08em] text-[#101828]">
+            <h2 className="font-display text-center text-[clamp(4rem,10vw,8.4rem)] leading-[0.82] tracking-[-0.08em] text-[#101828]" data-reveal>
               WHAT OUR
               <br />
               STUDENTS SAY
@@ -395,6 +457,7 @@ function TestimonialsSection() {
               <TestimonialCard
                 key={testimonial.name}
                 testimonial={testimonial}
+                revealDelay={index * 110}
                 className={
                   index === 0
                     ? "lg:mt-12"
@@ -416,7 +479,7 @@ function TestimonialsSection() {
 function Footer() {
   return (
     <footer className="bg-[#ffffff] px-4 pb-10 pt-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1260px] border-t border-slate-200 pt-8">
+      <div className="mx-auto max-w-[1260px] border-t border-slate-200 pt-8" data-reveal>
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <a href="#top" className="flex items-center gap-2.5">
@@ -470,9 +533,13 @@ function FloatingPill({ label, small = false }) {
   );
 }
 
-function CourseCard({ course }) {
+function CourseCard({ course, revealDelay = 0 }) {
   return (
-    <article className="overflow-hidden rounded-[20px] border border-slate-200 bg-white shadow-[0_12px_26px_rgba(15,23,42,0.07)]">
+    <article
+      className="overflow-hidden rounded-[20px] border border-slate-200 bg-white shadow-[0_12px_26px_rgba(15,23,42,0.07)]"
+      data-reveal
+      data-reveal-delay={revealDelay}
+    >
       <div className="relative">
         <img
           src={course.image}
@@ -504,10 +571,12 @@ function CourseCard({ course }) {
   );
 }
 
-function TestimonialCard({ testimonial, className = "" }) {
+function TestimonialCard({ testimonial, className = "", revealDelay = 0 }) {
   return (
     <article
       className={`rounded-[16px] border border-white/80 bg-white p-4 shadow-[0_14px_34px_rgba(33,55,102,0.08)] ${className}`}
+      data-reveal
+      data-reveal-delay={revealDelay}
     >
       <div className="flex items-center gap-3">
         <img
