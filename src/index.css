@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Saira:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -9,18 +9,41 @@
     scroll-behavior: smooth;
   }
 
+  :root {
+    color-scheme: light;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(91, 132, 255, 0.12), transparent 28%),
+      radial-gradient(circle at 80% 8%, rgba(0, 183, 255, 0.08), transparent 20%),
+      #f7f9ff;
+    color: #101828;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(rgba(96, 165, 250, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(96, 165, 250, 0.08) 1px, transparent 1px);
+      linear-gradient(rgba(148, 163, 184, 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.09) 1px, transparent 1px);
     background-size: 120px 120px;
-    opacity: 0.06;
-    mix-blend-mode: screen;
-    z-index: 0;
+    opacity: 0.08;
+    mix-blend-mode: multiply;
+    z-index: -2;
   }
 
   body::after {
@@ -29,66 +52,31 @@
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(circle at 20% 12%, rgba(37, 99, 235, 0.16), transparent 26%),
-      radial-gradient(circle at 80% 18%, rgba(0, 183, 255, 0.1), transparent 28%),
-      radial-gradient(circle at center, transparent 0%, rgba(5, 6, 8, 0.3) 58%, rgba(5, 6, 8, 0.82) 100%);
-    z-index: 0;
-  }
-
-  body {
-    @apply font-sans antialiased;
-    background:
-      radial-gradient(circle at 18% 8%, rgba(37, 99, 235, 0.18), transparent 28%),
-      radial-gradient(circle at 82% 18%, rgba(0, 183, 255, 0.1), transparent 24%),
-      linear-gradient(180deg, #050608 0%, #070b11 48%, #040506 100%);
-    color: #f5f8ff;
-    text-rendering: optimizeLegibility;
-  }
-
-  ::selection {
-    background: rgba(255, 159, 107, 0.35);
-    color: #fff7ef;
+      radial-gradient(circle at 50% 100%, rgba(72, 109, 255, 0.12), transparent 22%),
+      radial-gradient(circle at 10% 15%, rgba(255, 255, 255, 0.7), transparent 20%);
+    z-index: -1;
   }
 
   a {
-    @apply no-underline;
-  }
-}
-
-@layer components {
-  .reveal {
-    opacity: 0;
-    transform: translate3d(36px, 0, 0);
-    transition:
-      opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform, opacity;
+    color: inherit;
+    text-decoration: none;
   }
 
-  .reveal[data-side="left"] {
-    transform: translate3d(-36px, 0, 0);
+  img {
+    display: block;
+    max-width: 100%;
   }
 
-  .reveal[data-side="right"] {
-    transform: translate3d(36px, 0, 0);
-  }
-
-  .reveal.is-visible {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .reveal {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
   }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .font-display {
+    font-family: "Anton", "Arial Narrow", Arial, sans-serif;
   }
 }

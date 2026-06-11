@@ -1,715 +1,503 @@
-import { useEffect, useState } from "react";
+import React from "react";
 
-const stats = [
-  { value: "30+", label: "prompts por pack" },
-  { value: "100+", label: "variações prontas" },
-  { value: "50+", label: "estilos visuales" },
-  { value: "500k", label: "alcance potencial" },
-];
+const topNavItems = ["Course", "About Us", "Benefits", "Pricing", "Teams"];
 
-const featureCards = [
-  {
-    title: "Posicionamento nas buscas e no feed",
-    text:
-      "Prompts pensados para crear piezas con aspecto de campa?a, producto y creador, listas para publicar y vender.",
-    icon: "A",
-  },
-  {
-    title: "Meta Ads, Instagram y Pinterest",
-    text:
-      "Estruturas visuais que funcionam em conteúdo orgânico, anúncio, landing page e oferta direta.",
-    icon: "∞",
-  },
-  {
-    title: "Design, branding e direção de arte",
-    text:
-      "Visual premium, consistência estética e variações para nichos diferentes sem perder identidade.",
-    icon: "◎",
-  },
-];
+const discoveryFilters = ["All Courses", "Design", "Media", "Creativity"];
 
-const steps = [
+const courseFilters = ["All Courses", "Design", "Development", "Business", "Lifestyle", "Filter"];
+
+const courses = [
   {
-    title: "Escolha o cenário",
-    text:
-      "Selecciona el pack adecuado para el tipo de pieza: editorial, lifestyle, producto, creador o campa?a.",
+    badge: "NEW",
+    title: "Full-Stack Web Development Bootcamp",
+    text: "Learn modern frontend, backend, and deployment workflows from project one to launch.",
+    image:
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
+    meta: "12 Weeks - 24 lessons",
+    price: "From $55.00",
   },
   {
-    title: "Personaliza el prompt",
-    text:
-      "Troque nicho, pose, fundo, luz e styling sem perder a estrutura que mantém a qualidade do resultado.",
+    badge: "HOT",
+    title: "Digital Marketing Strategy 2025",
+    text: "Build campaigns, improve attribution, and understand what drives growth across channels.",
+    image:
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
+    meta: "8 Weeks - 18 lessons",
+    price: "From $45.00",
   },
   {
-    title: "Genera y publica",
-    text:
-      "O resultado já sai com linguagem visual consistente para usar no feed, anúncio ou página de venda.",
+    badge: "NEW",
+    title: "Cinematic Video Editing Essentials",
+    text: "Edit faster with storytelling structure, pacing, color, motion, and polished sound design.",
+    image:
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+    meta: "10 Weeks - 20 lessons",
+    price: "From $70.00",
   },
   {
-    title: "Teste novas variações",
-    text:
-      "Crie diferentes ângulos e aplicações com o mesmo padrão visual, sem começar do zero toda vez.",
-  },
-  {
-    title: "Escala por nicho",
-    text:
-      "Vá de creator para beauty, de e-commerce para business, com uma oferta fácil de entender.",
-  },
-  {
-    title: "Monetiza en capas",
-    text:
-      "Venda o pack principal, depois adicione bônus, upsell e novos bundles para aumentar o ticket.",
+    badge: "PRO",
+    title: "Advanced UX Research & Usability Testing",
+    text: "Run better interviews, synthesize findings, and turn insights into confident product decisions.",
+    image:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=900&q=80",
+    meta: "9 Weeks - 16 lessons",
+    price: "From $65.00",
   },
 ];
 
 const testimonials = [
   {
-    name: "Laura Mart?n",
-    role: "Creadora",
-    text:
-      "Com os prompts, eu parei de perder tempo tentando acertar estilo. A página já me ajudou a vender como algo premium.",
+    name: "Rina Kaur",
+    role: "Product Designer",
+    avatar:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&q=80",
+    quote:
+      "The layout gave me a clearer path and the structure made it easy to keep learning without feeling lost.",
   },
   {
-    name: "Miguel Serrano",
-    role: "Social Media",
-    text:
-      "O pack ficou com cara de produto de alto valor. A estrutura da landing convence rápido e deixa a oferta mais forte.",
+    name: "Budi Santoso",
+    role: "Frontend Developer",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80",
+    quote:
+      "Every section feels intentional. It helped me learn at my own pace and still stay motivated.",
   },
   {
-    name: "Nuria G?mez",
-    role: "Ecommerce",
-    text:
-      "Consistência visual foi o diferencial. Passei a gerar imagens muito mais confiáveis para campanhas e produtos.",
-  },
-];
-
-const logos = ["BrandFlow", "NovaSkin", "Studio IA", "Lume Lab", "Vibe Digital", "Orbit Ads"];
-const trustedLogos = ["ACME", "Neo Studio", "Blue Pulse", "Aurora", "Flux", "Zenith"];
-
-const faqs = [
-  {
-    q: "Preciso ser avançado em IA para comprar?",
-    a: "Não. Os prompts são estruturados para facilitar o uso mesmo por quem está começando.",
+    name: "Mila Anggraini",
+    role: "Creative Strategist",
+    avatar:
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=160&q=80",
+    quote:
+      "The mix of online and in-person options fits perfectly with how I work and how I study.",
   },
   {
-    q: "Serve para vender no Instagram?",
-    a: "Sim. A proposta foi pensada para conversão em social, checkout, DM ou lançamento.",
-  },
-  {
-    q: "Posso usar em vários nichos?",
-    a: "Pode. A ideia é justamente adaptar um mesmo sistema para creator, beauty, business e e-commerce.",
-  },
-  {
-    q: "Tem suporte e atualizações?",
-    a: "Se quiser, depois a gente pode transformar essa landing em um produto com área de membros e bônus.",
+    name: "Omar Hassan",
+    role: "UX Researcher",
+    avatar:
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=160&q=80",
+    quote:
+      "I would recommend this to anyone who wants a premium learning experience with a clean interface.",
   },
 ];
 
-const heroNavItems = ["INICIO", "PACKS", "BENEFICIOS", "CASOS", "FAQ"];
-
-const heroAvatars = [
-  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&q=80",
-  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80",
-  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=160&q=80",
-];
-
-const heroLeftCard = {
-  title: "100+ prompts",
-  subtitle: "Listos para usar",
-  image:
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
-  alt: "Persona creando prompts con estilo premium",
-};
-
-const heroCenterCard = {
-  title: "Sistema de prompts",
-  subtitle: "Pensado para vender",
-  image:
-    "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=1200&q=80",
-  alt: "Creador trabajando con su port?til",
-};
-
-const heroRightCard = {
-  title: "50+ estilos",
-  subtitle: "Para distintos nichos",
-  image:
-    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=900&q=80",
-  alt: "Persona con una imagen de marca premium",
-};
-
-const whyPackImage = "/images/ai-prompt-packs-hero.png";
-
-const companyLogos = ["Raonadle", "Mondole", "Hanhlod", "Wondrot", "Raonadle", "Bonraow"];
-
-const promptRailItems = [
+const heroCards = [
   {
-    title: "Pack de prompts",
-    subtitle: "Curado para convertir",
-    icon: "cube",
-    active: true,
-  },
-  {
-    title: "Hooks",
-    subtitle: "Ganchos que frenan el scroll",
-    icon: "bolt",
-  },
-  {
-    title: "Variantes visuales",
-    subtitle: "Opciones creativas sin l?mite",
-    icon: "layers",
-  },
-  {
-    title: "?ngulos de venta",
-    subtitle: "Prueba. Aprende. Convierte.",
-    icon: "target",
-  },
-  {
-    title: "Listo para publicar",
-    subtitle: "Copys, CTA y m?s",
-    icon: "send",
-  },
-  {
-    title: "Estilo consistente",
-    subtitle: "Siempre alineado con tu marca",
-    icon: "spark",
-  },
-];
-
-const promptWorkflowItems = [
-  { title: "Entender", subtitle: "Analizando el brief" },
-  { title: "Idear", subtitle: "Buscando ?ngulos" },
-  { title: "Crear", subtitle: "Generando variantes" },
-  { title: "Refinar", subtitle: "Ajustando resultados" },
-  { title: "Entregar", subtitle: "Listo para publicar" },
-];
-
-const promptOutputItems = [
-  { title: "Gancho que detiene.\nVenta que avanza.", tag: "GANCHO", tone: "blue" },
-  { title: "Estética premium.\nMarca más fuerte.", tag: "BENEFICIO", tone: "amber" },
-  { title: "Creatividades que parecen\ncampaña de alto nivel.", tag: "ESTILO", tone: "violet" },
-  { title: "Prueba social.\nDecisión más rápida.", tag: "PRUEBA", tone: "sand" },
-  { title: "Urgencia clara.\nMás conversiones.", tag: "URGENCIA", tone: "slate" },
-];
-
-const promptMetricItems = [
-  "5 variantes",
-  "100% de marca",
-  "Mayor engagement",
-  "Listo para publicar",
-];
-
-const featuredCourses = [
-  {
-    title: "Pack de anuncios para eCommerce",
     image:
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80",
-    duration: "30 prompts",
-    lessons: "4 bloques",
-    price: "149 ?",
-    oldPrice: "199 ?",
-    featured: false,
-    crop: "object-[center_28%]",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
+    alt: "Man portrait",
+    className: "md:mt-14 md:-rotate-1",
+    accent: "from-[#f0f4ff] via-[#dfe8ff] to-[#bbcffd]",
   },
   {
-    title: "Pack de lanzamientos para beauty",
     image:
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
-    duration: "26 prompts",
-    lessons: "3 ?ngulos",
-    price: "179 ?",
-    oldPrice: "229 ?",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=1100&q=80",
+    alt: "Man portrait",
+    className: "md:-mt-3 md:scale-[1.03]",
+    accent: "from-[#eef7ff] via-[#d6e4ff] to-[#b8ccff]",
     featured: true,
-    crop: "object-[center_28%]",
   },
   {
-    title: "Pack UGC para creadores",
     image:
-      "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80",
-    duration: "24 prompts",
-    lessons: "6 formatos",
-    price: "129 ?",
-    oldPrice: "169 ?",
-    featured: false,
-    crop: "object-[center_22%]",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=900&q=80",
+    alt: "Man portrait with dark sweater",
+    className: "md:mt-16 md:rotate-1",
+    accent: "from-[#eef2ff] via-[#d7e0ff] to-[#b2c4ff]",
   },
 ];
 
-const exploreCourseFilters = [
-  "TODO",
-  "ANUNCIOS",
-  "BEAUTY",
-  "CREADORES",
-  "CONTENIDO",
+const pixelBlocks = [
+  "#090e19",
+  "#0a101d",
+  "#0c1422",
+  "#0d1a2b",
+  "#13243f",
+  "#214f8d",
+  "#1f6eff",
+  "#7de8ff",
+  "#d5f5ff",
+  "#b7ff3c",
+  "#6cdb4d",
+  "#203042",
+  "#090e19",
+  "#0b111d",
+  "#13243f",
+  "#1f6eff",
+  "#7de8ff",
+  "#b7ff3c",
+  "#6cdb4d",
+  "#0b111d",
+  "#090e19",
+  "#13243f",
+  "#1f6eff",
+  "#7de8ff",
+  "#b7ff3c",
+  "#6cdb4d",
+  "#0c1422",
+  "#111827",
+  "#0a101d",
+  "#13243f",
+  "#1f6eff",
+  "#7de8ff",
 ];
 
-const exploreCourses = [
-  {
-    title: "Pack de hooks para anuncios",
-    image:
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
-    duration: "28 prompts",
-    lessons: "7 hooks",
-    price: "119 ?",
-    oldPrice: "149 ?",
-    featured: false,
-    crop: "object-[center_22%]",
-  },
-  {
-    title: "Pack de creatividades para Meta Ads",
-    image:
-      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80",
-    duration: "25 prompts",
-    lessons: "5 variantes",
-    price: "159 ?",
-    oldPrice: "199 ?",
-    featured: true,
-    crop: "object-[center_24%]",
-  },
-  {
-    title: "Pack de im?genes producto",
-    image:
-      "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=900&q=80",
-    duration: "22 prompts",
-    lessons: "4 estilos",
-    price: "129 ?",
-    oldPrice: "169 ?",
-    featured: false,
-    crop: "object-[center_20%]",
-  },
-  {
-    title: "Pack de landing pages",
-    image:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
-    duration: "20 prompts",
-    lessons: "3 estructuras",
-    price: "149 ?",
-    oldPrice: "189 ?",
-    featured: false,
-    crop: "object-[center_28%]",
-  },
-  {
-    title: "Pack de storytelling visual",
-    image:
-      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80",
-    duration: "18 prompts",
-    lessons: "5 narrativas",
-    price: "99 ?",
-    oldPrice: "129 ?",
-    featured: false,
-    crop: "object-[center_24%]",
-  },
-  {
-    title: "Pack bundle por nicho",
-    image:
-      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80",
-    duration: "16 prompts",
-    lessons: "8 nichos",
-    price: "89 ?",
-    oldPrice: "119 ?",
-    featured: false,
-    crop: "object-[center_26%]",
-  },
-];
+const pixelHeights = [14, 18, 24, 16, 30, 34, 42, 24, 18, 14, 18, 28, 14, 20, 30, 38, 22, 14, 18, 24, 14, 30, 38, 20, 14, 20, 28, 16, 14, 22, 34, 18];
 
-function Card({ children, className = "" }) {
+function App() {
   return (
-    <div
-      className={`reveal group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0b1017]/80 shadow-[0_24px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#00b7ff]/22 hover:bg-[#101826] hover:shadow-[0_32px_100px_rgba(0,183,255,0.12)] ${className}`}
-      data-scroll
-    >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,183,255,0.12),transparent_38%),linear-gradient(135deg,rgba(255,255,255,0.04),transparent_55%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-      <div className="relative z-10">{children}</div>
+    <div className="min-h-screen overflow-x-hidden bg-[#f7f9ff] text-[#0e1730]">
+      <HeroSection />
+      <DiscoverySection />
+      <CoursesSection />
+      <TestimonialsSection />
+      <Footer />
     </div>
   );
 }
 
-function Reveal({ children, className = "", delay = 0, side = "right" }) {
+function HeroSection() {
   return (
-    <div
-      className={`reveal ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
-      data-reveal
-      data-side={side}
-    >
-      {children}
-    </div>
-  );
-}
-
-function SectionTitle({ kicker, title, text, center = false }) {
-  return (
-    <div className={center ? "reveal mx-auto max-w-3xl text-center" : "reveal max-w-3xl"} data-scroll>
-      <p className="text-xs font-semibold uppercase tracking-[0.38em] text-[#7fd2ff]/90">{kicker}</p>
-      <h2 className="mt-4 font-saira text-[clamp(2rem,4vw,3.6rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-white">
-        {title}
-      </h2>
-      {text ? <p className="mt-4 text-sm leading-7 text-white/70 md:text-base">{text}</p> : null}
-    </div>
-  );
-}
-
-function HeroStat({ title, subtitle, image, alt, icon, align = "left", className = "" }) {
-  return (
-    <div
-      className={`reveal group absolute hidden lg:block transition duration-300 ease-out hover:-translate-y-1 ${className}`}
-      data-scroll
-      data-side={align === "right" ? "right" : "left"}
-    >
-      <div className={`flex ${align === "right" ? "justify-end" : "justify-start"}`}>
-        <div className="w-[158px] rounded-[18px] border border-white/10 bg-[#0b1017]/90 px-3 py-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.26)] backdrop-blur-md transition duration-300 ease-out group-hover:border-[#00b7ff]/25 group-hover:shadow-[0_18px_42px_rgba(0,183,255,0.14)]">
-          <div className="flex items-center gap-3">
-            <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-white/10 text-white/75 transition duration-300 ease-out group-hover:scale-105">
-              {icon}
+    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#fbfdff_0%,#eef4ff_36%,#dfe9ff_72%,#c7daff_100%)]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_12%,rgba(255,255,255,0.95),transparent_28%),radial-gradient(circle_at_48%_28%,rgba(90,130,255,0.18),transparent_34%),radial-gradient(circle_at_50%_92%,rgba(0,0,0,0.12),transparent_18%)]" />
+      <div className="mx-auto max-w-[1360px] px-4 pb-0 pt-5 md:px-6 lg:px-8">
+        <header className="relative z-10 mx-auto flex max-w-[1240px] items-center justify-between gap-4 rounded-full border border-white/70 bg-white/75 px-4 py-3 shadow-[0_10px_30px_rgba(31,41,55,0.08)] backdrop-blur-md md:px-5">
+          <a href="#top" className="flex items-center gap-2.5">
+            <div className="grid h-8 w-8 place-items-center rounded-lg bg-[linear-gradient(135deg,#87e4ff_0%,#5d9bff_50%,#2f60ff_100%)] shadow-[0_10px_20px_rgba(73,120,255,0.26)]">
+              <span className="block h-3 w-3 rotate-45 rounded-[2px] border-r border-t border-white/90" />
             </div>
-            <div className="min-w-0">
-              <div className="text-[12px] font-semibold leading-tight text-white">{title}</div>
-              <div className="text-[12px] leading-tight text-white/58">{subtitle}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className={`mt-4 h-[66px] w-[66px] overflow-hidden rounded-[14px] shadow-[0_16px_30px_rgba(0,0,0,0.12)] ${
-          align === "right" ? "ml-auto" : "ml-[86px]"
-        }`}
-      >
-        <img
-          src={image}
-          alt={alt}
-          className="h-full w-full object-cover object-center transition duration-300 ease-out group-hover:scale-105"
-        />
-      </div>
-    </div>
-  );
-}
+            <span className="text-[12px] font-semibold tracking-[0.34em] text-[#1a2842] md:text-[13px]">
+              CLASTRO
+            </span>
+          </a>
 
-function HeroShowcaseCard({ image, alt, title, subtitle, className = "", coverClassName = "", play = false }) {
-  return (
-    <div
-      className={`reveal group relative min-h-[260px] overflow-hidden rounded-[28px] bg-[#090d12] shadow-[0_30px_70px_rgba(0,0,0,0.28)] transition duration-300 ease-out md:min-h-[340px] lg:min-h-[388px] hover:-translate-y-1 hover:shadow-[0_38px_90px_rgba(0,183,255,0.12)] ${className}`}
-      data-scroll
-      data-side="right"
-    >
-      <img
-        src={image}
-        alt={alt}
-        className={`absolute inset-0 h-full w-full object-cover transition duration-500 ease-out group-hover:scale-[1.03] ${coverClassName}`}
-      />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.18)_48%,rgba(5,6,8,0.86)_100%)]" />
-      <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,transparent_0%,rgba(5,6,8,0.84)_100%)]" />
-
-      <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
-        <div className="max-w-[12ch] text-left text-white">
-          <div className="text-[15px] font-medium leading-[1.15] tracking-[-0.03em] md:text-[17px]">
-            {title}
-          </div>
-          <div className="mt-1 text-[12px] font-medium tracking-[-0.01em] text-white/80 md:text-[14px]">
-            {subtitle}
-          </div>
-        </div>
-
-        {play ? (
-          <button
-            type="button"
-            aria-label="Play video"
-            className="grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#00b7ff] text-[16px] text-white shadow-[0_0_22px_rgba(0,183,255,0.32)] transition duration-300 ease-out group-hover:scale-105 group-hover:shadow-[0_0_30px_rgba(0,183,255,0.45)]"
-          >
-            ►
-          </button>
-        ) : null}
-      </div>
-    </div>
-  );
-}
-
-function MetaIcon({ type }) {
-  if (type === "clock") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-white/60" aria-hidden="true">
-        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.6" />
-        <path d="M12 8v4l2.5 1.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    );
-  }
-
-  if (type === "lessons") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-white/60" aria-hidden="true">
-        <path
-          d="M5 7.5A2.5 2.5 0 0 1 7.5 5H19v11.5A2.5 2.5 0 0 1 16.5 19H7.5A2.5 2.5 0 0 1 5 16.5V7.5Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinejoin="round"
-        />
-        <path d="M8 8.5h8M8 12h6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-[#00b7ff]" aria-hidden="true">
-      <path d="m12 4 1.7 4.9h5.2l-4.2 3 1.6 5L12 14.9 7.7 16.9l1.6-5-4.2-3h5.2L12 4Z" fill="currentColor" />
-    </svg>
-  );
-}
-
-function CourseCard({ course }) {
-  return (
-    <div
-      className={`reveal group overflow-hidden rounded-[18px] border border-white/10 bg-[#0b1017] shadow-[0_14px_34px_rgba(0,0,0,0.22)] transition duration-300 ease-out hover:-translate-y-1 hover:border-[#00b7ff]/25 hover:shadow-[0_22px_44px_rgba(0,183,255,0.1)] ${
-        course.featured ? "ring-1 ring-[#00b7ff]/55" : ""
-      }`}
-      data-scroll
-      data-side="right"
-    >
-      <div className="p-2.5 pb-0">
-        <div className="relative overflow-hidden rounded-[14px] bg-[#101723]">
-          <img
-            src={course.image}
-            alt={course.title}
-            className={`h-[204px] w-full object-cover transition duration-500 ease-out group-hover:scale-[1.03] ${course.crop}`}
-          />
-        </div>
-      </div>
-
-      <div className="px-4 pb-4 pt-2.5">
-        <div className="flex items-center justify-between gap-3 text-[11px] text-white/50">
-          <div className="flex items-center gap-2">
-            <MetaIcon type="clock" />
-            <span>{course.duration}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <MetaIcon type="lessons" />
-            <span>{course.lessons}</span>
-          </div>
-          <div className="flex items-center gap-1 text-[#00b7ff]">
-            <MetaIcon type="star" />
-            <span className="text-white/68">5.0</span>
-          </div>
-        </div>
-
-        <h3 className="mt-3 text-[18px] font-semibold leading-tight tracking-[-0.03em] text-white">
-          {course.title}
-        </h3>
-
-        <div className="mt-2 flex flex-wrap items-end gap-2">
-          <span className="text-[18px] font-semibold tracking-[-0.03em] text-white">
-            {course.price}
-          </span>
-          <span className="pb-0.5 text-[12px] text-white/34 line-through">{course.oldPrice}</span>
-        </div>
-
-        <a
-          href="#cta"
-          className={`mt-4 flex h-10 w-full items-center justify-center rounded-full border text-[11px] font-semibold tracking-[0.06em] transition duration-300 ease-out ${
-            course.featured
-              ? "border-[#00b7ff]/45 bg-gradient-to-r from-[#1d4ed8] to-[#00b7ff] text-white shadow-[0_0_20px_rgba(0,183,255,0.18)]"
-              : "border-white/10 bg-[#0f1520] text-white hover:border-[#00b7ff]/35 hover:bg-[#111a27]"
-          }`}
-        >
-          VER PACK
-        </a>
-      </div>
-    </div>
-  );
-}
-
-function ExploreCourseCard({ course }) {
-  return (
-    <div
-      className="reveal group overflow-hidden rounded-[14px] border border-white/10 bg-[#0b1017] shadow-[0_10px_26px_rgba(0,0,0,0.18)] transition duration-300 ease-out hover:-translate-y-1 hover:border-[#00b7ff]/25 hover:shadow-[0_18px_36px_rgba(0,183,255,0.08)]"
-      data-scroll
-      data-side="right"
-    >
-      <div className="p-2.5 pb-0">
-        <div className="relative overflow-hidden rounded-[12px] bg-[#101723]">
-          <img
-            src={course.image}
-            alt={course.title}
-            className={`h-[194px] w-full object-cover transition duration-500 ease-out group-hover:scale-[1.03] ${course.crop}`}
-          />
-        </div>
-      </div>
-
-      <div className="px-4 pb-4 pt-2.5">
-        <div className="flex items-center justify-between gap-3 text-[11px] text-white/50">
-          <div className="flex items-center gap-2">
-            <MetaIcon type="clock" />
-            <span>{course.duration}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <MetaIcon type="lessons" />
-            <span>{course.lessons}</span>
-          </div>
-          <div className="flex items-center gap-1 text-[#00b7ff]">
-            <MetaIcon type="star" />
-            <span className="text-white/68">5.0</span>
-          </div>
-        </div>
-
-        <h3 className="mt-3 text-[17px] font-semibold leading-tight tracking-[-0.03em] text-white">
-          {course.title}
-        </h3>
-
-        <div className="mt-3 flex flex-wrap items-end gap-2">
-          <span className="text-[18px] font-semibold tracking-[-0.03em] text-white">
-            {course.price}
-          </span>
-          <span className="pb-0.5 text-[12px] text-white/34 line-through">{course.oldPrice}</span>
-        </div>
-
-        <a
-          href="#cta"
-          className={`mt-4 flex h-10 w-full items-center justify-center rounded-full border text-[11px] font-semibold tracking-[0.06em] transition duration-300 ease-out ${
-            course.featured
-              ? "border-[#00b7ff]/45 bg-gradient-to-r from-[#1d4ed8] to-[#00b7ff] text-white shadow-[0_0_20px_rgba(0,183,255,0.18)]"
-              : "border-white/10 bg-[#0f1520] text-white hover:border-[#00b7ff]/35 hover:bg-[#111a27]"
-          }`}
-        >
-          VER PACK
-        </a>
-      </div>
-    </div>
-  );
-}
-
-function ExploreCoursesSection() {
-  return (
-    <section id="courses" className="bg-[#050608] px-4 py-16 text-white md:px-6 lg:px-8 lg:py-18">
-      <div className="mx-auto max-w-[1120px]">
-        <h2 className="text-center text-[clamp(2rem,3vw,2.95rem)] font-semibold tracking-[-0.05em] text-white">
-          Explora los packs
-        </h2>
-
-        <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-          {exploreCourseFilters.map((filter, index) => {
-            const active = index === 0;
-            return (
-              <button
-                key={filter}
-                type="button"
-                className={`h-10 rounded-full px-5 text-[11px] font-semibold tracking-[0.08em] transition ${
-                  active
-                    ? "bg-gradient-to-r from-[#1d4ed8] to-[#00b7ff] text-white shadow-[0_0_20px_rgba(0,183,255,0.18)]"
-                    : "border border-white/10 bg-[#0b1118] text-white/68 hover:border-[#00b7ff]/25"
+          <nav className="hidden items-center gap-2 rounded-full border border-slate-200 bg-[#eff2f7] px-2 py-2 md:flex">
+            {topNavItems.map((item, index) => (
+              <a
+                key={item}
+                href="#top"
+                className={`rounded-full px-4 py-2 text-[12px] font-medium tracking-[-0.01em] transition ${
+                  index === 0
+                    ? "bg-white text-[#101828] shadow-[0_4px_14px_rgba(15,23,42,0.08)]"
+                    : "text-[#5f687b] hover:text-[#101828]"
                 }`}
               >
-                {filter}
-              </button>
-            );
-          })}
+                {item}
+              </a>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <a
+              href="#courses"
+              className="inline-flex h-9 items-center rounded-full bg-[#bbec2c] px-4 text-[12px] font-semibold text-[#223018] shadow-[0_8px_18px_rgba(187,236,44,0.28)] transition hover:-translate-y-0.5"
+            >
+              Login
+            </a>
+            <a
+              href="#courses"
+              className="inline-flex h-9 items-center rounded-full bg-[#12203a] px-4 text-[12px] font-semibold text-white shadow-[0_8px_18px_rgba(18,32,58,0.18)] transition hover:-translate-y-0.5"
+            >
+              Register
+            </a>
+          </div>
+        </header>
+
+        <div className="relative mx-auto flex max-w-[1280px] flex-col items-center pb-14 pt-8 md:pb-20 md:pt-12 lg:pb-24">
+          <div className="pointer-events-none absolute left-[16%] top-[28%] hidden md:block">
+            <FloatingPill label="Get Started Now" />
+          </div>
+
+          <div className="pointer-events-none absolute right-[18%] top-[24%] hidden md:block">
+            <FloatingPill label="Discover" small />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-[1050px] text-center">
+            <h1 className="font-display text-[clamp(2.95rem,6.6vw,6.8rem)] leading-[0.94] tracking-[-0.08em] text-[#111a33] md:leading-[0.9]">
+              ENHANCE YOUR
+              <br />
+              EXPERTISE TODAY.
+            </h1>
+          </div>
+
+          <div className="relative z-10 mt-8 w-full max-w-[950px] md:mt-10">
+            <div className="grid gap-4 md:grid-cols-[1fr_1.22fr_1fr] md:items-end md:gap-5">
+              {heroCards.map((card, index) => (
+                <HeroPhotoCard key={card.alt} {...card} index={index} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative z-10">
+        <PixelStrip />
+      </div>
+    </section>
+  );
+}
+
+function DiscoverySection() {
+  return (
+    <section className="bg-[#ffffff] px-4 py-18 text-[#101828] md:px-6 md:py-22 lg:px-8 lg:py-24">
+      <div className="mx-auto max-w-[1260px]">
+        <div className="mx-auto max-w-[820px] text-center">
+          <h2 className="text-[clamp(2.25rem,4vw,4.25rem)] font-medium leading-[0.92] tracking-[-0.06em] text-[#101828]">
+            Discover the Freedom
+            <br className="hidden sm:block" />
+            to Learn Your Way
+          </h2>
+          <p className="mx-auto mt-5 max-w-[560px] text-[14px] leading-7 text-[#6d7483] md:text-[15px]">
+            Explore a flexible learning experience designed for busy schedules, real goals, and
+            different styles of progress.
+          </p>
         </div>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {exploreCourses.map((course) => (
-            <ExploreCourseCard key={course.title} course={course} />
-          ))}
+        <div className="mt-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="#courses"
+              className="inline-flex h-10 items-center rounded-full bg-[#111827] px-5 text-[12px] font-semibold text-white shadow-[0_8px_18px_rgba(17,24,39,0.16)]"
+            >
+              Get Started
+            </a>
+            <a
+              href="#courses"
+              className="inline-flex h-10 items-center rounded-full border border-slate-200 bg-white px-5 text-[12px] font-semibold text-[#101828] shadow-[0_6px_18px_rgba(15,23,42,0.08)]"
+            >
+              Talk To Us
+            </a>
+          </div>
+
+          <div className="flex flex-wrap gap-2 lg:justify-end">
+            {discoveryFilters.map((item, index) => (
+              <a
+                key={item}
+                href="#courses"
+                className={`inline-flex h-10 items-center rounded-full px-4 text-[12px] font-semibold transition ${
+                  index === 0
+                    ? "bg-[#edf3ff] text-[#0f172a]"
+                    : index === discoveryFilters.length - 1
+                      ? "bg-[#ff5f87] text-white shadow-[0_10px_20px_rgba(255,95,135,0.22)]"
+                      : "bg-[#f1f4f9] text-[#5c677c]"
+                }`}
+              >
+                {item}
+              </a>
+            ))}
+          </div>
         </div>
 
-        <div className="mt-10 flex justify-center">
-          <a
-            href="#cta"
-            className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#1d4ed8] to-[#00b7ff] px-5 py-2 text-[11px] font-semibold tracking-[0.08em] text-white shadow-[0_0_20px_rgba(0,183,255,0.18)]"
-          >
-            <span>VER TODOS LOS PACKS</span>
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-white text-black">→</span>
-          </a>
+        <div className="mt-8 grid gap-4 lg:grid-cols-[1.26fr_0.94fr]">
+          <div className="relative overflow-hidden rounded-[24px] bg-[#0f1116] p-3 shadow-[0_18px_50px_rgba(14,23,48,0.16)]">
+            <div className="relative overflow-hidden rounded-[18px]">
+              <img
+                src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80"
+                alt="People learning together"
+                className="h-[410px] w-full object-cover object-[center_30%]"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.12)_48%,rgba(0,0,0,0.26)_100%)]" />
+            </div>
+
+            <div className="absolute bottom-4 left-4 w-[225px] rounded-[18px] bg-white p-4 shadow-[0_16px_38px_rgba(0,0,0,0.18)]">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="text-[34px] font-semibold leading-none tracking-[-0.08em] text-[#0f172a]">
+                    85%
+                  </div>
+                  <p className="mt-2 text-[11px] leading-5 text-[#6b7280]">
+                    of students say a guided path makes learning easier and more confident.
+                  </p>
+                </div>
+                <div className="grid h-9 w-9 place-items-center rounded-full bg-[#edf2ff] text-[#3b5cff]">
+                  <SparkIcon />
+                </div>
+              </div>
+
+              <div className="mt-3 flex items-end gap-1.5">
+                {Array.from({ length: 18 }).map((_, index) => (
+                  <span
+                    key={index}
+                    className="w-full rounded-sm bg-[linear-gradient(180deg,#9a8cff_0%,#8bc0ff_48%,#d9e3ff_100%)]"
+                    style={{ height: `${10 + ((index * 7) % 22)}px` }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-4">
+            <div className="rounded-[24px] bg-[#171311] p-6 text-white shadow-[0_18px_50px_rgba(14,23,48,0.12)]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f0df66] text-[#171311]">
+                01
+              </div>
+              <h3 className="mt-9 text-[24px] font-medium tracking-[-0.05em]">
+                In-Person Learning
+              </h3>
+              <p className="mt-4 max-w-[28ch] text-[14px] leading-7 text-white/55">
+                Join a focused environment with a clear structure, real-time guidance, and a
+                premium classroom feel.
+              </p>
+            </div>
+
+            <div className="rounded-[24px] bg-white p-6 shadow-[0_18px_50px_rgba(14,23,48,0.12)]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f0df66] text-[#171311]">
+                02
+              </div>
+              <h3 className="mt-9 text-[24px] font-medium tracking-[-0.05em] text-[#101828]">
+                Online Learning
+              </h3>
+              <p className="mt-4 max-w-[30ch] text-[14px] leading-7 text-[#6c7485]">
+                Learn anywhere with video lessons, flexible sessions, and a smooth experience on
+                every device.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function FooterSection() {
-  const footerLinks = {
-    Producto: ["Packs de prompts", "Qu? incluye", "Resultados", "Precios"],
-    Marca: ["Sobre VBM IA", "Casos", "Blog", "Contact"],
-    Recursos: ["Centro de ayuda", "Gu?as", "Comunidad", "Privacidad"],
-  };
-
+function CoursesSection() {
   return (
-    <footer id="cta" className="w-full bg-[#050608] text-white">
-      <div className="w-full border-t border-white/10">
-        <div className="mx-auto w-full max-w-none px-5 py-8 md:px-8 md:py-10">
-          <div className="grid gap-8 lg:grid-cols-[1.05fr_1.25fr] lg:items-start">
-            <div>
-              <div className="flex items-center gap-3">
-                <div className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#00b7ff] text-white shadow-[0_0_24px_rgba(0,183,255,0.28)]">
-                  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white" aria-hidden="true">
-                    <path d="M13.1 1.6 4.8 12.1h5.2L8.9 22.4 19.2 9.9h-5.3L13.1 1.6Z" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="text-[18px] font-semibold tracking-[-0.04em]">VBM IA</div>
-                  <div className="text-[12px] text-white/55">Packs de prompts para vender con IA.</div>
-                </div>
-              </div>
+    <section id="courses" className="bg-[#ffffff] px-4 pb-18 pt-8 md:px-6 md:pb-22 lg:px-8 lg:pt-10">
+      <div className="mx-auto max-w-[1260px]">
+        <div className="mx-auto max-w-[760px] text-center">
+          <h2 className="text-[clamp(2.1rem,3.8vw,3.45rem)] font-medium leading-[0.92] tracking-[-0.06em] text-[#101828]">
+            Browse Our Courses
+          </h2>
+          <p className="mx-auto mt-4 max-w-[560px] text-[14px] leading-7 text-[#6d7483] md:text-[15px]">
+            Explore practical lessons, clean structure, and flexible pathways for different goals.
+          </p>
+        </div>
 
-              <p className="mt-5 max-w-md text-[14px] leading-7 text-white/62">
-                Una experiencia simple y moderna para crear prompts que se ven premium, ahorran tiempo
-                y elevan la percepci?n de tu oferta.
-              </p>
-
-              <div className="mt-6 flex flex-wrap gap-3">
-                {["TODO", "ANUNCIOS", "BEAUTY"].map((pill) => (
-                  <span
-                    key={pill}
-                    className="rounded-full border border-white/10 bg-[#0c1118] px-4 py-2 text-[11px] font-semibold tracking-[0.08em] text-white/68"
-                  >
-                    {pill}
-                  </span>
-                ))}
-              </div>
+        <div className="mt-8 flex flex-col gap-4">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-3">
+              <label className="flex h-11 w-[220px] items-center gap-3 rounded-full border border-slate-200 bg-white px-4 text-[12px] text-[#6c7485] shadow-[0_6px_18px_rgba(15,23,42,0.06)]">
+                <SearchIcon />
+                <span>Enter keyword</span>
+              </label>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-3">
-              {Object.entries(footerLinks).map(([group, items]) => (
-                <div key={group}>
-                  <h3 className="text-[12px] font-semibold uppercase tracking-[0.18em] text-white/42">
-                    {group}
-                  </h3>
-                  <ul className="mt-4 space-y-3 text-[14px] text-white/74">
-                    {items.map((item) => (
-                      <li key={item}>
-                        <a href="#top" className="transition hover:text-white">
-                          {item}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            <div className="flex flex-wrap gap-2">
+              {courseFilters.map((item, index) => (
+                <a
+                  key={item}
+                  href="#courses"
+                  className={`inline-flex h-10 items-center rounded-full px-4 text-[12px] font-semibold transition ${
+                    index === 1
+                      ? "bg-[#1f57ff] text-white shadow-[0_10px_20px_rgba(31,87,255,0.18)]"
+                      : "border border-slate-200 bg-white text-[#5f687b]"
+                  }`}
+                >
+                  {item}
+                </a>
               ))}
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-5 md:flex-row md:items-center md:justify-between">
-            <div className="text-[12px] text-white/52">
-              © 2026 VBM IA. All rights reserved.
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {courses.map((course) => (
+              <CourseCard key={course.title} course={course} />
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between pt-2 text-[12px] font-medium text-[#5f687b]">
+            <button type="button" className="transition hover:text-[#101828]">
+              Prev
+            </button>
+
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#101828]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#c6cddc]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#c6cddc]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#c6cddc]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#c6cddc]" />
             </div>
 
-            <div className="flex items-center gap-3">
-              <a
-                href="#top"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-[#0c1118] text-white transition hover:border-[#00b7ff]/35 hover:bg-[#101826]"
-                aria-label="Instagram"
-              >
-                IG
-              </a>
-              <a
-                href="#top"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-[#0c1118] text-white transition hover:border-[#00b7ff]/35 hover:bg-[#101826]"
-                aria-label="X"
-              >
-                X
-              </a>
-              <a
-                href="#top"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-[#0c1118] text-white transition hover:border-[#00b7ff]/35 hover:bg-[#101826]"
-                aria-label="YouTube"
-              >
-                YT
-              </a>
+            <button type="button" className="transition hover:text-[#101828]">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TestimonialsSection() {
+  return (
+    <section className="bg-[#d9e5ff] px-4 py-18 md:px-6 md:py-22 lg:px-8 lg:py-26">
+      <div className="mx-auto max-w-[1260px]">
+        <div className="relative overflow-hidden rounded-[28px] bg-[#d9e5ff] px-4 py-14 md:px-6 lg:px-8 lg:py-18">
+          <div className="pointer-events-none absolute inset-x-0 top-2 flex justify-center">
+            <h2 className="font-display text-center text-[clamp(4rem,10vw,8.4rem)] leading-[0.82] tracking-[-0.08em] text-[#101828]">
+              WHAT OUR
+              <br />
+              STUDENTS SAY
+            </h2>
+          </div>
+
+          <div className="relative z-10 mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {testimonials.map((testimonial, index) => (
+              <TestimonialCard
+                key={testimonial.name}
+                testimonial={testimonial}
+                className={
+                  index === 0
+                    ? "lg:mt-12"
+                    : index === 1
+                      ? "lg:-mt-2"
+                      : index === 2
+                        ? "lg:mt-8"
+                        : "lg:mt-14"
+                }
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="bg-[#ffffff] px-4 pb-10 pt-8 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1260px] border-t border-slate-200 pt-8">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <a href="#top" className="flex items-center gap-2.5">
+              <div className="grid h-8 w-8 place-items-center rounded-lg bg-[linear-gradient(135deg,#87e4ff_0%,#5d9bff_50%,#2f60ff_100%)] shadow-[0_10px_20px_rgba(73,120,255,0.24)]">
+                <span className="block h-3 w-3 rotate-45 rounded-[2px] border-r border-t border-white/90" />
+              </div>
+              <span className="text-[12px] font-semibold tracking-[0.34em] text-[#1a2842]">
+                CLASTRO
+              </span>
+            </a>
+            <p className="mt-4 max-w-[320px] text-[13px] leading-7 text-[#677082]">
+              A clean learning platform with a premium feel, designed for modern students and
+              creators.
+            </p>
+          </div>
+
+          <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:gap-10">
+            <div className="flex gap-3">
+              <SocialButton label="F" />
+              <SocialButton label="X" />
+              <SocialButton label="IG" />
             </div>
+            <nav className="flex flex-wrap gap-8 text-[13px] text-[#5f687b]">
+              <a href="#courses" className="transition hover:text-[#101828]">
+                Contact
+              </a>
+              <a href="#courses" className="transition hover:text-[#101828]">
+                Resources
+              </a>
+              <a href="#courses" className="transition hover:text-[#101828]">
+                About
+              </a>
+            </nav>
           </div>
         </div>
       </div>
@@ -717,1568 +505,164 @@ function FooterSection() {
   );
 }
 
-function WhyIcon({ type }) {
-  if (type === "spark") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-        <path
-          d="M12 2.8 13.9 9l6.2 1.9-6.2 1.9L12 19l-1.9-6.2L3.9 10.9 10.1 9 12 2.8Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  if (type === "bolt") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-        <path
-          d="M13 2.8 6.5 13h4.8L10 21.2 17.5 11H12.7L13 2.8Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  if (type === "layers") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-        <path
-          d="m12 4 7 4-7 4-7-4 7-4Zm0 8 7 4-7 4-7-4 7-4Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  if (type === "target") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-        <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
-        <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="1.6" />
-      </svg>
-    );
-  }
-
-  if (type === "user") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-        <path
-          d="M20 19.5c0-3-3.4-5.5-8-5.5s-8 2.5-8 5.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-        <circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
-      </svg>
-    );
-  }
-
-  if (type === "money") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-        <path
-          d="M7 9.5c0-2 2.2-3.5 5-3.5s5 1.5 5 3.5-2.2 3.5-5 3.5-5 1.5-5 3.5 2.2 3.5 5 3.5 5-1.5 5-3.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-        <path d="M12 4.5v15" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      </svg>
-    );
-  }
-
-  if (type === "award") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-        <path
-          d="M8.5 14.5 7.2 20l4.8-2.7L17 20l-1.3-5.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <circle cx="12" cy="9.5" r="4.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-      <path
-        d="M12 4.5l2.1 4.3 4.8.7-3.5 3.4.8 4.8-4.2-2.2-4.2 2.2.8-4.8-3.5-3.4 4.8-.7L12 4.5z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function PackIcon({ type }) {
-  if (type === "cube") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
-        <path
-          d="m12 3.2 7 4v9.6l-7 4-7-4V7.2l7-4Zm0 0v8.8m0-8.8-7 4m7-4 7 4M5 7.2l7 4 7-4M12 12v8.8"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-      </svg>
-    );
-  }
-
-  if (type === "bolt") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
-        <path
-          d="M13 2.8 6.5 13h4.7L10 21.2 17.5 11h-4.7L13 2.8Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  if (type === "layers") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
-        <path
-          d="m12 4 7 4-7 4-7-4 7-4Zm0 8 7 4-7 4-7-4 7-4Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  if (type === "target") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
-        <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
-        <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="1.6" />
-      </svg>
-    );
-  }
-
-  if (type === "send") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
-        <path
-          d="m4 11.8 15.8-7.2-6.1 15.8-2.7-6.1-7-2.5Zm7 2.1 4.4-4.4"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  if (type === "spark") {
-    return (
-      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
-        <path
-          d="M12 2.8 13.9 9l6.2 1.9-6.2 1.9L12 19l-1.9-6.2L3.9 10.9 10.1 9 12 2.8Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
-      <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.6" />
-    </svg>
-  );
-}
-
-function PromptGlyph({ type, className = "h-6 w-6" }) {
-  if (type === "user") {
-    return (
-      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-        <path
-          d="M20 19.5c0-3-3.4-5.5-8-5.5s-8 2.5-8 5.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.02"
-          strokeLinecap="round"
-        />
-        <circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" strokeWidth="1.02" />
-      </svg>
-    );
-  }
-
-  if (type === "target") {
-    return (
-      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-        <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" strokeWidth="1.02" />
-        <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="1.02" />
-      </svg>
-    );
-  }
-
-  if (type === "cube") {
-    return (
-      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-        <path
-          d="M12.2 2.8 6.2 11.8h4.4l-1 9.4 7.8-10.8h-4.7L12.2 2.8Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.05"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-          strokeMiterlimit="2"
-        />
-      </svg>
-    );
-  }
-
-  if (type === "layers") {
-    return (
-      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-        <path
-          d="m12 4 7 4-7 4-7-4 7-4Zm0 8 7 4-7 4-7-4 7-4Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.02"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  if (type === "send") {
-    return (
-      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-        <path
-          d="m4 11.8 15.8-7.2-6.1 15.8-2.7-6.1-7-2.5Zm7 2.1 4.4-4.4"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.02"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeMiterlimit="2"
-        />
-      </svg>
-    );
-  }
-
-  if (type === "spark") {
-    return (
-      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-        <path
-          d="M12 2.8 13.9 9l6.2 1.9-6.2 1.9L12 19l-1.9-6.2L3.9 10.9 10.1 9 12 2.8Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.02"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-      <path
-        d="M13 2.8 6.5 13h4.7L10 21.2 17.5 11h-4.7L13 2.8Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.02"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function PackRailCard({ item, index }) {
-  const shift = index * 2;
+function HeroPhotoCard({ image, alt, className = "", featured = false, accent = "" }) {
   return (
     <div
-      className="group relative w-full max-w-[128px] transition duration-300 ease-out"
-      style={{
-        zIndex: 20 - index,
-        marginLeft: `${shift}px`,
-        marginTop: index === 0 ? "0px" : "-8px",
-      }}
+      className={`relative overflow-hidden rounded-[22px] border-[4px] border-white bg-white shadow-[0_18px_46px_rgba(24,38,72,0.16)] ${className} ${
+        featured ? "z-10" : ""
+      }`}
     >
       <div
-        className={`relative overflow-hidden rounded-[20px] border px-3 py-3 transition duration-300 ease-out hover:-translate-y-1 hover:border-white/16 ${
-          item.active
-            ? "border-white/14 bg-[linear-gradient(180deg,rgba(13,18,28,0.96),rgba(6,9,14,0.92))] shadow-[0_18px_50px_rgba(0,0,0,0.26)]"
-            : "border-white/8 bg-[linear-gradient(180deg,rgba(10,14,20,0.9),rgba(5,7,11,0.88))]"
+        className={`absolute inset-x-0 top-0 h-10 bg-gradient-to-b ${accent} opacity-95`}
+      />
+      <div className="absolute left-3 top-3 z-10 flex gap-1.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5b5b]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#ffc94d]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#53d86f]" />
+      </div>
+      <img
+        src={image}
+        alt={alt}
+        className={`h-[280px] w-full object-cover md:h-[360px] ${
+          featured ? "object-[center_24%]" : "object-[center_18%]"
         }`}
-        style={{ animationDelay: `${index * 140}ms` }}
-      >
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,183,255,0.11),transparent_52%)] opacity-0 transition duration-300 group-hover:opacity-100" />
-        <div className="pointer-events-none absolute inset-x-3 top-3 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-35" />
-        <PromptGlyph
-          type={item.icon}
-          className="h-6 w-6 text-[#d9ecff] drop-shadow-[0_0_1px_rgba(0,183,255,0.04)] transition duration-300 ease-out group-hover:scale-[1.02]"
-        />
-        <div className="mt-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/92">
-          {item.title}
-        </div>
-        <div className="mt-1 text-[9px] leading-4 text-white/46">{item.subtitle}</div>
-      </div>
+      />
+      <div className="absolute inset-x-0 bottom-0 h-16 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.18)_16%,rgba(11,18,32,0.34)_100%)]" />
     </div>
   );
 }
 
-function WorkflowDot({ active = false }) {
+function FloatingPill({ label, small = false }) {
   return (
     <div
-      className={`relative flex h-5 w-5 items-center justify-center rounded-full border transition duration-300 ease-out ${
-        active ? "border-[#00b7ff]/45 bg-[#00b7ff]/10" : "border-white/14 bg-white/[0.03]"
+      className={`inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-[#16233d] shadow-[0_10px_28px_rgba(18,32,58,0.12)] ${
+        small ? "text-[11px] font-medium" : "text-[12px] font-medium"
       }`}
     >
-      <div className={`h-2 w-2 rounded-full ${active ? "bg-[#00b7ff]" : "bg-white/42"}`} />
+      {label}
     </div>
   );
 }
 
-function WorkflowItem({ item, index }) {
-  const active = index < 4;
-  const glyphType = ["user", "target", "bolt", "spark", "send"][index] ?? "target";
-
+function PixelStrip() {
   return (
-    <div
-      className={`group relative overflow-hidden rounded-[22px] border px-4 py-4 transition duration-300 ease-out hover:-translate-y-1 hover:border-white/16 ${
-        active
-          ? "border-white/12 bg-[linear-gradient(180deg,rgba(11,16,24,0.96),rgba(6,9,13,0.92))] shadow-[0_18px_48px_rgba(0,0,0,0.22)]"
-          : "border-white/10 bg-[linear-gradient(180deg,rgba(10,14,20,0.92),rgba(5,7,11,0.9))]"
-      }`}
-    >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,183,255,0.12),transparent_55%)] opacity-0 transition duration-300 group-hover:opacity-100" />
-      <div className="pointer-events-none absolute inset-px rounded-[21px] border border-white/4" />
-      <div className="relative flex items-start gap-3">
-        <PromptGlyph
-          type={glyphType}
-          className="h-6 w-6 shrink-0 text-[#d9ecff] drop-shadow-[0_0_1px_rgba(0,183,255,0.04)] transition duration-300 ease-out group-hover:scale-[1.02]"
-        />
-        <div className="min-w-0 pb-2">
-          <div className="text-[15px] font-semibold tracking-[-0.03em] text-white">{item.title}</div>
-          <div className="mt-1 text-[12px] leading-5 text-white/50">{item.subtitle}</div>
-        </div>
-      </div>
-      {index !== promptWorkflowItems.length - 1 ? (
-        <div className="absolute bottom-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent" />
-      ) : null}
-    </div>
-  );
-}
-
-function PromptCubeArt() {
-  return (
-    <div className="relative flex h-full min-h-[228px] items-center justify-center [perspective:1200px]">
-      <div
-        className="relative h-28 w-28 [transform-style:preserve-3d]"
-        style={{ transform: "rotateX(4deg) rotateY(-10deg)" }}
-      >
-        <div className="absolute inset-0 rounded-[20px] border border-[#00b7ff]/14 bg-[linear-gradient(180deg,rgba(10,15,22,0.92),rgba(5,8,12,0.96))]" />
+    <div className="w-full bg-[#0b1220]">
+      <div className="mx-auto max-w-[1600px] px-0">
         <div
-          className="absolute left-[16%] top-[16%] h-[68%] w-[68%] rounded-[18px] border border-white/10 bg-[#09111a]"
-          style={{ transform: "translateZ(10px)" }}
-        />
-        <div
-          className="absolute left-[30%] top-[30%] h-[40%] w-[40%] rounded-[14px] border border-[#00b7ff]/16 bg-[#0d1621]"
-          style={{ transform: "translateZ(16px)" }}
-        />
-        <div
-          className="absolute left-[38%] top-[38%] h-[24%] w-[24%] rounded-[10px] bg-[#00b7ff]/14"
-          style={{ transform: "translateZ(22px)" }}
+          className="grid h-24 w-full items-end gap-0 overflow-hidden"
+          style={{ gridTemplateColumns: "repeat(32, minmax(0, 1fr))" }}
         >
-          <div className="absolute inset-x-2 top-2 h-px bg-white/60" />
-          <div className="absolute inset-x-2 bottom-2 h-px bg-white/20" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function OutputArt({ tone }) {
-  const palette =
-    tone === "amber"
-      ? "from-[#1a150d] via-[#2d2013] to-[#7b5b2b]"
-      : tone === "violet"
-        ? "from-[#110f1d] via-[#1d1631] to-[#4d347e]"
-        : tone === "sand"
-          ? "from-[#17130f] via-[#2b241c] to-[#78604a]"
-          : tone === "slate"
-            ? "from-[#0d1017] via-[#131922] to-[#30384a]"
-            : "from-[#08131f] via-[#0d203a] to-[#224d95]";
-
-  return (
-    <div className="relative h-[110px] overflow-hidden rounded-[16px] border border-white/10 bg-[#070b10]">
-      <div className={`absolute inset-0 bg-gradient-to-br ${palette} opacity-95`} />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),transparent_40%)]" />
-      <div className="absolute left-1/2 top-1/2 h-20 w-12 -translate-x-1/2 -translate-y-1/2 rounded-[18px] border border-white/12 bg-white/8 shadow-[0_0_26px_rgba(0,0,0,0.25)]" />
-      <div className="absolute bottom-4 left-4 h-2.5 w-20 rounded-full bg-white/12" />
-      <div className="absolute top-4 right-4 rounded-full border border-white/14 bg-black/30 px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.22em] text-white/70">
-        {tone}
-      </div>
-      <div className="absolute inset-x-0 bottom-0 h-14 bg-[linear-gradient(180deg,transparent_0%,rgba(5,6,8,0.72)_100%)]" />
-    </div>
-  );
-}
-
-function PromptOutputTile({ item, index }) {
-  return (
-    <div
-      className="group overflow-hidden rounded-[20px] border border-white/10 bg-[linear-gradient(180deg,rgba(12,16,23,0.96),rgba(6,8,12,0.94))] p-3 transition duration-300 ease-out hover:-translate-y-0.5 hover:border-white/16"
-      style={{ animationDelay: `${index * 120}ms` }}
-    >
-      <div className="text-[12px] font-medium leading-[1.2] tracking-[-0.03em] text-white">
-        {item.title.split("\n").map((line) => (
-          <div key={line}>{line}</div>
-        ))}
-      </div>
-      <div className="mt-3">
-        <OutputArt tone={item.tone} />
-      </div>
-      <div className="mt-3 flex items-center justify-between">
-        <div className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.24em] text-white/58">
-          {item.tag}
-        </div>
-        <div className="grid h-7 w-7 place-items-center rounded-full border border-[#00b7ff]/10 bg-[#00b7ff]/6 text-[#d9ecff]">
-          <span className="text-[13px] leading-none">✓</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PromptPacksSection() {
-  return (
-    <section className="relative bg-[#050608] py-16 text-white md:py-20 lg:py-24">
-      <div className="w-full overflow-hidden border border-x-0 border-white/10 bg-[radial-gradient(circle_at_top,rgba(0,183,255,0.08),transparent_28%),linear-gradient(180deg,#040608_0%,#05070a_100%)] px-4 py-10 shadow-[0_28px_90px_rgba(0,0,0,0.4)] md:px-8 lg:px-10 lg:py-14">
-        <div className="mx-auto max-w-4xl text-center">
-          <div
-            className="reveal hidden inline-flex items-center rounded-full border border-white/10 bg-black/45 px-5 py-2 text-[10px] font-semibold uppercase tracking-[0.32em] text-white/76 backdrop-blur-md"
-            data-scroll
-          >
-            <span className="mr-2 text-[#7fd2ff]">✦</span>
-            PACKS DE PROMPTS IA
-          </div>
-
-          <h2
-            className="reveal mt-7 text-[clamp(2.8rem,7vw,5.4rem)] font-black leading-[0.9] tracking-[-0.085em] text-white md:mt-9"
-            data-scroll
-          >
-            Prompts que convierten.
-            <br />
-            <span className="text-[#2d7bff]">Resultados</span> premium.
-          </h2>
-
-          <p
-            className="reveal mx-auto mt-6 max-w-[760px] text-[15px] leading-7 text-white/58 md:text-[16px]"
-            data-scroll
-          >
-            Conecta. Genera. Publica. Todo alineado con tu marca.
-          </p>
-        </div>
-
-        <div className="mt-14 grid gap-0 overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(7,11,16,0.98),rgba(5,7,10,0.96))] shadow-[0_22px_70px_rgba(0,0,0,0.38)] lg:grid-cols-3">
-          {[
-            {
-              icon: "bolt",
-              title: "Respuesta instantánea. Siempre.",
-              text: "Prompts listos para usar, con estructura clara y sin perder tiempo en pruebas innecesarias.",
-            },
-            {
-              icon: "user",
-              title: "Soporte que habla tu idioma.",
-              text: "Pensados para equipos, creadores y marcas que necesitan coherencia en cada salida.",
-            },
-            {
-              icon: "target",
-              title: "Escala sin romper tu sistema.",
-              text: "Crea nuevas variantes, nichos y campañas manteniendo el mismo estándar visual y comercial.",
-            },
-          ].map((card, index) => (
-            <div
-              key={card.title}
-              className={`reveal group relative min-h-[240px] overflow-hidden border-white/10 px-6 py-6 transition duration-300 ease-out hover:-translate-y-1 hover:bg-white/[0.015] md:px-7 md:py-7 ${
-                index < 2 ? "border-b lg:border-b-0 lg:border-r" : ""
-              }`}
-              data-scroll
-              data-side={index % 2 === 0 ? "left" : "right"}
-            >
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,183,255,0.08),transparent_60%)] opacity-0 transition duration-300 group-hover:opacity-100" />
-              <PromptGlyph
-                type={card.icon}
-                className="h-7 w-7 text-[#d9ecff] drop-shadow-[0_0_1px_rgba(0,183,255,0.04)] transition duration-300 ease-out group-hover:scale-[1.02]"
-              />
-              <h3 className="mt-10 max-w-[12ch] text-[22px] font-semibold tracking-[-0.06em] text-white">
-                {card.title}
-              </h3>
-              <p className="mt-3 max-w-[22ch] text-[13px] leading-6 text-white/52">{card.text}</p>
-            </div>
+          {pixelBlocks.map((color, index) => (
+            <span
+              key={`${color}-${index}`}
+              className="w-full"
+              style={{ backgroundColor: color, height: `${pixelHeights[index]}px` }}
+            />
           ))}
         </div>
       </div>
-    </section>
-  );
-}
-
-function WhyFeatureCard({ title, text, icon, dark = false }) {
-  return (
-    <div
-      className={`reveal group rounded-[18px] p-6 shadow-[0_10px_24px_rgba(0,0,0,0.06)] transition duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(0,0,0,0.1)] ${
-        dark ? "border border-[#00b7ff]/28 bg-[#070b10] text-white" : "border border-white/10 bg-[#0b1118] text-white"
-      }`}
-      data-scroll
-      data-side="right"
-    >
-      <div
-        className={`grid h-9 w-9 place-items-center rounded-full transition duration-300 ease-out group-hover:scale-105 ${
-          dark ? "bg-[#00b7ff]/14 text-[#7fd2ff]" : "bg-[#00b7ff]/10 text-[#7fd2ff]"
-        }`}
-      >
-        <WhyIcon type={icon} />
-      </div>
-      <h3 className="mt-8 text-[17px] font-semibold tracking-[-0.03em]">{title}</h3>
-      <p className="mt-3 max-w-[22ch] text-[13px] leading-6 text-white/60">{text}</p>
     </div>
   );
 }
 
-function WhyChooseSection() {
+function CourseCard({ course }) {
   return (
-    <section className="bg-[#050608] px-4 py-16 text-white md:px-6 lg:px-8 lg:py-18">
-      <div className="mx-auto max-w-[1120px]">
-        <div className="mx-auto max-w-[620px] text-center">
-          <h2 className="text-[clamp(2rem,3.3vw,3rem)] font-semibold tracking-[-0.05em] text-white">
-            Why choose VBM IA
-          </h2>
-          <p className="mx-auto mt-4 max-w-[420px] text-[13px] leading-6 text-white/62">
-            Feito para transformar prompts em oferta premium, com direção clara, velocidade e consistência.
-          </p>
-        </div>
-
-        <div className="mt-12 grid gap-4 lg:grid-cols-[0.86fr_1.22fr_0.86fr] lg:items-stretch">
-          <div className="grid gap-4">
-            <WhyFeatureCard
-              dark
-              icon="spark"
-              title="Prompts que convertem"
-              text="Estruturas prontas para anúncios, landing pages e conteúdos com cara de produto premium."
-            />
-            <WhyFeatureCard
-              icon="bolt"
-              title="Velocidade de produção"
-              text="Menos tentativa e erro. Mais variações, mais consistência e mais output em menos tempo."
-            />
-          </div>
-
-          <div className="overflow-hidden rounded-[18px] border border-white/10 bg-[#0b1017] shadow-[0_12px_28px_rgba(0,0,0,0.22)]">
-            <img
-              src={whyPackImage}
-              alt="AI prompt packs visual preview"
-              className="h-full min-h-[340px] w-full object-contain p-3 md:p-4 transition duration-500 ease-out hover:scale-[1.01]"
-            />
-          </div>
-
-          <div className="grid gap-4">
-            <WhyFeatureCard
-              icon="layers"
-              title="Pronto para escalar"
-              text="Você adapta o mesmo sistema para novas campanhas, nichos e formatos sem recomeçar do zero."
-            />
-            <WhyFeatureCard
-              icon="target"
-              title="Entrega on-brand"
-              text="Cada pack mantém direção visual, tom e repetição para a marca parecer sólida em qualquer canal."
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function TutorHero() {
-  return (
-    <section className="relative isolate overflow-hidden bg-[#050608] text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_12%,rgba(37,99,235,0.24),transparent_28%),radial-gradient(circle_at_82%_22%,rgba(0,183,255,0.12),transparent_26%),linear-gradient(180deg,#050608_0%,#070b11_100%)]" />
-      <div className="absolute inset-0 opacity-[0.75] [background-image:linear-gradient(rgba(96,165,250,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.06)_1px,transparent_1px)] [background-size:74px_74px]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_42%,rgba(5,6,8,0.92)_100%)]" />
-
-      <div className="relative mx-auto flex min-h-screen max-w-[1240px] flex-col px-4 pb-10 pt-4 md:px-6 lg:px-8">
-        <div className="mx-auto w-full max-w-[586px] rounded-full border border-white/10 bg-[#0a0d12]/90 shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-          <div className="flex h-[54px] items-center justify-between gap-3 px-3 sm:px-4">
-            <a
-              href="#top"
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#00b7ff] text-white shadow-[0_0_26px_rgba(0,183,255,0.35)]"
-              aria-label="Inicio"
-            >
-              <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white" aria-hidden="true">
-                <path d="M13.1 1.6 4.8 12.1h5.2L8.9 22.4 19.2 9.9h-5.3L13.1 1.6Z" />
-              </svg>
-            </a>
-
-            <nav className="hidden flex-1 items-center justify-center gap-6 text-[12px] font-medium tracking-[0.01em] text-white/72 md:flex md:gap-7 md:text-[13px]">
-              {heroNavItems.map((item) => (
-                <a
-                  key={item}
-                  href="#top"
-                  className="group relative py-1 transition duration-300 ease-out hover:-translate-y-0.5 hover:text-white"
-                >
-                  {item}
-                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-[#00b7ff] transition-transform duration-300 ease-out group-hover:scale-x-100" />
-                </a>
-              ))}
-            </nav>
-
-            <a
-              href="#cta"
-              className="group inline-flex h-10 shrink-0 items-center gap-3 rounded-full bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#00b7ff] pl-5 pr-1.5 text-[12px] font-medium tracking-[0.01em] text-white shadow-[0_0_24px_rgba(0,183,255,0.28)] transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_0_36px_rgba(0,183,255,0.42)] md:text-[13px]"
-            >
-              <span>VER PACKS</span>
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-[18px] text-[#0b1220] transition duration-300 ease-out group-hover:scale-105 group-hover:rotate-[-8deg] group-hover:bg-[#dff6ff]">
-                →
-              </span>
-            </a>
-          </div>
-        </div>
-
-        <div className="relative flex flex-1 flex-col">
-          <div className="relative z-10 mx-auto mt-16 w-full max-w-[780px] text-center md:mt-20 lg:mt-24">
-            <div className="reveal inline-flex items-center rounded-full border border-white/10 bg-[#0a0d12]/80 px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.25)] backdrop-blur-md" data-scroll>
-              <div className="flex -space-x-2">
-                {heroAvatars.map((avatar, index) => (
-                  <img
-                    key={avatar}
-                    src={avatar}
-                    alt={`Student ${index + 1}`}
-                    className="h-7 w-7 rounded-full border border-[#050608] object-cover"
-                  />
-                ))}
-              </div>
-              <span className="ml-3 text-[13px] font-medium text-white/76 md:text-[15px]">
-                Clientes que ya lo aplican
-              </span>
-            </div>
-
-            <h1
-              className="reveal mt-6 font-sans text-[clamp(3.15rem,7vw,5.6rem)] font-black leading-[0.9] tracking-[-0.08em] text-white md:mt-8"
-              data-scroll
-            >
-              Crea prompts
-              <br />
-              que venden de verdad.
-            </h1>
-
-            <p
-              className="reveal mx-auto mt-6 max-w-[780px] text-[15px] leading-7 text-white/68 md:text-[17px] md:leading-8"
-              data-scroll
-            >
-              Packs de prompts en espa?ol para anuncios, creatividades y contenido con est?tica premium.
-              Menos prueba y error. M?s velocidad. M?s ventas.
-            </p>
-
-            <a
-              href="#courses"
-              className="reveal mt-8 inline-flex items-center gap-4 rounded-full bg-gradient-to-r from-[#1d4ed8] to-[#00b7ff] px-5 py-2.5 text-[11px] font-medium tracking-[0.04em] text-white shadow-[0_0_26px_rgba(0,183,255,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_0_38px_rgba(0,183,255,0.34)] md:px-6 md:py-3 md:text-[13px]"
-              data-scroll
-            >
-              <span className="pl-1">EXPLORAR PACKS</span>
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-[18px] text-[#0b1220]">
-                →
-              </span>
-            </a>
-          </div>
-
-          <HeroStat
-            className="left-0 top-[43%]"
-            align="left"
-            icon={<span className="text-lg leading-none">◌</span>}
-            title="100+"
-            subtitle="Prompts listos"
-            image={heroLeftCard.image}
-            alt={heroLeftCard.alt}
-          />
-
-          <HeroStat
-            className="right-0 top-[33%]"
-            align="right"
-            icon={<span className="text-lg leading-none">▢</span>}
-            title="30+"
-            subtitle="Packs premium"
-            image={heroRightCard.image}
-            alt={heroRightCard.alt}
-          />
-
-          <div className="relative z-10 mt-auto pt-12 lg:pt-16">
-            <div className="grid gap-4 lg:grid-cols-[0.9fr_1.4fr_0.9fr] lg:gap-5">
-              <HeroShowcaseCard
-                image={heroLeftCard.image}
-                alt={heroLeftCard.alt}
-                title={heroLeftCard.title}
-                subtitle={heroLeftCard.subtitle}
-                coverClassName="object-[center_18%]"
-              />
-              <HeroShowcaseCard
-                image={heroCenterCard.image}
-                alt={heroCenterCard.alt}
-                title={heroCenterCard.title}
-                subtitle={heroCenterCard.subtitle}
-                play
-                coverClassName="object-[center_22%]"
-              />
-              <HeroShowcaseCard
-                image={heroRightCard.image}
-                alt={heroRightCard.alt}
-                title={heroRightCard.title}
-                subtitle={heroRightCard.subtitle}
-                coverClassName="object-[center_18%]"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function PromptHeroArt() {
-  return (
-    <div className="relative mx-auto h-[580px] w-full max-w-[680px]">
-      <div className="absolute left-[4%] top-[18%] h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" />
-      <div className="absolute right-[6%] top-[8%] h-72 w-72 rounded-full bg-teal-400/10 blur-3xl" />
-      <div className="absolute inset-y-[12%] right-[14%] w-[1px] bg-gradient-to-b from-transparent via-cyan-300/60 to-transparent opacity-50" />
-
-      <div className="absolute left-[8%] top-[15%] rotate-[-6deg]">
-        <Card className="w-56 p-4">
-          <div className="flex items-center justify-between text-[11px] text-white/55">
-            <span>Prompt premium</span>
-            <span className="rounded-full bg-teal-300/15 px-2 py-1 text-teal-200">AI</span>
-          </div>
-          <div className="mt-4 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-cyan-900 p-4">
-            <div className="mb-3 h-2 w-20 rounded-full bg-teal-300/90" />
-            <div className="space-y-2">
-              <div className="h-2 w-full rounded-full bg-white/20" />
-              <div className="h-2 w-4/5 rounded-full bg-white/15" />
-              <div className="h-2 w-2/3 rounded-full bg-white/10" />
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      <div className="absolute left-[34%] top-[3%] rotate-[8deg]">
-        <Card className="w-48 p-4">
-          <div className="text-[11px] uppercase tracking-[0.28em] text-teal-300">score</div>
-          <div className="mt-4 text-4xl font-semibold text-white">98</div>
-          <p className="mt-2 text-xs leading-5 text-white/60">padrão visual premium.</p>
-        </Card>
-      </div>
-
-      <div className="absolute bottom-[10%] left-[8%] rotate-[4deg]">
-        <Card className="w-60 p-4">
-          <div className="flex items-center justify-between">
-            <div className="text-xs text-white/55">Estructura completa</div>
-            <div className="h-3 w-3 rounded-full bg-teal-300 shadow-[0_0_20px_rgba(45,212,191,0.8)]" />
-          </div>
-          <div className="mt-4 grid grid-cols-3 gap-2">
-            <div className="h-16 rounded-2xl bg-white/5 p-2">
-              <div className="h-full rounded-xl bg-gradient-to-t from-cyan-400/25 to-transparent" />
-            </div>
-            <div className="h-16 rounded-2xl bg-white/5 p-2">
-              <div className="h-full rounded-xl bg-gradient-to-t from-teal-400/25 to-transparent" />
-            </div>
-            <div className="h-16 rounded-2xl bg-white/5 p-2">
-              <div className="h-full rounded-xl bg-gradient-to-t from-white/20 to-transparent" />
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      <div className="absolute bottom-[22%] right-[7%] rotate-[-8deg]">
-        <Card className="w-44 p-3">
-          <div className="text-[10px] uppercase tracking-[0.28em] text-teal-300">release</div>
-          <div className="mt-2 text-3xl font-semibold text-white">+30</div>
-          <div className="mt-2 h-1.5 rounded-full bg-white/10">
-            <div className="h-1.5 w-[84%] rounded-full bg-gradient-to-r from-teal-300 to-cyan-400" />
-          </div>
-        </Card>
-      </div>
-
-      <div className="absolute inset-0">
-        <svg viewBox="0 0 640 540" className="h-full w-full">
-          <defs>
-            <linearGradient id="heroGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#a7f3d0" stopOpacity="1" />
-              <stop offset="45%" stopColor="#22d3ee" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#0f172a" stopOpacity="1" />
-            </linearGradient>
-            <radialGradient id="heroSpot" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.85" />
-              <stop offset="35%" stopColor="#67e8f9" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
-            </radialGradient>
-            <filter id="heroBlur" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="16" />
-            </filter>
-          </defs>
-
-          <ellipse cx="450" cy="416" rx="188" ry="54" fill="#02131b" opacity="0.72" />
-          <ellipse cx="432" cy="394" rx="144" ry="38" fill="#0ea5e9" opacity="0.2" filter="url(#heroBlur)" />
-
-          <g transform="translate(312 60)">
-            <path
-              d="M114 334c-7-19-15-36-22-56-10-29-9-61 5-87 8-14 16-26 17-41 1-18-7-32-11-48-5-20-1-37 7-54 18 5 31 16 39 30 9 16 13 35 10 54-1 13-6 25-10 37-5 17-2 33 3 49 9 31 25 55 24 90-1 22-6 42-16 59-22 4-41 3-52-3z"
-              fill="url(#heroGlow)"
-              opacity="0.95"
-            />
-            <path
-              d="M122 334c-5-17-13-31-19-50-8-24-8-49 4-69 8-14 14-25 14-37 0-14-6-26-9-40-4-16-1-30 5-44 13 5 23 13 29 25 7 13 10 28 8 44-1 11-5 20-8 31-4 14-2 28 2 40 7 26 20 47 19 76-1 18-4 35-11 49-14 3-28 2-34-1z"
-              fill="#e0f7ff"
-              opacity="0.45"
-            />
-            <path
-              d="M120 332c-5-17-11-32-18-48-10-23-10-49 2-71 8-13 11-24 11-35 0-14-7-27-10-40-4-17-1-31 6-46 19 9 28 22 30 38 2 12-1 24-5 36-5 16-2 31 2 46 7 25 18 46 20 72 1 17-1 31-7 44-12 2-22 2-31 4z"
-              fill="url(#heroSpot)"
-              opacity="0.8"
-            />
-            <circle cx="133" cy="88" r="22" fill="#d9fbff" opacity="0.65" />
-            <circle cx="109" cy="74" r="12" fill="#ffffff" opacity="0.45" />
-          </g>
-
-          <g opacity="0.95">
-            <path d="M128 102c18 8 30 20 36 38" stroke="#9ef3ff" strokeWidth="2" strokeLinecap="round" />
-            <path d="M124 118l18-7-5 19" fill="none" stroke="#9ef3ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M146 182c26 1 49 8 66 24" stroke="#9ef3ff" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
-            <path d="M192 216l24-5-11 22" fill="none" stroke="#9ef3ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.7" />
-          </g>
-
-          <g transform="translate(72 126)">
-            <rect x="0" y="0" width="90" height="108" rx="18" fill="#0b1220" opacity="0.95" />
-            <rect x="12" y="10" width="66" height="16" rx="8" fill="#0f172a" />
-            <rect x="20" y="36" width="50" height="40" rx="10" fill="url(#heroGlow)" opacity="0.88" />
-            <text x="45" y="62" textAnchor="middle" fontSize="15" fontWeight="700" fill="#ffffff">
-              39€
-            </text>
-            <path d="M14 88h62" stroke="#67e8f9" strokeWidth="2" strokeLinecap="round" />
-            <path d="M18 97h48" stroke="#ffffff" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" />
-          </g>
-
-          <g transform="translate(108 356)">
-            <rect x="0" y="0" width="168" height="82" rx="18" fill="#f8fafc" opacity="0.95" />
-            <circle cx="28" cy="30" r="10" fill="#0f172a" />
-            <circle cx="56" cy="30" r="10" fill="#0f172a" opacity="0.85" />
-            <circle cx="84" cy="30" r="10" fill="#0f172a" opacity="0.72" />
-            <circle cx="112" cy="30" r="10" fill="#0f172a" opacity="0.58" />
-            <circle cx="140" cy="30" r="10" fill="#0f172a" opacity="0.4" />
-            <path d="M20 58h128" stroke="#cbd5e1" strokeWidth="4" strokeLinecap="round" />
-            <path d="M20 58c18-12 38-6 52-14s23-15 34-15 18 8 31 4 24-13 40-9" fill="none" stroke="#0ea5e9" strokeWidth="2.5" strokeLinecap="round" />
-          </g>
-
-          <g transform="translate(342 26)" opacity="0.9">
-            <rect x="0" y="0" width="176" height="22" rx="11" fill="url(#heroGlow)" opacity="0.65" />
-            <rect x="18" y="5" width="42" height="12" rx="6" fill="#0f172a" opacity="0.7" />
-          </g>
-
-          <g transform="translate(490 108)" opacity="0.9">
-            <rect x="0" y="0" width="16" height="16" rx="4" fill="#67e8f9" />
-            <rect x="24" y="24" width="10" height="10" rx="3" fill="#67e8f9" opacity="0.8" />
-            <rect x="42" y="42" width="8" height="8" rx="3" fill="#67e8f9" opacity="0.65" />
-          </g>
-        </svg>
-      </div>
-    </div>
-  );
-}
-
-function LaptopMockup() {
-  return (
-    <div className="relative mx-auto w-full max-w-[540px]">
-      <div className="absolute left-[-10px] top-[20px] h-[300px] w-[300px] rounded-full bg-teal-300/10 blur-3xl" />
-      <div className="relative rotate-[-8deg]">
-        <svg viewBox="0 0 540 400" className="h-auto w-full drop-shadow-[0_30px_90px_rgba(0,0,0,0.55)]">
-          <defs>
-            <linearGradient id="laptopBody" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#f8fafc" />
-              <stop offset="52%" stopColor="#cbd5e1" />
-              <stop offset="100%" stopColor="#64748b" />
-            </linearGradient>
-            <linearGradient id="screenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#d8f8ff" />
-              <stop offset="100%" stopColor="#eff6ff" />
-            </linearGradient>
-            <linearGradient id="chartLine" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#2dd4bf" />
-              <stop offset="100%" stopColor="#3b82f6" />
-            </linearGradient>
-          </defs>
-          <g transform="translate(68 28)">
-            <path d="M20 0h312c12 0 22 10 22 22v178c0 12-10 22-22 22H20c-12 0-22-10-22-22V22C-2 10 8 0 20 0z" fill="url(#laptopBody)" />
-            <rect x="18" y="18" width="316" height="184" rx="16" fill="#f8fafc" />
-            <rect x="28" y="28" width="296" height="164" rx="12" fill="url(#screenGrad)" />
-            <rect x="28" y="28" width="96" height="164" rx="12" fill="#eff6ff" opacity="0.85" />
-            <circle cx="54" cy="46" r="8" fill="#0f172a" opacity="0.9" />
-            <circle cx="74" cy="46" r="8" fill="#0f172a" opacity="0.78" />
-            <circle cx="94" cy="46" r="8" fill="#0f172a" opacity="0.66" />
-            <g transform="translate(52 72)">
-              <rect x="0" y="0" width="226" height="98" rx="10" fill="#ffffff" opacity="0.8" />
-              <path d="M16 66c18-10 30-7 46-16s22-18 40-19 23 10 37 8 27-15 46-12 32 17 48 12" fill="none" stroke="url(#chartLine)" strokeWidth="3" strokeLinecap="round" />
-              <path d="M16 66v18h194" stroke="#cbd5e1" strokeWidth="2" strokeLinecap="round" />
-              <path d="M22 18h44" stroke="#0f172a" strokeOpacity="0.12" strokeWidth="6" strokeLinecap="round" />
-              <path d="M22 32h80" stroke="#0f172a" strokeOpacity="0.1" strokeWidth="5" strokeLinecap="round" />
-              <path d="M22 46h62" stroke="#0f172a" strokeOpacity="0.08" strokeWidth="5" strokeLinecap="round" />
-            </g>
-            <rect x="148" y="30" width="126" height="164" rx="12" fill="#ffffff" opacity="0.92" />
-            <rect x="164" y="46" width="92" height="24" rx="10" fill="#0f172a" opacity="0.95" />
-            <rect x="164" y="82" width="92" height="74" rx="12" fill="url(#screenGrad)" />
-            <path d="M176 146h68" stroke="url(#chartLine)" strokeWidth="4" strokeLinecap="round" />
-            <path d="M176 132h52" stroke="#0f172a" strokeOpacity="0.14" strokeWidth="4" strokeLinecap="round" />
-            <path d="M176 118h38" stroke="#0f172a" strokeOpacity="0.12" strokeWidth="4" strokeLinecap="round" />
-            <rect x="148" y="202" width="126" height="16" rx="8" fill="#cbd5e1" />
-          </g>
-          <g transform="translate(82 230)">
-            <path d="M0 52l330 0c18 0 30 11 30 23s-12 21-30 21H0c-18 0-30-9-30-21S-18 52 0 52z" fill="#94a3b8" opacity="0.18" />
-            <path d="M18 0h302c12 0 22 10 22 22v38c0 12-10 22-22 22H18C6 82-4 72-4 60V22C-4 10 6 0 18 0z" fill="url(#laptopBody)" />
-            <path d="M0 74h330c16 0 28 8 28 18 0 8-10 16-26 16H18c-20 0-34-8-34-18 0-10 12-16 16-16z" fill="#cbd5e1" />
-            <path d="M26 22h278" stroke="#94a3b8" strokeWidth="6" strokeLinecap="round" />
-            <path d="M80 22v26" stroke="#94a3b8" strokeWidth="6" strokeLinecap="round" />
-          </g>
-        </svg>
-      </div>
-    </div>
-  );
-}
-
-function PawnIllustration() {
-  return (
-    <div className="relative mx-auto h-[360px] w-full max-w-[460px]">
-      <div className="absolute left-[14%] top-[10%] h-[300px] w-[300px] rounded-full bg-cyan-400/10 blur-3xl" />
-      <svg viewBox="0 0 460 360" className="relative h-full w-full">
-        <defs>
-          <linearGradient id="pawnGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#d9fbff" />
-            <stop offset="35%" stopColor="#67e8f9" />
-            <stop offset="100%" stopColor="#0f172a" />
-          </linearGradient>
-        </defs>
-        <ellipse cx="222" cy="302" rx="135" ry="34" fill="#0a1220" opacity="0.9" />
-        <ellipse cx="222" cy="302" rx="92" ry="22" fill="#67e8f9" opacity="0.2" />
-        <g transform="translate(170 48)">
-          <path
-            d="M76 0c18 0 30 15 30 34 0 10-4 20-12 26 17 12 31 30 38 53 8 29 2 66-9 95-11 28-30 52-55 67-24 14-52 21-79 21-30 0-57-9-77-25-18-15-31-38-31-65 0-31 16-58 41-76-10-9-16-22-16-36 0-19 12-34 29-34h40c0-18 16-40 32-40h19z"
-            fill="url(#pawnGlow)"
-            opacity="0.95"
-          />
-          <path
-            d="M73 16c10 0 17 8 17 18 0 8-4 15-11 19 14 10 25 25 31 44 6 22 1 49-7 71-9 22-24 41-43 52-18 11-40 17-61 17-24 0-45-7-61-20-15-12-24-29-24-49 0-23 12-43 31-56-8-8-12-18-12-29 0-10 6-17 15-17h39c0-15 12-28 25-28h20z"
-            transform="translate(15 10)"
-            fill="#ffffff"
-            opacity="0.28"
-          />
-          <ellipse cx="59" cy="206" rx="120" ry="27" fill="#020617" opacity="0.85" />
-          <ellipse cx="62" cy="204" rx="82" ry="16" fill="#22d3ee" opacity="0.16" />
-        </g>
-        <path d="M326 84c16 14 24 29 28 48" stroke="#9ef3ff" strokeWidth="2" strokeLinecap="round" />
-        <path d="M320 96l18-7-4 19" fill="none" stroke="#9ef3ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M336 166c20 1 36 8 50 22" stroke="#9ef3ff" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
-        <path d="M366 196l20-4-9 18" fill="none" stroke="#9ef3ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.7" />
-        <rect x="66" y="78" width="18" height="18" rx="5" fill="#9ef3ff" opacity="0.8" />
-        <rect x="390" y="94" width="14" height="14" rx="4" fill="#9ef3ff" opacity="0.65" />
-        <rect x="376" y="232" width="12" height="12" rx="3" fill="#9ef3ff" opacity="0.5" />
-        <circle cx="396" cy="70" r="22" fill="#d9fbff" opacity="0.65" />
-        <circle cx="401" cy="68" r="12" fill="#ffffff" opacity="0.42" />
-      </svg>
-    </div>
-  );
-}
-
-function App() {
-  const [openFaq, setOpenFaq] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const elements = document.querySelectorAll("[data-reveal], [data-scroll]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.14, rootMargin: "0px 0px -8% 0px" },
-    );
-
-    elements.forEach((element) => observer.observe(element));
-
-    const updateScrollProgress = () => {
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = scrollHeight > 0 ? (window.scrollY / scrollHeight) * 100 : 0;
-      setScrollProgress(Math.max(0, Math.min(100, progress)));
-    };
-
-    let rafId = 0;
-    const onScroll = () => {
-      if (rafId) return;
-      rafId = window.requestAnimationFrame(() => {
-        updateScrollProgress();
-        rafId = 0;
-      });
-    };
-
-    updateScrollProgress();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", updateScrollProgress);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", updateScrollProgress);
-      if (rafId) {
-        window.cancelAnimationFrame(rafId);
-      }
-    };
-  }, []);
-
-  return (
-    <div className="min-h-screen bg-[#050608] text-white">
-      <div className="fixed left-0 top-0 z-[70] h-[3px] w-full bg-black/5">
-        <div
-          className="h-full bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#00b7ff] transition-[width] duration-150 ease-out"
-          style={{ width: `${scrollProgress}%` }}
+    <article className="overflow-hidden rounded-[20px] border border-slate-200 bg-white shadow-[0_12px_26px_rgba(15,23,42,0.07)]">
+      <div className="relative">
+        <img
+          src={course.image}
+          alt={course.title}
+          className="h-[210px] w-full object-cover object-[center_24%]"
         />
-      </div>
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-[-8%] top-[-10%] h-[34rem] w-[34rem] rounded-full bg-[#1d4ed8]/12 blur-3xl" />
-        <div className="absolute right-[-10%] top-[16%] h-[38rem] w-[38rem] rounded-full bg-[#00b7ff]/10 blur-3xl" />
-        <div className="absolute left-0 top-[45%] h-[26rem] w-[26rem] rounded-full bg-[#0c274d]/40 blur-3xl" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(96,165,250,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.05)_1px,transparent_1px)] bg-[size:120px_120px] opacity-[0.08]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,6,8,0.28)_58%,rgba(5,6,8,0.8)_100%)]" />
+        <div className="absolute left-3 top-3 rounded-full bg-[#1f57ff] px-3 py-1 text-[10px] font-semibold tracking-[0.16em] text-white shadow-[0_10px_20px_rgba(31,87,255,0.18)]">
+          {course.badge}
+        </div>
       </div>
 
-      <header className="hidden sticky top-0 z-40 border-b border-white/5 bg-black/70 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
-          <a href="#top" className="flex items-center gap-3">
-            <div className="grid h-9 w-9 place-items-center rounded-full border border-teal-300/30 bg-teal-300/10 text-xs font-bold text-teal-200">
-              V
-            </div>
-          </a>
-
-          <nav className="hidden items-center gap-8 text-[13px] text-white/70 md:flex">
-            <a className="transition hover:text-white" href="#top">
-              Home
-            </a>
-            <a className="transition hover:text-white" href="#sobre">
-              Sobre nos
-            </a>
-            <a className="transition hover:text-white" href="#servicos">
-              Servicos
-            </a>
-            <a className="transition hover:text-white" href="#clientes">
-              Clientes
-            </a>
-            <a className="transition hover:text-white" href="#faq">
-              FAQ
-            </a>
-          </nav>
-
-          <a
-            href="#cta"
-            className="rounded-full bg-gradient-to-r from-teal-400 to-blue-500 px-5 py-2.5 text-[13px] font-semibold text-white shadow-[0_18px_40px_rgba(34,211,238,0.22)] transition hover:-translate-y-0.5"
-          >
-            Comece Agora!
-          </a>
+      <div className="p-4">
+        <div className="text-[11px] font-medium tracking-[0.02em] text-[#6d7483]">
+          {course.meta}
         </div>
-      </header>
-
-      <main id="top" className="relative z-10">
-        <TutorHero />
-
-        <Reveal className="hidden">
-          <section className="mx-auto grid max-w-7xl gap-12 px-5 pb-18 pt-14 md:px-8 lg:grid-cols-[0.98fr_1.02fr] lg:items-center lg:pt-20">
-            <div className="max-w-[540px]">
-              <div className="mb-8 inline-flex h-10 w-10 items-center justify-center rounded-full border border-teal-300/30 bg-teal-300/10 text-teal-200">
-                ◌
-              </div>
-              <h1 className="max-w-[10ch] font-saira text-[clamp(3rem,6vw,5.2rem)] font-semibold leading-[0.9] tracking-[-0.07em] text-white">
-                O nosso pack e feito para acelerar os seus{" "}
-                <span className="text-teal-300">resultados</span>.
-              </h1>
-              <p className="mt-5 max-w-[34ch] text-sm leading-7 text-white/72 md:text-[15px]">
-                Packs de prompts premium para fotos com IA, com direção visual,
-                consistência de marca e uma leitura que parece produto de alto valor.
-              </p>
-
-              <div className="mt-7 flex flex-wrap gap-3">
-                {stats.map((item) => (
-                  <Card key={item.label} className="min-w-[92px] px-4 py-3">
-                    <div className="text-xl font-semibold text-white">{item.value}</div>
-                    <div className="mt-1 text-[11px] uppercase tracking-[0.18em] text-white/45">
-                      {item.label}
-                    </div>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="mt-8 flex flex-wrap gap-4">
-                <a
-                  href="#cta"
-                  className="rounded-full bg-gradient-to-r from-teal-400 to-blue-500 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-                >
-                  Ver packs
-                </a>
-                <a
-                  href="#sobre"
-                  className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/90 transition hover:border-white/20 hover:bg-white/10"
-                >
-                  Ver demo
-                </a>
-              </div>
-
-              <div className="mt-10">
-                <div className="text-xs uppercase tracking-[0.3em] text-white/45">Estructura completa</div>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  {["Prompt base", "Estilos", "Variações", "Upsell"].map((item) => (
-                    <Card key={item} className="px-5 py-3 text-sm text-white/85">
-                      {item}
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="relative">
-              <PromptHeroArt />
-            </div>
-          </section>
-        </Reveal>
-
-        <PromptPacksSection />
-
-        <ExploreCoursesSection />
-
-        <div className="hidden">
-        <Reveal delay={90}>
-          <section className="hidden bg-[#f5f5f5] px-4 py-14 text-black md:px-6 lg:px-8 lg:py-16">
-            <div className="mx-auto max-w-[1120px]">
-              <p className="text-center text-[12px] font-medium tracking-[-0.01em] text-black/72">
-                VBM IA fetured in more than 50+ companies
-              </p>
-
-              <div className="mt-7 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-[#8d8d8d]">
-                {companyLogos.map((logo, index) => (
-                  <div key={`${logo}-${index}`} className="flex items-center gap-2 text-[22px] font-semibold">
-                    <span className="opacity-75">◌</span>
-                    <span className="text-[18px] font-bold tracking-[-0.04em]">{logo}</span>
-                  </div>
-                ))}
-              </div>
-
-              <h2 className="mt-20 text-center text-[clamp(2rem,3vw,2.9rem)] font-semibold tracking-[-0.05em] text-black">
-                Our featured courses
-              </h2>
-
-              <div className="mt-12 grid gap-5 md:grid-cols-3">
-                {featuredCourses.map((course) => (
-                  <CourseCard key={course.title} course={course} />
-                ))}
-              </div>
-            </div>
-          </section>
-        </Reveal>
-
-        <Reveal delay={120}>
-          <section id="sobre" className="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div className="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
-              <div className="order-2 lg:order-1">
-                <LaptopMockup />
-              </div>
-              <div className="order-1 max-w-xl lg:order-2">
-                <SectionTitle
-                  kicker="CRESCA RAPIDO COM O PODER DA IA"
-                  title={
-                    <>
-                      Gere prompts com{" "}
-                      <span className="text-teal-300">cara de campanha</span>{" "}
-                      sem perder tempo.
-                    </>
-                  }
-                  text="Se você quer vender imagens geradas por IA, precisa de packs prontos que entregam qualidade, direção e repetição consistente. É isso que essa oferta resolve."
-                />
-                <div className="mt-8">
-                  <a
-                    href="#servicos"
-                    className="inline-flex rounded-full bg-gradient-to-r from-teal-400 to-blue-500 px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-                  >
-                    Hablar con un experto
-                  </a>
-                </div>
-              </div>
-            </div>
-          </section>
-        </Reveal>
-
-        <Reveal delay={140}>
-          <section id="servicos" className="bg-[#050608] px-4 py-16 text-white md:px-6 md:py-20 lg:px-8">
-            <div className="mx-auto max-w-[1120px]">
-              <div className="mx-auto max-w-[760px] text-center">
-                <div className="reveal inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.26em] text-white/58" data-scroll>
-                  WHY VBM IA?
-                </div>
-                <h2
-                  className="reveal mt-5 text-[clamp(2.2rem,4vw,3.4rem)] font-medium tracking-[-0.05em] text-white md:mt-6"
-                  data-scroll
-                >
-                  Nunca pierdas una venta por prompts flojos.
-                </h2>
-                <p
-                  className="reveal mx-auto mt-4 max-w-[620px] text-[14px] leading-7 text-white/58 md:text-[15px]"
-                  data-scroll
-                >
-                  Tres razones por las que marcas y creadores eligen VBM IA para crear más rápido,
-                  mantener coherencia y convertir con menos fricción.
-                </p>
-              </div>
-
-              <div className="mt-12 overflow-hidden rounded-[20px] border border-white/10 bg-[#060b0f] shadow-[0_24px_70px_rgba(0,0,0,0.32)]">
-                <div className="grid lg:grid-cols-3">
-                  {[
-                    {
-                      icon: "bolt",
-                      title: "Respuesta instantánea",
-                      text: "Prompts listos para anuncios, creatividades y landings sin arrancar desde cero.",
-                    },
-                    {
-                      icon: "user",
-                      title: "Soporte creativo",
-                      text: "Hooks, ángulos y variantes para moverte rápido sin sacrificar calidad ni coherencia.",
-                    },
-                    {
-                      icon: "target",
-                      title: "Escala sin fricción",
-                      text: "Aplica el mismo sistema a nuevos nichos y campañas manteniendo una marca sólida.",
-                    },
-                  ].map((card, index) => (
-                    <div
-                      key={card.title}
-                      className={`reveal p-7 md:p-8 ${
-                        index < 2 ? "border-b border-white/10 lg:border-b-0 lg:border-r lg:border-white/10" : ""
-                      }`}
-                      data-scroll
-                      data-side={index % 2 === 0 ? "left" : "right"}
-                    >
-                      <div className="grid h-12 w-12 place-items-center rounded-[14px] border border-[#9eea6d]/35 bg-[#101b12] text-[#c9ff93] shadow-[0_0_0_1px_rgba(0,0,0,0.12)]">
-                        <WhyIcon type={card.icon} />
-                      </div>
-                      <h3 className="mt-8 text-[18px] font-semibold tracking-[-0.03em] text-white">
-                        {card.title}
-                      </h3>
-                      <p className="mt-3 max-w-[22ch] text-[13px] leading-6 text-white/58">
-                        {card.text}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-        </Reveal>
-
-        <Reveal delay={160}>
-          <section className="mx-auto max-w-7xl px-5 py-14 md:px-8">
-            <div className="text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.38em] text-teal-300/90">
-                O QUE A VBM IA FAZ?
-              </p>
-              <h2 className="mt-4 font-saira text-[clamp(1.8rem,3.8vw,3rem)] font-semibold leading-[0.96] tracking-[-0.05em] text-white">
-                Tudo o que você precisa para transformar prompts em produto desejável.
-              </h2>
-            </div>
-
-            <div className="mt-10 grid gap-5 md:grid-cols-3">
-              {steps.map((step, index) => (
-                <div key={step.title} className="relative">
-                  <div className="absolute left-0 right-0 top-7 hidden h-px bg-gradient-to-r from-teal-300/50 via-white/15 to-transparent md:block" />
-                  <Card className="relative px-5 py-5">
-                    <div className="mb-4 flex items-center gap-3">
-                      <div className="grid h-12 w-12 place-items-center rounded-full border border-teal-300/20 bg-teal-300/10 text-sm font-semibold text-teal-200">
-                        0{index + 1}
-                      </div>
-                      <div className="text-sm font-semibold uppercase tracking-[0.2em] text-white/25">
-                        Etapa
-                      </div>
-                    </div>
-                    <h3 className="text-lg font-semibold text-white">{step.title}</h3>
-                    <p className="mt-3 text-sm leading-7 text-white/65">{step.text}</p>
-                  </Card>
-                </div>
-              ))}
-            </div>
-          </section>
-        </Reveal>
-
-        <Reveal delay={180}>
-          <section id="clientes" className="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(45,212,191,0.12),transparent_35%),radial-gradient(circle_at_bottom,rgba(34,211,238,0.1),transparent_35%),rgba(255,255,255,0.03)] px-6 py-10 md:px-8 md:py-12">
-              <div className="pointer-events-none absolute inset-0">
-                <div className="absolute left-[-4%] top-[12%] h-40 w-40 rounded-full bg-white/5 blur-3xl" />
-                <div className="absolute right-[-2%] top-[18%] h-44 w-44 rounded-full bg-teal-300/10 blur-3xl" />
-                <div className="absolute bottom-[-10%] left-[40%] h-44 w-44 rounded-full bg-cyan-400/10 blur-3xl" />
-                <div className="absolute left-[10%] top-[18%] h-24 w-24 rounded-[1.5rem] border border-white/10 bg-white/[0.03] blur-[1px]" />
-                <div className="absolute right-[12%] bottom-[18%] h-20 w-20 rounded-[1.25rem] border border-white/10 bg-white/[0.03] blur-[1px]" />
-              </div>
-
-              <div className="mx-auto max-w-4xl text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.38em] text-teal-300/90">
-                  O QUE NOSSOS CLIENTES ESTAO FALANDO SOBRE NOS
-                </p>
-                <h2 className="mt-4 font-saira text-[clamp(1.8rem,3.6vw,2.8rem)] font-semibold leading-[0.96] tracking-[-0.05em] text-white">
-                  Gente que comprou, aplicou e viu o produto ficar mais forte.
-                </h2>
-              </div>
-
-              <div className="relative mt-10 grid gap-4 lg:grid-cols-[0.88fr_1.24fr_0.88fr] lg:items-stretch">
-                <Card className="pointer-events-none absolute left-[-40px] top-[18px] hidden h-24 w-24 rotate-[-8deg] opacity-60 blur-[1px] lg:block" />
-                <Card className="pointer-events-none absolute right-[-30px] top-[10px] hidden h-20 w-20 rotate-[10deg] opacity-60 blur-[1px] lg:block" />
-
-                {testimonials.map((item, index) => {
-                  const isCenter = index === 1;
-
-                  return (
-                    <Card
-                      key={item.name}
-                      className={`relative p-5 ${
-                        isCenter
-                          ? "scale-[1.03] border-white/15 bg-white/[0.07] lg:py-6"
-                          : "opacity-80 lg:mt-6"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`grid h-12 w-12 place-items-center rounded-full border border-white/10 ${
-                              isCenter ? "bg-gradient-to-br from-teal-300/25 to-blue-500/20" : "bg-white/5"
-                            }`}
-                          >
-                            <span className="text-sm font-semibold text-white">
-                              {item.name
-                                .split(" ")
-                                .map((part) => part[0])
-                                .join("")
-                                .slice(0, 2)}
-                            </span>
-                          </div>
-                          <div>
-                            <div className="font-semibold text-white">{item.name}</div>
-                            <div className="text-xs uppercase tracking-[0.18em] text-white/40">
-                              {item.role}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-teal-300">Google</div>
-                      </div>
-
-                      <div className="mt-4 flex gap-1 text-teal-300">
-                        <span>★</span>
-                        <span>★</span>
-                        <span>★</span>
-                        <span>★</span>
-                        <span>★</span>
-                      </div>
-
-                      <div className="mt-4 text-sm leading-7 text-white/68">{item.text}</div>
-                      {isCenter ? (
-                        <div className="mt-4 flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-white/35">
-                          <span className="h-1.5 w-1.5 rounded-full bg-teal-300" />
-                          prova social real
-                        </div>
-                      ) : null}
-                    </Card>
-                  );
-                })}
-              </div>
-
-              <div className="mt-10 text-center">
-                <a
-                  href="#cta"
-                  className="inline-flex rounded-full bg-gradient-to-r from-teal-400 to-blue-500 px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-                >
-                  Quero crescer mais
-                </a>
-              </div>
-            </div>
-          </section>
-        </Reveal>
-
-        <Reveal delay={200}>
-          <section className="mx-auto max-w-7xl px-5 py-14 md:px-8">
-            <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.38em] text-teal-300/90">
-                  A VBM IA E RESPONSAVEL PELO CRESCIMENTO DE GRANDES NEGOCIOS
-                </p>
-                <p className="mt-4 max-w-xl text-sm leading-7 text-white/68">
-                  Pack pronto, visual forte e promessa clara. E isso que ajuda sua oferta
-                  a se diferenciar em um mercado cheio de material generico.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                {logos.map((logo) => (
-                  <Card
-                    key={logo}
-                    className="grid place-items-center px-4 py-6 text-center text-sm font-semibold text-white/80"
-                  >
-                    {logo}
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-        </Reveal>
-
-        <Reveal delay={220}>
-          <section className="mx-auto max-w-7xl px-5 py-12 md:px-8">
-            <Card className="mx-auto max-w-2xl px-6 py-6 text-center">
-              <div className="mx-auto flex w-fit items-center gap-3 rounded-2xl bg-teal-300/10 px-4 py-2">
-                <div className="h-8 w-8 rounded-full border border-white/15 bg-white/10" />
-                <span className="font-semibold text-teal-300">ATENCAO!</span>
-              </div>
-              <p className="mt-4 text-sm leading-7 text-white/72">
-                Acelere seu crescimento agora com a VBM IA. Se a sua oferta precisa
-                parecer mais premium, mais clara e mais vendavel, esse e o ponto de virada.
-              </p>
-              <div className="mt-6">
-                <a
-                  href="#cta"
-                  className="inline-flex rounded-full bg-gradient-to-r from-teal-400 to-blue-500 px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-                >
-                  Eleve seu negocio agora!
-                </a>
-              </div>
-            </Card>
-          </section>
-        </Reveal>
-
-        <Reveal delay={240}>
-          <section className="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
-              <div className="relative">
-                <Card className="max-w-xl p-6 md:p-7">
-                  <div className="text-xs font-semibold uppercase tracking-[0.32em] text-teal-300/90">
-                    Garantia
-                  </div>
-                  <h3 className="mt-4 font-saira text-3xl font-semibold leading-[0.98] tracking-[-0.04em] text-white">
-                    Cancele, quando quiser.
-                  </h3>
-                  <p className="mt-4 text-sm leading-7 text-white/68">
-                    Aqui a proposta é simples: entregar um produto digital com valor
-                    percebido alto, sem fricção e sem compromisso complicado.
-                  </p>
-                </Card>
-              </div>
-
-              <div className="relative flex min-h-[360px] items-center justify-center">
-                <PawnIllustration />
-              </div>
-            </div>
-          </section>
-        </Reveal>
-
-        <Reveal delay={260}>
-          <section id="faq" className="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div className="grid gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
-              <div>
-                <div className="mb-5 h-14 w-14 rounded-full border border-teal-300/20 bg-teal-300/10" />
-                <div className="space-y-3">
-                  {faqs.map((faq, index) => {
-                    const open = openFaq === index;
-                    return (
-                      <Card key={faq.q} className="overflow-hidden">
-                        <button
-                          type="button"
-                          onClick={() => setOpenFaq(open ? -1 : index)}
-                          className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
-                        >
-                          <span className="text-sm font-medium text-white/85">{faq.q}</span>
-                          <span className="text-teal-300">{open ? "−" : "+"}</span>
-                        </button>
-                        {open ? (
-                          <div className="px-5 pb-5 text-sm leading-7 text-white/66">{faq.a}</div>
-                        ) : null}
-                      </Card>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="lg:pt-14">
-                <p className="text-xs font-semibold uppercase tracking-[0.38em] text-teal-300/90">
-                  Perguntas Frequentes
-                </p>
-                <h2 className="mt-4 font-saira text-[clamp(2rem,4vw,3.3rem)] font-semibold leading-[0.96] tracking-[-0.05em] text-white">
-                  Ainda ficou com alguma dúvida?
-                </h2>
-                <p className="mt-4 max-w-md text-sm leading-7 text-white/68">
-                  Fala com a gente no WhatsApp e a gente te ajuda a escolher o melhor
-                  pack para o seu momento.
-                </p>
-                <div className="mt-6">
-                  <a
-                    href="#cta"
-                    className="inline-flex rounded-full bg-gradient-to-r from-teal-400 to-blue-500 px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-                  >
-                    Chamar no WhatsApp
-                  </a>
-                </div>
-              </div>
-            </div>
-          </section>
-        </Reveal>
+        <h3 className="mt-3 text-[17px] font-semibold leading-[1.25] tracking-[-0.04em] text-[#101828]">
+          {course.title}
+        </h3>
+        <p className="mt-2 text-[13px] leading-6 text-[#6d7483]">{course.text}</p>
+        <div className="mt-4 flex items-center justify-between">
+          <span className="text-[15px] font-semibold text-[#1d7c45]">{course.price}</span>
+          <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-[#101828]">
+            View
+            <ArrowIcon />
+          </span>
         </div>
+      </div>
+    </article>
+  );
+}
 
-        <FooterSection />
+function TestimonialCard({ testimonial, className = "" }) {
+  return (
+    <article
+      className={`rounded-[16px] border border-white/80 bg-white p-4 shadow-[0_14px_34px_rgba(33,55,102,0.08)] ${className}`}
+    >
+      <div className="flex items-center gap-3">
+        <img
+          src={testimonial.avatar}
+          alt={testimonial.name}
+          className="h-11 w-11 rounded-full object-cover"
+        />
+        <div>
+          <div className="text-[13px] font-semibold text-[#101828]">{testimonial.name}</div>
+          <div className="text-[11px] text-[#6d7483]">{testimonial.role}</div>
+        </div>
+      </div>
+      <p className="mt-4 text-[13px] leading-6 text-[#4f596a]">{testimonial.quote}</p>
+    </article>
+  );
+}
 
-        <Reveal delay={280}>
-          <section id="cta" className="hidden mt-10">
-            <div className="mx-auto max-w-7xl px-5 pb-0 md:px-8">
-              <div className="rounded-t-[2rem] bg-gradient-to-r from-[#08313b] via-[#138b84] to-[#2a8dc0] px-5 py-5 text-center text-sm text-white/80 md:px-8">
-                <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
-                  <div className="font-medium">© 2026 VBM IA - Todos os direitos reservados</div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-white/65">Desenvolvido por VBM</span>
-                    <span className="h-5 w-5 rounded-full border border-white/20 bg-white/10" />
-                    <span className="h-5 w-5 rounded-full border border-white/20 bg-white/10" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </Reveal>
-      </main>
-    </div>
+function SocialButton({ label }) {
+  return (
+    <a
+      href="#top"
+      className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white text-[12px] font-semibold text-[#101828] shadow-[0_8px_18px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5 hover:border-[#1f57ff]/30"
+    >
+      {label}
+    </a>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-[#8a93a4]" aria-hidden="true">
+      <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      <path d="m16 16 4 4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-current" aria-hidden="true">
+      <path
+        d="M5 12h12m0 0-4.5-4.5M17 12l-4.5 4.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function SparkIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
+      <path
+        d="M12 3.2 13.9 9l6.1 1.9-6.1 1.9L12 18.8l-1.9-6-6.1-1.9L10.1 9 12 3.2Z"
+        fill="currentColor"
+      />
+    </svg>
   );
 }
 
