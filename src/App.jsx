@@ -132,8 +132,66 @@ function useScrollReveal() {
   }, []);
 }
 
+function useDirectionalScrollReveal() {
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll("[data-direction-reveal]"));
+
+    if (elements.length === 0) {
+      return undefined;
+    }
+
+    let frameId = 0;
+
+    const clamp = (value) => Math.min(1, Math.max(0, value));
+
+    const setBaseStyles = (element) => {
+      const baseSide = element.dataset.directionRevealBase || "left";
+      const offsetX = baseSide === "right" ? "28px" : "-28px";
+
+      element.style.setProperty("--direction-reveal-offset-x", offsetX);
+      element.style.setProperty("--direction-reveal-progress", "0");
+    };
+
+    const scheduleUpdate = () => {
+      if (frameId) {
+        return;
+      }
+
+      frameId = window.requestAnimationFrame(() => {
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        const revealStart = viewportHeight * 0.82;
+        const revealEnd = viewportHeight * 0.42;
+        const revealSpan = revealStart - revealEnd || 1;
+
+        elements.forEach((element) => {
+          const rect = element.getBoundingClientRect();
+          const progress = clamp((revealStart - rect.top) / revealSpan);
+          element.style.setProperty("--direction-reveal-progress", progress.toFixed(3));
+        });
+
+        frameId = 0;
+      });
+    };
+
+    elements.forEach(setBaseStyles);
+
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    scheduleUpdate();
+
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
+      }
+    };
+  }, []);
+}
+
 function App() {
   useScrollReveal();
+  useDirectionalScrollReveal();
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f7f9ff] text-[#0e1730]">
@@ -249,13 +307,21 @@ function DiscoverySection() {
   return (
     <section className="bg-[#ffffff] px-4 py-18 text-[#101828] md:px-6 md:py-22 lg:px-8 lg:py-24">
       <div className="mx-auto max-w-[1260px]">
-        <div className="mx-auto max-w-[820px] text-center" data-reveal>
-          <h2 className="text-[clamp(2.25rem,4vw,4.25rem)] font-medium leading-[0.92] tracking-[-0.06em] text-[#101828]">
+        <div className="mx-auto max-w-[820px] text-center">
+          <h2
+            className="text-[clamp(2.25rem,4vw,4.25rem)] font-medium leading-[0.92] tracking-[-0.06em] text-[#101828]"
+            data-direction-reveal
+            data-direction-reveal-base="left"
+          >
             Discover the Freedom
             <br className="hidden sm:block" />
             to Learn Your Way
           </h2>
-          <p className="mx-auto mt-5 max-w-[560px] text-[14px] leading-7 text-[#6d7483] md:text-[15px]">
+          <p
+            className="mx-auto mt-5 max-w-[560px] text-[14px] leading-7 text-[#6d7483] md:text-[15px]"
+            data-reveal
+            data-reveal-delay="80"
+          >
             Explore a flexible learning experience designed for busy schedules, real goals, and
             different styles of progress.
           </p>
@@ -375,11 +441,19 @@ function CoursesSection() {
   return (
     <section id="courses" className="bg-[#ffffff] px-4 pb-18 pt-8 md:px-6 md:pb-22 lg:px-8 lg:pt-10">
       <div className="mx-auto max-w-[1260px]">
-        <div className="mx-auto max-w-[760px] text-center" data-reveal>
-          <h2 className="text-[clamp(2.1rem,3.8vw,3.45rem)] font-medium leading-[0.92] tracking-[-0.06em] text-[#101828]">
+        <div className="mx-auto max-w-[760px] text-center">
+          <h2
+            className="text-[clamp(2.1rem,3.8vw,3.45rem)] font-medium leading-[0.92] tracking-[-0.06em] text-[#101828]"
+            data-direction-reveal
+            data-direction-reveal-base="right"
+          >
             Browse Our Courses
           </h2>
-          <p className="mx-auto mt-4 max-w-[560px] text-[14px] leading-7 text-[#6d7483] md:text-[15px]">
+          <p
+            className="mx-auto mt-4 max-w-[560px] text-[14px] leading-7 text-[#6d7483] md:text-[15px]"
+            data-reveal
+            data-reveal-delay="80"
+          >
             Explore practical lessons, clean structure, and flexible pathways for different goals.
           </p>
         </div>
@@ -445,7 +519,11 @@ function TestimonialsSection() {
       <div className="mx-auto max-w-[1260px]">
         <div className="relative overflow-hidden rounded-[28px] bg-[#d9e5ff] px-4 py-14 md:px-6 lg:px-8 lg:py-18">
           <div className="pointer-events-none absolute inset-x-0 top-2 flex justify-center">
-            <h2 className="font-display text-center text-[clamp(4rem,10vw,8.4rem)] leading-[0.82] tracking-[-0.08em] text-[#101828]" data-reveal>
+            <h2
+              className="font-display text-center text-[clamp(4rem,10vw,8.4rem)] leading-[0.82] tracking-[-0.08em] text-[#101828]"
+              data-direction-reveal
+              data-direction-reveal-base="left"
+            >
               WHAT OUR
               <br />
               STUDENTS SAY
