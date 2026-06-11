@@ -266,7 +266,7 @@ function HeroSection() {
           <div className="flex items-center gap-2">
             <a
               href="#courses"
-              className="inline-flex h-9 items-center rounded-full bg-[#bbec2c] px-4 text-[12px] font-semibold text-[#223018] shadow-[0_8px_18px_rgba(187,236,44,0.28)] transition hover:-translate-y-0.5"
+              className="inline-flex h-9 items-center rounded-full bg-[#1f57ff] px-4 text-[12px] font-semibold text-white shadow-[0_8px_18px_rgba(31,87,255,0.22)] transition hover:-translate-y-0.5"
             >
               Login
             </a>
@@ -352,7 +352,7 @@ function DiscoverySection() {
                   index === 0
                     ? "bg-[#edf3ff] text-[#0f172a]"
                     : index === discoveryFilters.length - 1
-                      ? "bg-[#ff5f87] text-white shadow-[0_10px_20px_rgba(255,95,135,0.22)]"
+                      ? "bg-[#1f57ff] text-white shadow-[0_10px_20px_rgba(31,87,255,0.18)]"
                       : "bg-[#f1f4f9] text-[#5c677c]"
                 }`}
               >
@@ -406,7 +406,7 @@ function DiscoverySection() {
 
           <div className="grid gap-4">
             <div className="rounded-[24px] bg-[#171311] p-6 text-white shadow-[0_18px_50px_rgba(14,23,48,0.12)]" data-reveal data-reveal-delay="120">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f0df66] text-[#171311]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1f57ff] text-white shadow-[0_10px_20px_rgba(31,87,255,0.18)]">
                 01
               </div>
               <h3 className="mt-9 text-[24px] font-medium tracking-[-0.05em]">
@@ -419,7 +419,7 @@ function DiscoverySection() {
             </div>
 
             <div className="rounded-[24px] bg-white p-6 shadow-[0_18px_50px_rgba(14,23,48,0.12)]" data-reveal data-reveal-delay="220">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f0df66] text-[#171311]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1f57ff] text-white shadow-[0_10px_20px_rgba(31,87,255,0.18)]">
                 02
               </div>
               <h3 className="mt-9 text-[24px] font-medium tracking-[-0.05em] text-[#101828]">
