@@ -7,6 +7,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: var(--scroll-thumb) var(--scroll-track);
@@ -277,6 +278,26 @@
 
   html[data-theme="dark"] .theme-toggle {
     box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+  }
+
+  .hero-pill {
+    transition-property: color, background-color, border-color, box-shadow, transform;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html[data-theme="dark"] .hero-pill {
+    background-color: rgba(11, 19, 32, 0.9) !important;
+    border-color: rgba(149, 171, 214, 0.18) !important;
+    color: #edf3ff !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24) !important;
+  }
+
+  html[data-theme="dark"] .hero-pill:hover {
+    background-color: #edf3ff !important;
+    border-color: #1f57ff !important;
+    color: #101828 !important;
+    box-shadow: 0 12px 28px rgba(31, 87, 255, 0.18) !important;
   }
 
   .theme-testimonials {

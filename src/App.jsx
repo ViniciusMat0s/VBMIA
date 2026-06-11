@@ -330,8 +330,8 @@ function HeroSection() {
         className="pointer-events-none absolute bottom-[18%] left-[18%] h-48 w-48 rounded-full blur-3xl"
         style={{ backgroundColor: "var(--hero-orb-3)" }}
       />
-      <div className="relative z-10 mx-auto flex w-full max-w-[1360px] flex-1 flex-col px-4 pt-5 md:px-6 lg:px-8">
-        <header className="relative z-10 mx-auto flex w-full max-w-[1240px] items-center justify-between gap-4 rounded-full border border-white/70 bg-white/75 px-4 py-3 shadow-[0_10px_30px_rgba(31,41,55,0.08)] backdrop-blur-md md:px-5">
+      <div className="fixed inset-x-0 top-4 z-50 px-4 md:top-6 md:px-6 lg:px-8">
+        <header className="mx-auto flex w-full max-w-[1240px] items-center justify-between gap-4 rounded-full border border-white/70 bg-white/75 px-4 py-3 shadow-[0_10px_30px_rgba(31,41,55,0.08)] backdrop-blur-md md:px-5">
           <a href="#top" className="flex items-center gap-2.5">
             <div className="grid h-8 w-8 place-items-center rounded-lg bg-[linear-gradient(135deg,#87e4ff_0%,#5d9bff_50%,#2f60ff_100%)] shadow-[0_10px_20px_rgba(73,120,255,0.26)]">
               <span className="block h-3 w-3 rotate-45 rounded-[2px] border-r border-t border-white/90" />
@@ -372,7 +372,9 @@ function HeroSection() {
             </a>
           </div>
         </header>
+      </div>
 
+      <div className="relative z-10 mx-auto flex w-full max-w-[1360px] flex-1 flex-col px-4 pt-28 md:px-6 md:pt-32 lg:px-8 lg:pt-32">
         <div className="relative mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pb-24 pt-8 md:pb-24 md:pt-12 lg:pb-28">
           <div className="relative z-10 mx-auto max-w-[1050px] text-center" data-reveal data-reveal-side="up">
             <h1 className="font-display text-[clamp(2.95rem,6.6vw,6.8rem)] leading-[0.94] tracking-[-0.05em] text-[#111a33] md:leading-[0.9]">
@@ -609,40 +611,34 @@ function CoursesSection() {
 
 function TestimonialsSection() {
   return (
-    <section className="theme-testimonials px-4 py-24 md:px-6 md:py-28 lg:px-8 lg:py-32">
-      <div className="mx-auto max-w-[1260px]">
-        <div className="theme-testimonials-panel relative overflow-hidden rounded-[28px] px-4 py-20 md:px-6 lg:px-8 lg:py-24">
-          <div className="pointer-events-none absolute inset-x-0 top-6 flex justify-center">
-            <h2
-              className="font-display text-center text-[clamp(4rem,10vw,8.4rem)] leading-[0.95] tracking-[0.04em] text-[#101828]"
-              data-direction-reveal
-              data-direction-reveal-base="left"
-            >
-              WHAT OUR
-              <br />
-              STUDENTS SAY
-            </h2>
-          </div>
+    <section className="theme-testimonials theme-testimonials-panel relative overflow-hidden px-4 py-24 md:px-6 md:py-28 lg:px-8 lg:py-32">
+      <h2
+        className="pointer-events-none absolute inset-x-0 top-12 flex justify-center font-display text-center text-[clamp(4rem,10vw,8.4rem)] leading-[0.95] tracking-[0.04em] text-[#101828] md:top-20 lg:top-24"
+        data-direction-reveal
+        data-direction-reveal-base="left"
+      >
+        WHAT OUR
+        <br />
+        STUDENTS SAY
+      </h2>
 
-          <div className="relative z-10 mt-32 grid gap-4 sm:grid-cols-2 md:mt-40 lg:mt-72 lg:grid-cols-4">
-            {testimonials.map((testimonial, index) => (
-              <TestimonialCard
-                key={testimonial.name}
-                testimonial={testimonial}
-                revealDelay={index * 110}
-                className={
-                  index === 0
-                    ? "lg:mt-12"
-                    : index === 1
-                      ? "lg:-mt-2"
-                      : index === 2
-                        ? "lg:mt-8"
-                        : "lg:mt-14"
-                }
-              />
-            ))}
-          </div>
-        </div>
+      <div className="relative z-10 mx-auto mt-32 grid max-w-[1260px] gap-4 sm:grid-cols-2 md:mt-40 lg:mt-72 lg:grid-cols-4">
+        {testimonials.map((testimonial, index) => (
+          <TestimonialCard
+            key={testimonial.name}
+            testimonial={testimonial}
+            revealDelay={index * 110}
+            className={
+              index === 0
+                ? "lg:mt-12"
+                : index === 1
+                  ? "lg:-mt-2"
+                  : index === 2
+                    ? "lg:mt-8"
+                    : "lg:mt-14"
+            }
+          />
+        ))}
       </div>
     </section>
   );
@@ -790,7 +786,7 @@ function FloatingPill({ label, small = false }) {
   return (
     <button
       type="button"
-      className={`inline-flex cursor-pointer items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-[#16233d] shadow-[0_10px_28px_rgba(18,32,58,0.12)] ${
+      className={`hero-pill inline-flex cursor-pointer items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-[#16233d] shadow-[0_10px_28px_rgba(18,32,58,0.12)] transition-all duration-300 ease-out hover:border-[#1f57ff] hover:bg-[#1f57ff] hover:text-white hover:shadow-[0_10px_28px_rgba(31,87,255,0.18)] ${
         small ? "text-[11px] font-medium" : "text-[12px] font-medium"
       }`}
     >
