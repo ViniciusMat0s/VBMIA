@@ -378,8 +378,8 @@ function HeroSection() {
         <div className="relative mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pb-24 pt-8 md:pb-24 md:pt-12 lg:pb-28">
           <div className="relative z-10 mx-auto max-w-[1120px] text-center" data-reveal data-reveal-side="up">
             <h1 className="font-display text-[clamp(3.35rem,7.25vw,8.2rem)] leading-[0.88] tracking-[-0.055em] text-[#111a33] uppercase md:leading-[0.86]">
-              <span className="block md:whitespace-nowrap">La biblioteca de prompts de IA</span>
-              <span className="block md:whitespace-nowrap">más completa</span>
+              <span className="block">La biblioteca de prompts</span>
+              <span className="block">de IA más completa</span>
             </h1>
           </div>
 
