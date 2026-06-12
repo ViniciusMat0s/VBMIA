@@ -3,17 +3,6 @@ import { flushSync } from "react-dom";
 
 const topNavItems = ["Pack", "Nichos", "Cómo funciona", "Casos", "FAQ"];
 
-const discoveryFilters = ["Todo el pack", "Profesional", "Lifestyle", "Comercial"];
-
-const courseFilters = [
-  "Todo el pack",
-  "Profesional",
-  "Lifestyle",
-  "Lujo",
-  "Redes",
-  "Editorial",
-];
-
 const footerColumns = [
   {
     title: "Pack",
@@ -387,11 +376,10 @@ function HeroSection() {
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1360px] flex-1 flex-col px-4 pt-28 md:px-6 md:pt-32 lg:px-8 lg:pt-32">
         <div className="relative mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pb-24 pt-8 md:pb-24 md:pt-12 lg:pb-28">
-          <div className="relative z-10 mx-auto max-w-[1050px] text-center" data-reveal data-reveal-side="up">
-            <h1 className="font-display text-[clamp(2.95rem,6.6vw,6.8rem)] leading-[0.94] tracking-[-0.05em] text-[#111a33] uppercase md:leading-[0.9]">
-              La biblioteca de prompts de IA
-              <br />
-              más completa
+          <div className="relative z-10 mx-auto max-w-[1120px] text-center" data-reveal data-reveal-side="up">
+            <h1 className="font-display text-[clamp(3.35rem,7.25vw,8.2rem)] leading-[0.88] tracking-[-0.055em] text-[#111a33] uppercase md:leading-[0.86]">
+              <span className="block md:whitespace-nowrap">La biblioteca de prompts de IA</span>
+              <span className="block md:whitespace-nowrap">más completa</span>
             </h1>
           </div>
 
@@ -432,41 +420,6 @@ function DiscoverySection() {
             Prompts editables para crear imágenes realistas, estéticas y comerciales en varios
             estilos, nichos y objetivos.
           </p>
-        </div>
-
-        <div className="mt-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between" data-reveal data-reveal-delay="100">
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="#courses"
-              className="inline-flex h-10 items-center rounded-full bg-[#111827] px-5 text-[12px] font-semibold text-white shadow-[0_8px_18px_rgba(17,24,39,0.16)]"
-            >
-              Quiero el pack
-            </a>
-            <a
-              href="#courses"
-              className="inline-flex h-10 items-center rounded-full border border-slate-200 bg-white px-5 text-[12px] font-semibold text-[#101828] shadow-[0_6px_18px_rgba(15,23,42,0.08)]"
-            >
-              Cómo funciona
-            </a>
-          </div>
-
-          <div className="flex flex-wrap gap-2 lg:justify-end">
-            {discoveryFilters.map((item, index) => (
-              <a
-                key={item}
-                href="#courses"
-                className={`inline-flex h-10 items-center rounded-full px-4 text-[12px] font-semibold transition ${
-                  index === 0
-                    ? "bg-[#edf3ff] text-[#0f172a]"
-                    : index === discoveryFilters.length - 1
-                      ? "bg-[#1f57ff] text-white shadow-[0_10px_20px_rgba(31,87,255,0.18)]"
-                      : "bg-[#f1f4f9] text-[#5c677c]"
-                }`}
-              >
-                {item}
-              </a>
-            ))}
-          </div>
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1.26fr_0.94fr]">
@@ -561,32 +514,7 @@ function CoursesSection() {
           </h2>
         </div>
 
-        <div className="mt-8 flex flex-col gap-4">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between" data-reveal data-reveal-delay="80">
-            <div className="flex items-center gap-3">
-              <label className="flex h-11 w-[220px] items-center gap-3 rounded-full border border-slate-200 bg-white px-4 text-[12px] text-[#6c7485] shadow-[0_6px_18px_rgba(15,23,42,0.06)]">
-                <SearchIcon />
-                <span>Busca un nicho</span>
-              </label>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              {courseFilters.map((item, index) => (
-                <a
-                  key={item}
-                  href="#courses"
-                  className={`inline-flex h-10 items-center rounded-full px-4 text-[12px] font-semibold transition ${
-                    index === 1
-                      ? "bg-[#1f57ff] text-white shadow-[0_10px_20px_rgba(31,87,255,0.18)]"
-                      : "border border-slate-200 bg-white text-[#5f687b]"
-                  }`}
-                >
-                  {item}
-                </a>
-              ))}
-            </div>
-          </div>
-
+        <div className="mt-12 flex flex-col gap-4 md:mt-14 lg:mt-16">
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {courses.map((course, index) => (
               <CourseCard key={course.title} course={course} revealDelay={index * 110} />
@@ -686,19 +614,6 @@ function Footer() {
               </span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="flex gap-3">
-                <SocialButton label="F" />
-                <SocialButton label="X" />
-                <SocialButton label="IG" />
-              </div>
-              <a
-                href="#top"
-                className="inline-flex h-10 items-center rounded-full border border-slate-200 bg-white px-4 text-[12px] font-semibold text-[#101828] shadow-[0_8px_18px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5 hover:border-[#1f57ff]/30"
-              >
-                Volver arriba
-              </a>
-            </div>
           </div>
 
           <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
@@ -860,26 +775,6 @@ function TestimonialCard({ testimonial, className = "", revealDelay = 0 }) {
       </div>
       <p className="mt-4 text-[13px] leading-6 text-[#4f596a]">{testimonial.quote}</p>
     </article>
-  );
-}
-
-function SocialButton({ label }) {
-  return (
-    <a
-      href="#top"
-      className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white text-[12px] font-semibold text-[#101828] shadow-[0_8px_18px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5 hover:border-[#1f57ff]/30"
-    >
-      {label}
-    </a>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-[#8a93a4]" aria-hidden="true">
-      <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
-      <path d="m16 16 4 4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
   );
 }
 
