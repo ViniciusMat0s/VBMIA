@@ -1,103 +1,114 @@
 import React, { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 
-const topNavItems = ["Course", "About Us", "Benefits", "Pricing", "Teams"];
+const topNavItems = ["Pack", "Nichos", "Cómo funciona", "Casos", "FAQ"];
 
-const discoveryFilters = ["All Courses", "Design", "Media", "Creativity"];
+const discoveryFilters = ["Todo el pack", "Profesional", "Lifestyle", "Comercial"];
 
-const courseFilters = ["All Courses", "Design", "Development", "Business", "Lifestyle", "Filter"];
+const courseFilters = [
+  "Todo el pack",
+  "Profesional",
+  "Lifestyle",
+  "Lujo",
+  "Redes",
+  "Editorial",
+];
 
 const footerColumns = [
   {
-    title: "Product",
+    title: "Pack",
     links: [
-      "Prompt Packs",
-      "AI Prompt Systems",
-      "Custom Bundles",
-      "New Releases",
+      "Qué incluye",
+      "Cómo funciona",
+      "Ejemplos",
+      "Actualizaciones",
     ],
   },
   {
-    title: "Company",
-    links: ["About", "Testimonials", "Pricing", "Contact"],
+    title: "Nichos",
+    links: ["Profesional", "Lifestyle", "Lujo", "Comercial"],
   },
   {
-    title: "Resources",
-    links: ["Help Center", "FAQ", "Blog", "Terms"],
+    title: "FAQ",
+    links: [
+      "¿Necesito experiencia?",
+      "¿Sirve para varios nichos?",
+      "¿Puedo adaptarlo?",
+      "¿Funciona con herramientas de IA?",
+    ],
   },
 ];
 
 const courses = [
   {
-    badge: "NEW",
-    title: "Full-Stack Web Development Bootcamp",
-    text: "Learn modern frontend, backend, and deployment workflows from project one to launch.",
+    badge: "NUEVO",
+    title: "Profesional y corporativo",
+    text: "Prompts para retratos limpios, perfiles serios y piezas visuales que refuerzan tu presencia digital.",
     image:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
-    meta: "12 Weeks - 24 lessons",
-    price: "From $55.00",
+    meta: "Perfil · marca",
+    price: "24 prompts",
   },
   {
-    badge: "HOT",
-    title: "Digital Marketing Strategy 2025",
-    text: "Build campaigns, improve attribution, and understand what drives growth across channels.",
+    badge: "DESTACADO",
+    title: "Marca personal y redes sociales",
+    text: "Imágenes naturales para Instagram, stories y contenido diario con un look más actual y coherente.",
     image:
       "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
-    meta: "8 Weeks - 18 lessons",
-    price: "From $45.00",
+    meta: "Social · creadores",
+    price: "22 prompts",
   },
   {
-    badge: "NEW",
-    title: "Cinematic Video Editing Essentials",
-    text: "Edit faster with storytelling structure, pacing, color, motion, and polished sound design.",
+    badge: "PREMIUM",
+    title: "Lifestyle, lujo y viajes",
+    text: "Escenas con aire editorial para coches, moda, belleza y un acabado más aspiracional.",
     image:
       "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
-    meta: "10 Weeks - 20 lessons",
-    price: "From $70.00",
+    meta: "Premium · editorial",
+    price: "20 prompts",
   },
   {
     badge: "PRO",
-    title: "Advanced UX Research & Usability Testing",
-    text: "Run better interviews, synthesize findings, and turn insights into confident product decisions.",
+    title: "Negocios y publicidad",
+    text: "Sistemas listos para posts, anuncios y creatividades comerciales con una dirección visual clara.",
     image:
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=900&q=80",
-    meta: "9 Weeks - 16 lessons",
-    price: "From $65.00",
+    meta: "Anuncios · negocio",
+    price: "18 prompts",
   },
 ];
 
 const testimonials = [
   {
-    name: "Rina Kaur",
-    role: "Product Designer",
+    name: "Laura Gómez",
+    role: "Marca personal",
     avatar:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&q=80",
     quote:
-      "The layout gave me a clearer path and the structure made it easy to keep learning without feeling lost.",
+      "Me ayudó a pasar de ideas sueltas a imágenes más coherentes para LinkedIn, Instagram y mi web.",
   },
   {
-    name: "Budi Santoso",
-    role: "Frontend Developer",
+    name: "Álvaro Martín",
+    role: "Lifestyle y redes",
     avatar:
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80",
-    quote:
-      "Every section feels intentional. It helped me learn at my own pace and still stay motivated.",
+    quote: "Ahora adapto el estilo en minutos y no tengo que empezar desde cero cada vez.",
   },
   {
-    name: "Mila Anggraini",
-    role: "Creative Strategist",
+    name: "Marta Ruiz",
+    role: "Lujo y editorial",
     avatar:
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=160&q=80",
     quote:
-      "The mix of online and in-person options fits perfectly with how I work and how I study.",
+      "Me sirve para moda, viajes y escenas premium con un resultado mucho más cuidado.",
   },
   {
-    name: "Omar Hassan",
-    role: "UX Researcher",
+    name: "Javier López",
+    role: "Negocio y publicidad",
     avatar:
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=160&q=80",
     quote:
-      "I would recommend this to anyone who wants a premium learning experience with a clean interface.",
+      "Para campañas y contenido comercial me ahorra tiempo y me da una dirección visual mucho más clara.",
   },
 ];
 
@@ -362,13 +373,13 @@ function HeroSection() {
               href="#courses"
               className="inline-flex h-9 items-center rounded-full bg-[#1f57ff] px-4 text-[12px] font-semibold text-white shadow-[0_8px_18px_rgba(31,87,255,0.22)] transition hover:-translate-y-0.5"
             >
-              Login
+              Ver pack
             </a>
             <a
               href="#courses"
               className="inline-flex h-9 items-center rounded-full bg-[#12203a] px-4 text-[12px] font-semibold text-white shadow-[0_8px_18px_rgba(18,32,58,0.18)] transition hover:-translate-y-0.5"
             >
-              Register
+              Comprar
             </a>
           </div>
         </header>
@@ -377,10 +388,10 @@ function HeroSection() {
       <div className="relative z-10 mx-auto flex w-full max-w-[1360px] flex-1 flex-col px-4 pt-28 md:px-6 md:pt-32 lg:px-8 lg:pt-32">
         <div className="relative mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pb-24 pt-8 md:pb-24 md:pt-12 lg:pb-28">
           <div className="relative z-10 mx-auto max-w-[1050px] text-center" data-reveal data-reveal-side="up">
-            <h1 className="font-display text-[clamp(2.95rem,6.6vw,6.8rem)] leading-[0.94] tracking-[-0.05em] text-[#111a33] md:leading-[0.9]">
-              ENHANCE YOUR
+            <h1 className="font-display text-[clamp(2.95rem,6.6vw,6.8rem)] leading-[0.94] tracking-[-0.05em] text-[#111a33] uppercase md:leading-[0.9]">
+              La biblioteca de prompts de IA
               <br />
-              EXPERTISE TODAY.
+              más completa
             </h1>
           </div>
 
@@ -389,8 +400,8 @@ function HeroSection() {
             data-reveal
             data-reveal-delay="120"
           >
-            <FloatingPill label="Get Started Now" />
-            <FloatingPill label="Discover" small />
+            <FloatingPill label="Quiero el pack" />
+            <FloatingPill label="Ver nichos" small />
           </div>
         </div>
       </div>
@@ -409,17 +420,17 @@ function DiscoverySection() {
             data-direction-reveal
             data-direction-reveal-base="left"
           >
-            Discover the Freedom
+            Una biblioteca de prompts,
             <br className="hidden sm:block" />
-            to Learn Your Way
+            múltiples posibilidades
           </h2>
           <p
             className="mx-auto mt-5 max-w-[560px] text-[14px] leading-7 text-[#6d7483] md:text-[15px]"
             data-reveal
             data-reveal-delay="80"
           >
-            Explore a flexible learning experience designed for busy schedules, real goals, and
-            different styles of progress.
+            Prompts editables para crear imágenes realistas, estéticas y comerciales en varios
+            estilos, nichos y objetivos.
           </p>
         </div>
 
@@ -429,13 +440,13 @@ function DiscoverySection() {
               href="#courses"
               className="inline-flex h-10 items-center rounded-full bg-[#111827] px-5 text-[12px] font-semibold text-white shadow-[0_8px_18px_rgba(17,24,39,0.16)]"
             >
-              Get Started
+              Quiero el pack
             </a>
             <a
               href="#courses"
               className="inline-flex h-10 items-center rounded-full border border-slate-200 bg-white px-5 text-[12px] font-semibold text-[#101828] shadow-[0_6px_18px_rgba(15,23,42,0.08)]"
             >
-              Talk To Us
+              Cómo funciona
             </a>
           </div>
 
@@ -460,17 +471,17 @@ function DiscoverySection() {
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1.26fr_0.94fr]">
           <div
-            className="relative overflow-hidden rounded-[24px] bg-[#0f1116] p-3 shadow-[0_18px_50px_rgba(14,23,48,0.16)]"
+            className="theme-discovery-card relative overflow-hidden rounded-[24px] p-3 shadow-[0_18px_50px_rgba(14,23,48,0.16)]"
             data-reveal
             data-reveal-side="left"
           >
-            <div className="relative overflow-hidden rounded-[18px]">
+            <div className="relative overflow-hidden rounded-[18px] border border-slate-200/70">
               <img
                 src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80"
-                alt="People learning together"
+                alt="Personas trabajando juntas"
                 className="h-[410px] w-full object-cover object-[center_30%]"
               />
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.12)_48%,rgba(0,0,0,0.26)_100%)]" />
+              <div className="theme-discovery-overlay absolute inset-0" />
             </div>
 
             <div className="absolute bottom-4 left-4 w-[225px] rounded-[18px] bg-white p-4 shadow-[0_16px_38px_rgba(0,0,0,0.18)]" data-reveal data-reveal-delay="180">
@@ -480,7 +491,8 @@ function DiscoverySection() {
                     85%
                   </div>
                   <p className="mt-2 text-[11px] leading-5 text-[#6b7280]">
-                    of students say a guided path makes learning easier and more confident.
+                    de usuarios dice que una base clara les ayuda a ahorrar tiempo y mejorar el
+                    resultado final.
                   </p>
                 </div>
                 <div className="grid h-9 w-9 place-items-center rounded-full bg-[#edf2ff] text-[#3b5cff]">
@@ -501,16 +513,16 @@ function DiscoverySection() {
           </div>
 
           <div className="grid gap-4">
-            <div className="rounded-[24px] bg-[#171311] p-6 text-white shadow-[0_18px_50px_rgba(14,23,48,0.12)]" data-reveal data-reveal-delay="120">
+            <div className="theme-discovery-card-emphasis rounded-[24px] p-6 text-[#101828] shadow-[0_18px_50px_rgba(14,23,48,0.12)]" data-reveal data-reveal-delay="120">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1f57ff] text-white shadow-[0_10px_20px_rgba(31,87,255,0.18)]">
                 01
               </div>
               <h3 className="mt-9 text-[24px] font-medium tracking-[-0.05em]">
-                In-Person Learning
+                Prompts listos
               </h3>
-              <p className="mt-4 max-w-[28ch] text-[14px] leading-7 text-white/55">
-                Join a focused environment with a clear structure, real-time guidance, and a
-                premium classroom feel.
+              <p className="mt-4 max-w-[28ch] text-[14px] leading-7 text-[#6c7485]">
+                Elige el nicho, ajusta los detalles y genera imágenes con una dirección mucho más
+                clara desde el primer intento.
               </p>
             </div>
 
@@ -519,11 +531,11 @@ function DiscoverySection() {
                 02
               </div>
               <h3 className="mt-9 text-[24px] font-medium tracking-[-0.05em] text-[#101828]">
-                Online Learning
+                Fáciles de adaptar
               </h3>
               <p className="mt-4 max-w-[30ch] text-[14px] leading-7 text-[#6c7485]">
-                Learn anywhere with video lessons, flexible sessions, and a smooth experience on
-                every device.
+                Sirven para profesional, lifestyle, lujo, redes, moda y contenido comercial sin
+                complicarte con instrucciones largas.
               </p>
             </div>
           </div>
@@ -543,15 +555,10 @@ function CoursesSection() {
             data-direction-reveal
             data-direction-reveal-base="right"
           >
-            Browse Our Courses
+            Encuentra el pack ideal
+            <br className="hidden sm:block" />
+            para cada tipo de imagen
           </h2>
-          <p
-            className="mx-auto mt-4 max-w-[560px] text-[14px] leading-7 text-[#6d7483] md:text-[15px]"
-            data-reveal
-            data-reveal-delay="80"
-          >
-            Explore practical lessons, clean structure, and flexible pathways for different goals.
-          </p>
         </div>
 
         <div className="mt-8 flex flex-col gap-4">
@@ -559,7 +566,7 @@ function CoursesSection() {
             <div className="flex items-center gap-3">
               <label className="flex h-11 w-[220px] items-center gap-3 rounded-full border border-slate-200 bg-white px-4 text-[12px] text-[#6c7485] shadow-[0_6px_18px_rgba(15,23,42,0.06)]">
                 <SearchIcon />
-                <span>Enter keyword</span>
+                <span>Busca un nicho</span>
               </label>
             </div>
 
@@ -588,7 +595,7 @@ function CoursesSection() {
 
           <div className="flex items-center justify-between pt-2 text-[12px] font-medium text-[#5f687b]">
             <button type="button" className="transition hover:text-[#101828]">
-              Prev
+              Anterior
             </button>
 
             <div className="flex items-center gap-2">
@@ -600,7 +607,7 @@ function CoursesSection() {
             </div>
 
             <button type="button" className="transition hover:text-[#101828]">
-              Next
+              Siguiente
             </button>
           </div>
         </div>
@@ -617,9 +624,9 @@ function TestimonialsSection() {
         data-direction-reveal
         data-direction-reveal-base="left"
       >
-        WHAT OUR
+        LO QUE OPINAN
         <br />
-        STUDENTS SAY
+        NUESTROS CLIENTES
       </h2>
 
       <div className="relative z-10 mx-auto mt-32 grid max-w-[1260px] gap-4 sm:grid-cols-2 md:mt-40 lg:mt-72 lg:grid-cols-4">
@@ -663,19 +670,19 @@ function Footer() {
             </a>
 
             <p className="max-w-[360px] text-[13px] leading-7 text-[#677082]">
-              A clean learning platform with a premium feel, designed for modern students and
-              creators.
+              Una biblioteca de prompts de IA para crear imágenes en distintos nichos, estilos y
+              objetivos sin empezar desde cero.
             </p>
 
             <div className="flex flex-wrap gap-2">
               <span className="inline-flex h-9 items-center rounded-full bg-[#edf3ff] px-4 text-[11px] font-semibold text-[#101828]">
-                100+ prompts
+                Más de 100 prompts
               </span>
               <span className="inline-flex h-9 items-center rounded-full bg-[#f1f4f9] px-4 text-[11px] font-semibold text-[#5f687b]">
-                Premium systems
+                Varios nichos
               </span>
               <span className="inline-flex h-9 items-center rounded-full bg-[#f1f4f9] px-4 text-[11px] font-semibold text-[#5f687b]">
-                Instant access
+                Acceso instantáneo
               </span>
             </div>
 
@@ -689,7 +696,7 @@ function Footer() {
                 href="#top"
                 className="inline-flex h-10 items-center rounded-full border border-slate-200 bg-white px-4 text-[12px] font-semibold text-[#101828] shadow-[0_8px_18px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5 hover:border-[#1f57ff]/30"
               >
-                Back to top
+                Volver arriba
               </a>
             </div>
           </div>
@@ -714,18 +721,18 @@ function Footer() {
               <div className="flex flex-col gap-4 rounded-[24px] border border-slate-200 bg-[#edf3ff] p-5 shadow-[0_12px_28px_rgba(31,87,255,0.08)] md:flex-row md:items-center md:justify-between">
                 <div>
                   <div className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[#1a2842]">
-                    Need something custom?
+                    ¿Qué lo hace distinto?
                   </div>
                   <p className="mt-2 max-w-[42ch] text-[13px] leading-6 text-[#677082]">
-                    We can help you build a tailored prompt pack with the right structure for your
-                    workflow.
+                    No es un pack centrado en un solo uso: reúne prompts para distintos
+                    objetivos y estilos en una sola biblioteca fácil de adaptar.
                   </p>
                 </div>
                 <a
                   href="#courses"
                   className="inline-flex h-11 items-center rounded-full bg-[#1f57ff] px-5 text-[12px] font-semibold text-white shadow-[0_10px_20px_rgba(31,87,255,0.18)] transition hover:-translate-y-0.5"
                 >
-                  Talk to us
+                  Quiero el pack
                 </a>
               </div>
             </div>
@@ -734,19 +741,19 @@ function Footer() {
 
         <div className="mt-10 flex flex-col gap-4 border-t border-slate-200 pt-6 md:flex-row md:items-center md:justify-between">
           <p className="text-[12px] leading-6 text-[#677082]">
-            © 2026 CLASTRO. All rights reserved. Built for creators who want premium AI prompts
-            and a clean learning experience.
+            © 2026 CLASTRO. Todos los derechos reservados. Creado para quienes quieren generar
+            imágenes con IA de forma práctica y profesional.
           </p>
 
           <div className="flex flex-wrap items-center gap-4 text-[12px] text-[#5f687b]">
             <a href="#courses" className="transition hover:text-[#101828]">
-              Courses
+              Pack
             </a>
             <a href="#top" className="transition hover:text-[#101828]">
-              Top
+              Inicio
             </a>
-            <a href="mailto:hello@clastro.ai" className="transition hover:text-[#101828]">
-              hello@clastro.ai
+            <a href="mailto:hola@clastro.ai" className="transition hover:text-[#101828]">
+              hola@clastro.ai
             </a>
           </div>
         </div>
@@ -759,7 +766,7 @@ function ThemeToggleButton({ isDark, onToggle }) {
   return (
     <button
       type="button"
-      aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
+      aria-label={isDark ? "Activar modo claro" : "Activar modo oscuro"}
       aria-pressed={isDark}
       onClick={onToggle}
       className="theme-toggle fixed bottom-5 right-5 z-50 grid h-14 w-14 place-items-center rounded-full transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f57ff]/35 focus-visible:ring-offset-4 focus-visible:ring-offset-transparent md:bottom-6 md:right-6"
