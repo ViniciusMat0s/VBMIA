@@ -8,6 +8,14 @@ function joinClasses(...parts) {
   return parts.filter(Boolean).join(" ");
 }
 
+function normalizeSearchText(value) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
 function getProductProgress(progressMap, userId, productId) {
   return progressMap?.[userId]?.[productId] || { progress: 0, completedLessonIds: [] };
 }
@@ -835,6 +843,7 @@ function DashboardSectionHeader({ title, action, subtitle }) {
 function DashboardHeader({
   search,
   onSearch,
+  onClearSearch,
   onMenu,
   onThemeToggle,
   theme,
@@ -860,8 +869,19 @@ function DashboardHeader({
             value={search}
             onChange={(event) => onSearch(event.target.value)}
             placeholder="Buscar cursos, packs y prompts..."
-            className="h-11 w-full rounded-full border border-slate-200 bg-white pl-10 pr-4 text-[13px] outline-none transition placeholder:text-[#8a93a4] focus:border-[#1f57ff] focus:ring-2 focus:ring-[#1f57ff]/10"
+            className="h-11 w-full rounded-full border border-slate-200 bg-white pl-10 pr-12 text-[13px] outline-none transition placeholder:text-[#8a93a4] focus:border-[#1f57ff] focus:ring-2 focus:ring-[#1f57ff]/10"
           />
+          {search ? (
+            <button
+              type="button"
+              onClick={onClearSearch}
+              className="absolute right-3 grid h-7 w-7 place-items-center rounded-full text-[#8a93a4] transition hover:bg-[#edf3ff] hover:text-[#101828]"
+              aria-label="Limpiar búsqueda"
+              title="Limpiar búsqueda"
+            >
+              <span className="text-[18px] leading-none">×</span>
+            </button>
+          ) : null}
         </label>
 
         <button
@@ -955,11 +975,11 @@ function DashboardBanner({ currentUser, featuredProduct, completedCount, progres
 }
 
 function LibraryPage() {
-  const { currentUser, products, progress, entitlements, favorites, toggleFavorite, theme, toggleTheme, logout } = usePlatform();
+  const { currentUser, products, progress, entitlements, favorites, history, toggleFavorite, theme, toggleTheme, logout } = usePlatform();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeMenu, setActiveMenu] = useState("home");
+  const [activeMenu, setActiveMenu] = useState("comprados");
 
   useEffect(() => {
     if (!sidebarOpen) {
@@ -1000,16 +1020,29 @@ function LibraryPage() {
       });
   }, [currentUser, entitlements, favorites, products, progress]);
 
-  const query = search.trim().toLowerCase();
+  const normalizedQuery = normalizeSearchText(search);
 
   const visibleProducts = useMemo(() => {
     return items.filter((product) => {
-      const searchable = [product.title, product.description, product.author, ...(product.tags || [])]
+      const searchable = [
+        product.title,
+        product.description,
+        product.author,
+        product.type,
+        product.category,
+        product.badge,
+        ...(product.tags || []),
+      ]
         .join(" ")
         .toLowerCase();
-      return !query || searchable.includes(query);
+      return !normalizedQuery || normalizeSearchText(searchable).includes(normalizedQuery);
     });
-  }, [items, query]);
+  }, [items, normalizedQuery]);
+
+  const purchasedProducts = useMemo(
+    () => visibleProducts.filter((product) => product.accessible).slice(0, 4),
+    [visibleProducts],
+  );
 
   const featuredProducts = useMemo(
     () => [...visibleProducts].filter((product) => product.featured).sort((a, b) => b.rating - a.rating).slice(0, 4),
@@ -1040,6 +1073,34 @@ function LibraryPage() {
     [visibleProducts],
   );
 
+  const mostUsedProducts = useMemo(
+    () => {
+      const base = (history[currentUser.id] || [])
+        .map((productId) => products.find((product) => product.id === productId))
+        .filter(Boolean);
+
+      if (!normalizedQuery) {
+        return base.slice(0, 4);
+      }
+
+      return base
+        .filter((product) => {
+          const searchable = [
+            product.title,
+            product.description,
+            product.author,
+            product.type,
+            product.category,
+            product.badge,
+            ...(product.tags || []),
+          ].join(" ");
+          return normalizeSearchText(searchable).includes(normalizedQuery);
+        })
+        .slice(0, 4);
+    },
+    [currentUser.id, history, normalizedQuery, products],
+  );
+
   const topRatedProducts = useMemo(
     () => [...visibleProducts].sort((a, b) => b.rating - a.rating).slice(0, 5),
     [visibleProducts],
@@ -1051,7 +1112,7 @@ function LibraryPage() {
     ? Math.round(items.reduce((sum, product) => sum + product.progressValue, 0) / items.length)
     : 0;
 
-  const featuredHero = featuredProducts[0] || visibleProducts[0] || items[0] || products[0];
+  const featuredHero = purchasedProducts[0] || visibleProducts[0] || items[0] || products[0];
   const continueTarget = ongoingProducts[0] || featuredHero;
 
   const continueAction = () => {
@@ -1077,13 +1138,10 @@ function LibraryPage() {
   };
 
   const sidebarItems = [
-    { key: "home", label: "Inicio", icon: "home", onClick: () => window.scrollTo({ top: 0, behavior: "smooth" }) },
-    { key: "library", label: "Mi biblioteca", icon: "library", onClick: () => { setActiveMenu("library"); scrollToSection("catalog"); } },
-    { key: "popular", label: "Populares", icon: "star", onClick: () => { setActiveMenu("popular"); scrollToSection("popular"); } },
-    { key: "ongoing", label: "En progreso", icon: "clock", onClick: () => { setActiveMenu("ongoing"); scrollToSection("ongoing"); } },
-    { key: "favorites", label: "Favoritos", icon: "star", onClick: () => { setActiveMenu("favorites"); scrollToSection("favorites"); } },
-    { key: "completed", label: "Completados", icon: "check", onClick: () => { setActiveMenu("completed"); scrollToSection("completed"); } },
-    { key: "downloads", label: "Downloads", icon: "download", onClick: () => { setActiveMenu("downloads"); scrollToSection("downloads"); } },
+    { key: "comprados", label: "Comprados", icon: "check", onClick: () => { setActiveMenu("comprados"); scrollToSection("comprados"); } },
+    { key: "catalogo", label: "Catálogo", icon: "library", onClick: () => { setActiveMenu("catalogo"); scrollToSection("catalogo"); } },
+    { key: "descargas", label: "Descargas", icon: "download", onClick: () => { setActiveMenu("descargas"); scrollToSection("descargas"); } },
+    { key: "mas-usados", label: "Más usados", icon: "star", onClick: () => { setActiveMenu("mas-usados"); scrollToSection("mas-usados"); } },
     { key: "profile", label: "Perfil", icon: "user", onClick: () => navigate("/profile") },
   ];
 
@@ -1190,14 +1248,15 @@ function LibraryPage() {
           <DashboardHeader
             search={search}
             onSearch={setSearch}
+            onClearSearch={() => setSearch("")}
             onMenu={() => setSidebarOpen(true)}
             onThemeToggle={toggleTheme}
             theme={theme}
             currentUser={currentUser}
             onProfile={() => navigate("/profile")}
             onNotifications={() => {
-              setActiveMenu("popular");
-              scrollToSection("popular");
+              setActiveMenu("mas-usados");
+              scrollToSection("mas-usados");
             }}
           />
 
@@ -1205,21 +1264,21 @@ function LibraryPage() {
             <div className="space-y-5">
               <DashboardBanner
                 currentUser={currentUser}
-              featuredProduct={featuredHero}
-              completedCount={unlockedCount}
-              progressAverage={progressAverage}
-              onContinuar={continueAction}
-              onExplore={() => {
-                setActiveMenu("library");
-                scrollToSection("catalog");
-              }}
-            />
+                featuredProduct={featuredHero}
+                completedCount={unlockedCount}
+                progressAverage={progressAverage}
+                onContinuar={continueAction}
+                onExplore={() => {
+                  setActiveMenu("catalogo");
+                  scrollToSection("catalogo");
+                }}
+              />
 
-              <section id="popular" className="space-y-4">
-                <DashboardSectionHeader title="Populares" action="Ver todos" subtitle="Productos mejor valorados y destacados." />
+              <section id="comprados" className="space-y-4">
+                <DashboardSectionHeader title="Comprados" action="Ver todos" subtitle="Tus contenidos adquiridos y desbloqueados." />
                 <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                  {featuredProducts.length ? (
-                    featuredProducts.map((product) => (
+                  {purchasedProducts.length ? (
+                    purchasedProducts.map((product) => (
                       <DashboardCard
                         key={product.id}
                         product={product}
@@ -1230,38 +1289,17 @@ function LibraryPage() {
                     ))
                   ) : (
                     <div className="rounded-[22px] border border-dashed border-slate-200 bg-[var(--surface)] p-6 text-sm text-[#6d7483] sm:col-span-2 xl:col-span-4">
-                      No se ha encontrado contenido destacado.
+                      Aún no tienes contenidos comprados.
                     </div>
                   )}
                 </div>
               </section>
 
-              <section id="ongoing" className="space-y-4">
-                <DashboardSectionHeader title="En curso" action="Ver todos" subtitle="Continúa donde lo dejaste." />
+              <section id="catalogo" className="space-y-4">
+                <DashboardSectionHeader title="Catálogo" action="Ver todos" subtitle="Busca en toda la biblioteca de contenidos." />
                 <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                  {ongoingProducts.length ? (
-                    ongoingProducts.map((product) => (
-                      <DashboardCard
-                        key={product.id}
-                        product={product}
-                        progressValue={product.progressValue}
-                        locked={!product.accessible}
-                        onClick={() => navigate(`/watch/${product.slug}/${product.progressInfo.lastLessonId || product.modules?.[0]?.lessons?.[0]?.id}`)}
-                      />
-                    ))
-                  ) : (
-                    <div className="rounded-[22px] border border-dashed border-slate-200 bg-[var(--surface)] p-6 text-sm text-[#6d7483] sm:col-span-2 xl:col-span-4">
-                    Todavía no hay lecciones en progreso.
-                    </div>
-                  )}
-                </div>
-              </section>
-
-              <section id="favorites" className="space-y-4">
-                <DashboardSectionHeader title="Favoritos" action="Ver todos" subtitle="Elementos guardados para acceder rápidamente." />
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                  {favoriteProducts.length ? (
-                    favoriteProducts.map((product) => (
+                  {visibleProducts.length ? (
+                    visibleProducts.slice(0, 4).map((product) => (
                       <DashboardCard
                         key={product.id}
                         product={product}
@@ -1272,34 +1310,13 @@ function LibraryPage() {
                     ))
                   ) : (
                     <div className="rounded-[22px] border border-dashed border-slate-200 bg-[var(--surface)] p-6 text-sm text-[#6d7483] sm:col-span-2 xl:col-span-4">
-                      Todavía no has guardado favoritos.
+                      No hay resultados para esta búsqueda.
                     </div>
                   )}
                 </div>
               </section>
 
-              <section id="completed" className="space-y-4">
-                <DashboardSectionHeader title="Completados" action="Ver todos" subtitle="Productos finalizados y lecciones completadas." />
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                  {completedProducts.length ? (
-                    completedProducts.map((product) => (
-                      <DashboardCard
-                        key={product.id}
-                        product={product}
-                        progressValue={product.progressValue}
-                        locked={!product.accessible}
-                        onClick={() => navigate(`/product/${product.slug}`)}
-                      />
-                    ))
-                  ) : (
-                    <div className="rounded-[22px] border border-dashed border-slate-200 bg-[var(--surface)] p-6 text-sm text-[#6d7483] sm:col-span-2 xl:col-span-4">
-                      Todavía no hay elementos completados.
-                    </div>
-                  )}
-                </div>
-              </section>
-
-              <section id="downloads" className="space-y-4">
+              <section id="descargas" className="space-y-4">
                 <DashboardSectionHeader title="Descargas" action="Ver todos" subtitle="Ebooks, plantillas y otros materiales descargables." />
                 <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                   {downloadProducts.length ? (
@@ -1320,11 +1337,11 @@ function LibraryPage() {
                 </div>
               </section>
 
-              <section id="catalog" className="space-y-4">
-                <DashboardSectionHeader title="Catálogo" action="Ver todos" subtitle="Busca en toda la biblioteca de contenidos." />
-                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                  {visibleProducts.length ? (
-                    visibleProducts.slice(0, 9).map((product) => (
+              <section id="mas-usados" className="space-y-4">
+                <DashboardSectionHeader title="Más usados" action="Ver todos" subtitle="Tus productos más consultados recientemente." />
+                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                  {mostUsedProducts.length ? (
+                    mostUsedProducts.map((product) => (
                       <DashboardCard
                         key={product.id}
                         product={product}
@@ -1334,8 +1351,8 @@ function LibraryPage() {
                       />
                     ))
                   ) : (
-                    <div className="rounded-[22px] border border-dashed border-slate-200 bg-[var(--surface)] p-6 text-sm text-[#6d7483] md:col-span-2 xl:col-span-3">
-                      No hay resultados para esta búsqueda.
+                    <div className="rounded-[22px] border border-dashed border-slate-200 bg-[var(--surface)] p-6 text-sm text-[#6d7483] sm:col-span-2 xl:col-span-4">
+                      Aún no hay actividad suficiente para mostrar aquí.
                     </div>
                   )}
                 </div>
