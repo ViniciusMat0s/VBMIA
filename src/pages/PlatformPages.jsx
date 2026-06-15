@@ -1201,7 +1201,7 @@ function LibraryPage() {
             }}
           />
 
-          <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_300px]">
+          <div className="mt-5">
             <div className="space-y-5">
               <DashboardBanner
                 currentUser={currentUser}
@@ -1341,71 +1341,6 @@ function LibraryPage() {
                 </div>
               </section>
             </div>
-
-            <aside className="space-y-5 xl:sticky xl:top-5 xl:self-start">
-              <div className="rounded-[26px] border border-slate-200 bg-[var(--surface)] p-4 shadow-[0_14px_40px_rgba(15,23,42,0.08)]">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#5f687b]">
-                      Logro desbloqueado
-                    </div>
-                    <div className="mt-2 text-[22px] font-semibold tracking-[-0.05em] text-[#101828]">
-                      {progressAverage}%
-                    </div>
-                  </div>
-                  <div
-                    className="grid h-[72px] w-[72px] place-items-center rounded-full"
-                    style={{
-                      background: `conic-gradient(#1f57ff ${progressAverage * 3.6}deg, #e9edf6 0deg)`,
-                    }}
-                  >
-                    <div className="grid h-[52px] w-[52px] place-items-center rounded-full bg-[var(--surface)] text-[12px] font-semibold text-[#101828]">
-                      {progressAverage}%
-                    </div>
-                  </div>
-                </div>
-                <ProgressBar value={progressAverage} className="mt-4" />
-                <div className="mt-4 grid grid-cols-3 gap-2">
-                  {[
-                    { label: "Desbloqueados", value: unlockedCount },
-                    { label: "Completado", value: completedCount },
-                    { label: "Favoritos", value: (favorites[currentUser.id] || []).length },
-                  ].map((metric) => (
-                    <div key={metric.label} className="rounded-[18px] bg-[#f7f9ff] p-3 text-center">
-                      <div className="text-[18px] font-semibold text-[#101828]">{metric.value}</div>
-                      <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-[#6d7483]">{metric.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="rounded-[26px] border border-slate-200 bg-[var(--surface)] p-5 shadow-[0_14px_40px_rgba(15,23,42,0.08)]">
-                <div className="flex items-end justify-between gap-4">
-                  <div>
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#5f687b]">
-                      Más vistos
-                    </div>
-                    <h4 className="mt-2 text-[18px] font-semibold tracking-[-0.04em] text-[#101828]">
-                      Contenido más visto
-                    </h4>
-                  </div>
-                  <button type="button" className="text-[12px] font-semibold text-[#5f687b]">
-                    Ver todos
-                  </button>
-                </div>
-                <div className="mt-4 space-y-3">
-                  {topRatedProducts.map((product) => (
-                    <DashboardListItem
-                      key={product.id}
-                      product={product}
-                      progressValue={product.progressValue}
-                      actionLabel={product.accessible ? "Abrir" : "Bloquear"}
-                      onClick={() => navigate(`/product/${product.slug}`)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </aside>
           </div>
         </main>
       </div>
