@@ -342,7 +342,10 @@ function ShellNav() {
 }
 
 function RequireAuth({ children }) {
-  const { currentUser } = usePlatform();
+  const { currentUser, authReady } = usePlatform();
+  if (!authReady) {
+    return null;
+  }
   if (!currentUser) {
     return <Navigate to="/login" replace />;
   }
@@ -350,7 +353,10 @@ function RequireAuth({ children }) {
 }
 
 function RequireRole({ role, children }) {
-  const { currentUser } = usePlatform();
+  const { currentUser, authReady } = usePlatform();
+  if (!authReady) {
+    return null;
+  }
   if (!currentUser) {
     return <Navigate to="/login" replace />;
   }
@@ -403,18 +409,22 @@ function AuthLayout({ title, subtitle, children, footerLink }) {
 }
 
 function LoginPage() {
-  const { login, demoCredentials } = usePlatform();
+  const { login, demoCredentials, firebaseEnabled } = usePlatform();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ email: demoCredentials.student.email, password: demoCredentials.student.password });
+  const [form, setForm] = useState(
+    firebaseEnabled
+      ? { email: "", password: "" }
+      : { email: demoCredentials.student.email, password: demoCredentials.student.password },
+  );
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
     setError("");
     setLoading(true);
     try {
-      login(form);
+      await login(form);
       navigate("/library");
     } catch (err) {
       setError(err.message);
@@ -464,7 +474,9 @@ function LoginPage() {
         </form>
 
         <div className="rounded-[20px] bg-[#edf3ff] p-4 text-[13px] text-[#677082]">
-          Cuentas de demo: admin@vbmdevs.com / admin123, student@vbmdevs.com / student123
+          {firebaseEnabled
+            ? "Inicia sesión con las cuentas creadas en Firebase Authentication."
+            : "Cuentas de demo: admin@vbmdevs.com / admin123, student@vbmdevs.com / student123"}
         </div>
 
         <div className="flex flex-wrap gap-3 text-[13px]">
@@ -488,15 +500,19 @@ function SignupPage() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
     setError("");
+    setLoading(true);
     try {
-      register(form);
+      await register(form);
       navigate("/library");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -538,8 +554,8 @@ function SignupPage() {
             placeholder="Contraseña"
             required
           />
-          <button className="w-full rounded-full bg-[#1f57ff] px-5 py-3 text-[13px] font-semibold text-white">
-            Crear cuenta
+          <button disabled={loading} className="w-full rounded-full bg-[#1f57ff] px-5 py-3 text-[13px] font-semibold text-white disabled:opacity-60">
+            {loading ? "Creando cuenta..." : "Crear cuenta"}
           </button>
         </form>
       </div>
@@ -548,20 +564,28 @@ function SignupPage() {
 }
 
 function ForgotPasswordPage() {
-  const { requestPasswordReset } = usePlatform();
+  const { requestPasswordReset, firebaseEnabled } = usePlatform();
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
     setError("");
+    setLoading(true);
     try {
-      const createdToken = requestPasswordReset(email);
-      setToken(`${window.location.origin}/reset-password?token=${encodeURIComponent(createdToken)}`);
+      const result = await requestPasswordReset(email);
+      if (result?.firebase) {
+        setToken("email-sent");
+      } else {
+        setToken(`${window.location.origin}/reset-password?token=${encodeURIComponent(result)}`);
+      }
     } catch (err) {
       setToken("");
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -578,7 +602,11 @@ function ForgotPasswordPage() {
         </div>
 
         {error ? <div className="rounded-[18px] bg-[#ffe5e5] px-4 py-3 text-[13px] text-[#b42318]">{error}</div> : null}
-        {token ? (
+        {token === "email-sent" ? (
+          <div className="rounded-[18px] bg-[#e7f7ee] px-4 py-3 text-[13px] text-[#0e7a42]">
+            Te enviamos un correo con el enlace para restablecer tu contraseña.
+          </div>
+        ) : token ? (
           <div className="rounded-[18px] bg-[#e7f7ee] px-4 py-3 text-[13px] text-[#0e7a42]">
             Enlace de restablecimiento generado: <a className="underline" href={token}>{token}</a>
           </div>
@@ -593,8 +621,8 @@ function ForgotPasswordPage() {
             placeholder="Correo electrónico"
             required
           />
-          <button className="w-full rounded-full bg-[#1f57ff] px-5 py-3 text-[13px] font-semibold text-white">
-            Generar enlace de restablecimiento
+          <button disabled={loading} className="w-full rounded-full bg-[#1f57ff] px-5 py-3 text-[13px] font-semibold text-white disabled:opacity-60">
+            {loading ? "Enviando..." : firebaseEnabled ? "Enviar correo de restablecimiento" : "Generar enlace de restablecimiento"}
           </button>
         </form>
       </div>
@@ -603,21 +631,50 @@ function ForgotPasswordPage() {
 }
 
 function ResetPasswordPage() {
-  const { resetPassword } = usePlatform();
+  const { resetPassword, verifyResetEmail, firebaseEnabled } = usePlatform();
   const [params] = useSearchParams();
   const token = params.get("token") || "";
+  const oobCode = params.get("oobCode") || "";
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const submit = (event) => {
+  useEffect(() => {
+    if (!firebaseEnabled || !oobCode) {
+      return undefined;
+    }
+
+    let cancelled = false;
+    verifyResetEmail(oobCode)
+      .then((resetEmail) => {
+        if (!cancelled) {
+          setEmail(resetEmail || "");
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setError(err.message);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [firebaseEnabled, oobCode, verifyResetEmail]);
+
+  const submit = async (event) => {
     event.preventDefault();
     setError("");
+    setLoading(true);
     try {
-      resetPassword({ token, password });
+      await resetPassword({ token, oobCode, password });
       navigate("/login");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -635,13 +692,21 @@ function ResetPasswordPage() {
 
         {error ? <div className="rounded-[18px] bg-[#ffe5e5] px-4 py-3 text-[13px] text-[#b42318]">{error}</div> : null}
 
+        {firebaseEnabled ? (
+          <div className="rounded-[18px] bg-[#edf3ff] px-4 py-3 text-[13px] text-[#677082]">
+            {email ? `Restableciendo acceso para ${email}` : "Validando enlace de restablecimiento..."}
+          </div>
+        ) : null}
+
         <form className="space-y-4" onSubmit={submit}>
-          <input
-            className="w-full rounded-[18px] border border-slate-200 bg-white px-4 py-3 text-[14px] outline-none focus:border-[#1f57ff]"
-            value={token}
-            readOnly
-            placeholder="Token de restablecimiento"
-          />
+          {!firebaseEnabled ? (
+            <input
+              className="w-full rounded-[18px] border border-slate-200 bg-white px-4 py-3 text-[14px] outline-none focus:border-[#1f57ff]"
+              value={token}
+              readOnly
+              placeholder="Token de restablecimiento"
+            />
+          ) : null}
           <input
             className="w-full rounded-[18px] border border-slate-200 bg-white px-4 py-3 text-[14px] outline-none focus:border-[#1f57ff]"
             value={password}
@@ -650,8 +715,8 @@ function ResetPasswordPage() {
             placeholder="Nueva contraseña"
             required
           />
-          <button className="w-full rounded-full bg-[#1f57ff] px-5 py-3 text-[13px] font-semibold text-white">
-            Guardar contraseña
+          <button disabled={loading} className="w-full rounded-full bg-[#1f57ff] px-5 py-3 text-[13px] font-semibold text-white disabled:opacity-60">
+            {loading ? "Guardando..." : "Guardar contraseña"}
           </button>
         </form>
       </div>
@@ -1637,6 +1702,7 @@ function ProfilePage() {
   const [name, setName] = useState(currentUser.name);
   const [email, setEmail] = useState(currentUser.email);
   const navigate = useNavigate();
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     setName(currentUser.name);
@@ -1647,9 +1713,14 @@ function ProfilePage() {
   const favoriteProducts = products.filter((product) => (favorites[currentUser.id] || []).includes(product.id));
   const recentProductos = (history[currentUser.id] || []).map((productId) => products.find((product) => product.id === productId)).filter(Boolean);
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
-    updateProfile({ name, email });
+    setSaving(true);
+    try {
+      await updateProfile({ name, email });
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -1675,7 +1746,9 @@ function ProfilePage() {
             <div className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[#5f687b]">Preferencias</div>
             <input className="w-full rounded-full border border-slate-200 bg-[#f7f9ff] px-4 py-3" value={name} onChange={(event) => setName(event.target.value)} />
             <input className="w-full rounded-full border border-slate-200 bg-[#f7f9ff] px-4 py-3" value={email} onChange={(event) => setEmail(event.target.value)} />
-            <button className="rounded-full bg-[#1f57ff] px-5 py-3 text-[13px] font-semibold text-white">Guardar cambios</button>
+            <button disabled={saving} className="rounded-full bg-[#1f57ff] px-5 py-3 text-[13px] font-semibold text-white disabled:opacity-60">
+              {saving ? "Guardando..." : "Guardar cambios"}
+            </button>
           </form>
 
           <button

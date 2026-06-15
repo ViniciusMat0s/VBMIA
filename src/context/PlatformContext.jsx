@@ -1,6 +1,18 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { flushSync } from "react-dom";
+import {
+  confirmPasswordReset,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut,
+  updateEmail,
+  updateProfile as updateFirebaseProfile,
+  verifyPasswordResetCode,
+} from "firebase/auth";
 import { demoCredentials, seedUsers, productCatalog } from "../data/platformData";
+import { firebaseAuth, firebaseEnabled } from "../lib/firebase";
 
 const STORAGE_KEYS = {
   theme: "vbm-theme",
@@ -71,6 +83,62 @@ function createDefaultResetTokens() {
   return {};
 }
 
+function getAdminEmails() {
+  const fallback = ["admin@vbmdevs.com"];
+  const envValue = import.meta.env.VITE_FIREBASE_ADMIN_EMAILS;
+
+  if (!envValue) {
+    return new Set(fallback);
+  }
+
+  return new Set(
+    envValue
+      .split(",")
+      .map((email) => email.trim().toLowerCase())
+      .filter(Boolean)
+      .concat(fallback),
+  );
+}
+
+const DEFAULT_AVATAR =
+  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80";
+
+function isAdminEmail(email) {
+  if (!email) {
+    return false;
+  }
+
+  return getAdminEmails().has(email.trim().toLowerCase());
+}
+
+function getSeedUserByEmail(email) {
+  if (!email) {
+    return null;
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+  return seedUsers.find((user) => user.email.toLowerCase() === normalizedEmail) || null;
+}
+
+function createProfileFromAuthUser(authUser) {
+  const seedUser = getSeedUserByEmail(authUser.email);
+  const email = authUser.email || seedUser?.email || "";
+
+  return {
+    id: authUser.uid,
+    name: authUser.displayName || seedUser?.name || email.split("@")[0] || "Usuario",
+    email,
+    role: seedUser?.role || (isAdminEmail(email) ? "admin" : "student"),
+    avatar: authUser.photoURL || seedUser?.avatar || DEFAULT_AVATAR,
+  };
+}
+
+function mergeProfileLists(current, profile) {
+  const next = current.filter((entry) => entry.id !== profile.id);
+  next.push(profile);
+  return next;
+}
+
 function getSeedUsers() {
   return seedUsers;
 }
@@ -94,6 +162,8 @@ export function PlatformProvider({ children }) {
   });
   const [users, setUsers] = useState(() => readJSON(STORAGE_KEYS.users, getSeedUsers()));
   const [session, setSession] = useState(() => readJSON(STORAGE_KEYS.session, { userId: null }));
+  const [firebaseUser, setFirebaseUser] = useState(null);
+  const [authReady, setAuthReady] = useState(!firebaseEnabled);
   const [products, setProducts] = useState(() => readJSON(STORAGE_KEYS.products, getSeedProducts()));
   const [entitlements, setEntitlements] = useState(() =>
     readJSON(STORAGE_KEYS.entitlements, createDefaultEntitlements())
@@ -141,7 +211,63 @@ export function PlatformProvider({ children }) {
     writeJSON(STORAGE_KEYS.resetTokens, resetTokens);
   }, [resetTokens]);
 
-  const currentUser = useMemo(() => users.find((user) => user.id === session.userId) || null, [session.userId, users]);
+  useEffect(() => {
+    if (!firebaseEnabled || !firebaseAuth) {
+      setAuthReady(true);
+      return undefined;
+    }
+
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
+      setFirebaseUser(user);
+      setAuthReady(true);
+
+      if (!user) {
+        return;
+      }
+
+      const profile = createProfileFromAuthUser(user);
+      setUsers((current) => mergeProfileLists(current, profile));
+      setEntitlements((current) => {
+        if (current[profile.id]) {
+          return current;
+        }
+
+        const fallbackProductIds = products.filter((product) => product.access !== "locked").map((product) => product.id);
+        return {
+          ...current,
+          [profile.id]: profile.role === "admin" ? products.map((product) => product.id) : fallbackProductIds.slice(0, 4),
+        };
+      });
+      setProgress((current) => (current[profile.id] ? current : { ...current, [profile.id]: {} }));
+      setFavorites((current) => (current[profile.id] ? current : { ...current, [profile.id]: [] }));
+      setHistory((current) => (current[profile.id] ? current : { ...current, [profile.id]: [] }));
+    });
+
+    return () => unsubscribe();
+  }, [products]);
+
+  const currentUser = useMemo(() => {
+    if (firebaseEnabled && firebaseUser) {
+      const firebaseProfile = users.find((user) => user.id === firebaseUser.uid);
+      const seedUser = getSeedUserByEmail(firebaseUser.email);
+      return (
+        firebaseProfile || {
+          id: firebaseUser.uid,
+          name: firebaseUser.displayName || seedUser?.name || firebaseUser.email?.split("@")[0] || "Usuario",
+          email: firebaseUser.email || seedUser?.email || "",
+          role: seedUser?.role || (isAdminEmail(firebaseUser.email) ? "admin" : "student"),
+          avatar: firebaseUser.photoURL || seedUser?.avatar || DEFAULT_AVATAR,
+        }
+      );
+    }
+
+    if (firebaseEnabled) {
+      return null;
+    }
+
+    return users.find((user) => user.id === session.userId) || null;
+  }, [firebaseUser, session.userId, users]);
+
   const isAuthenticated = Boolean(currentUser);
   const isAdmin = currentUser?.role === "admin";
 
@@ -160,7 +286,12 @@ export function PlatformProvider({ children }) {
     setTheme(nextTheme);
   };
 
-  const login = ({ email, password }) => {
+  const login = async ({ email, password }) => {
+    if (firebaseEnabled && firebaseAuth) {
+      const result = await signInWithEmailAndPassword(firebaseAuth, email.trim(), password);
+      return result.user;
+    }
+
     const normalizedEmail = email.trim().toLowerCase();
     const user = users.find(
       (entry) => entry.email.toLowerCase() === normalizedEmail && entry.password === password,
@@ -174,9 +305,50 @@ export function PlatformProvider({ children }) {
     return user;
   };
 
-  const logout = () => setSession({ userId: null });
+  const logout = async () => {
+    if (firebaseEnabled && firebaseAuth) {
+      await signOut(firebaseAuth);
+      setSession({ userId: null });
+      return;
+    }
 
-  const register = ({ name, email, password }) => {
+    setSession({ userId: null });
+  };
+
+  const register = async ({ name, email, password }) => {
+    if (firebaseEnabled && firebaseAuth) {
+      const result = await createUserWithEmailAndPassword(firebaseAuth, email.trim(), password);
+      await updateFirebaseProfile(result.user, { displayName: name.trim() });
+
+      const profile = {
+        ...createProfileFromAuthUser({
+          ...result.user,
+          displayName: name.trim(),
+        }),
+        id: result.user.uid,
+        name: name.trim(),
+        email: result.user.email || email.trim().toLowerCase(),
+        avatar: DEFAULT_AVATAR,
+      };
+
+      setUsers((current) => mergeProfileLists(current, profile));
+      setEntitlements((current) => {
+        if (current[profile.id]) {
+          return current;
+        }
+
+        const fallbackProductIds = products.filter((product) => product.access !== "locked").map((product) => product.id);
+        return {
+          ...current,
+          [profile.id]: profile.role === "admin" ? products.map((product) => product.id) : fallbackProductIds.slice(0, 4),
+        };
+      });
+      setProgress((current) => ({ ...current, [profile.id]: current[profile.id] || {} }));
+      setFavorites((current) => ({ ...current, [profile.id]: current[profile.id] || [] }));
+      setHistory((current) => ({ ...current, [profile.id]: current[profile.id] || [] }));
+      return result.user;
+    }
+
     const normalizedEmail = email.trim().toLowerCase();
     if (users.some((user) => user.email.toLowerCase() === normalizedEmail)) {
       throw new Error("Email already in use.");
@@ -204,7 +376,14 @@ export function PlatformProvider({ children }) {
     return newUser;
   };
 
-  const requestPasswordReset = (email) => {
+  const requestPasswordReset = async (email) => {
+    if (firebaseEnabled && firebaseAuth) {
+      await sendPasswordResetEmail(firebaseAuth, email.trim(), {
+        url: `${window.location.origin}/reset-password`,
+      });
+      return { email: email.trim(), firebase: true };
+    }
+
     const normalizedEmail = email.trim().toLowerCase();
     const user = users.find((entry) => entry.email.toLowerCase() === normalizedEmail);
 
@@ -217,7 +396,20 @@ export function PlatformProvider({ children }) {
     return token;
   };
 
-  const resetPassword = ({ token, password }) => {
+  const verifyResetEmail = async (oobCode) => {
+    if (firebaseEnabled && firebaseAuth) {
+      return verifyPasswordResetCode(firebaseAuth, oobCode);
+    }
+
+    return null;
+  };
+
+  const resetPassword = async ({ token, oobCode, password }) => {
+    if (firebaseEnabled && firebaseAuth) {
+      await confirmPasswordReset(firebaseAuth, oobCode || token, password);
+      return true;
+    }
+
     const entry = resetTokens[token];
     if (!entry) {
       throw new Error("Invalid or expired reset token.");
@@ -236,6 +428,31 @@ export function PlatformProvider({ children }) {
   const updateProfile = (patch) => {
     if (!currentUser) {
       throw new Error("Not authenticated.");
+    }
+
+    if (firebaseEnabled && firebaseAuth?.currentUser) {
+      const nextName = typeof patch.name === "string" ? patch.name.trim() : currentUser.name;
+      const nextEmail = typeof patch.email === "string" ? patch.email.trim().toLowerCase() : currentUser.email;
+
+      const tasks = [];
+      if (nextName && nextName !== firebaseAuth.currentUser.displayName) {
+        tasks.push(updateFirebaseProfile(firebaseAuth.currentUser, { displayName: nextName }));
+      }
+      if (nextEmail && nextEmail !== firebaseAuth.currentUser.email) {
+        tasks.push(updateEmail(firebaseAuth.currentUser, nextEmail));
+      }
+
+      return Promise.all(tasks)
+        .then(() => {
+          setUsers((current) =>
+            current.map((user) =>
+              user.id === currentUser.id ? { ...user, ...patch, id: currentUser.id } : user,
+            ),
+          );
+        })
+        .catch((error) => {
+          throw error;
+        });
     }
 
     setUsers((current) =>
@@ -360,11 +577,14 @@ export function PlatformProvider({ children }) {
     favorites,
     history,
     resetTokens,
+    authReady,
+    firebaseEnabled,
     login,
     logout,
     register,
     requestPasswordReset,
     resetPassword,
+    verifyResetEmail,
     updateProfile,
     grantAccess,
     revokeAccess,
