@@ -1088,8 +1088,8 @@ function LibraryPage() {
       className={joinClasses(
         "flex h-full flex-col border-r border-[var(--border-soft)] bg-[var(--surface-elevated)] backdrop-blur-xl",
         mobile
-          ? "fixed inset-y-0 left-0 z-40 w-[272px] rounded-r-[28px] p-4 shadow-[0_24px_60px_rgba(15,23,42,0.18)] transition duration-300 lg:hidden"
-          : "hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:w-[272px] lg:px-4 lg:py-4",
+          ? "fixed inset-y-0 left-0 z-40 w-[304px] rounded-r-[28px] p-4 shadow-[0_24px_60px_rgba(15,23,42,0.18)] transition duration-300 lg:hidden"
+          : "hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:w-[304px] lg:px-4 lg:py-4",
       )}
       style={
         mobile
@@ -1100,30 +1100,22 @@ function LibraryPage() {
       }
     >
       <div className="flex h-full flex-col rounded-[26px] border border-white/70 bg-[var(--surface-elevated)] p-3 shadow-[0_14px_40px_rgba(15,23,42,0.06)] backdrop-blur-xl">
-        <div className="flex items-center justify-between">
-          <Link to="/library" className="flex items-center gap-3" onClick={() => setSidebarOpen(false)}>
-            <img src="/images/logo-vm.png" alt="VBM Devs" className="theme-logo h-9 w-auto" />
+        <div className="relative flex items-center justify-center py-2 pb-6">
+          <Link to="/library" className="flex items-center justify-center" onClick={() => setSidebarOpen(false)}>
+            <img src="/images/logo-vm.png" alt="VBM Devs" className="theme-logo h-12 w-auto" />
           </Link>
           {mobile ? (
             <button
               type="button"
               onClick={() => setSidebarOpen(false)}
-              className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white text-[#101828]"
+              className="absolute right-0 grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-white text-[#101828]"
             >
-              <DashboardIcon name="chevron" className="h-4 w-4 -rotate-180" />
+              <DashboardIcon name="chevron" className="h-3.5 w-3.5 -rotate-180" />
             </button>
           ) : null}
         </div>
 
-        <div className="mt-5 rounded-[22px] bg-[linear-gradient(135deg,#12203a_0%,#1f57ff_50%,#87e4ff_100%)] p-4 text-white shadow-[0_14px_30px_rgba(31,87,255,0.2)]">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/75">Espacio de trabajo</div>
-          <div className="mt-3 text-[14px] font-semibold leading-6">Toda tu biblioteca de contenidos en un solo lugar</div>
-          <div className="mt-2 text-[11px] leading-6 text-white/80">
-            {unlockedCount} elementos desbloqueados · {completedCount} completados
-          </div>
-        </div>
-
-        <nav className="mt-5 flex-1 space-y-1 overflow-y-auto pr-1">
+        <nav className="mt-8 flex-1 space-y-1 overflow-visible pr-0">
           {sidebarItems.map((item) => {
             const active = activeMenu === item.key;
 
@@ -1136,7 +1128,7 @@ function LibraryPage() {
                   item.onClick();
                 }}
                 className={joinClasses(
-                  "group flex w-full items-center gap-3 rounded-[18px] px-4 py-3 text-left text-[13px] font-medium transition",
+                  "group flex w-full items-center gap-2.5 rounded-[16px] px-3 py-2 text-left text-[11px] font-medium transition",
                   active
                     ? "bg-[#edf3ff] text-[#101828] shadow-[0_10px_20px_rgba(31,87,255,0.08)]"
                     : "text-[#5f687b] hover:bg-white hover:text-[#101828]",
@@ -1144,43 +1136,29 @@ function LibraryPage() {
               >
                 <span
                   className={joinClasses(
-                    "grid h-9 w-9 place-items-center rounded-full border transition",
+                    "grid h-8 w-8 place-items-center rounded-full border transition",
                     active ? "border-[#1f57ff]/20 bg-white text-[#1f57ff]" : "border-slate-200 bg-white/80 text-[#5f687b]",
                   )}
                 >
                   <DashboardIcon name={item.icon} className="h-4.5 w-4.5" />
                 </span>
                 <span className="flex-1">{item.label}</span>
-                {active ? <span className="h-2 w-2 rounded-full bg-[#1f57ff]" /> : null}
+                {active ? <span className="h-1.5 w-1.5 rounded-full bg-[#1f57ff]" /> : null}
               </button>
             );
           })}
         </nav>
 
-        <div className="mt-4 rounded-[22px] border border-slate-200 bg-white p-4 shadow-[0_12px_30px_rgba(15,23,42,0.06)]">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#5f687b]">Upgrade</div>
-          <p className="mt-2 text-[12px] leading-6 text-[#6d7483]">
-            Desbloquea más packs, plantillas y rutas de aprendizaje premium.
-          </p>
-          <button
-            type="button"
-            onClick={() => navigate(`/product/${products[0].slug}`)}
-            className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-full bg-[#1f57ff] px-4 text-[12px] font-semibold text-white shadow-[0_10px_18px_rgba(31,87,255,0.18)]"
-          >
-            Explorar premium
-          </button>
-        </div>
-
-        <div className="mt-4 flex items-center gap-3 rounded-[22px] border border-slate-200 bg-white p-3 shadow-[0_12px_30px_rgba(15,23,42,0.06)]">
-          <img src={currentUser.avatar} alt={currentUser.name} className="h-10 w-10 rounded-full object-cover" />
+        <div className="mt-4 flex items-center gap-3 rounded-[20px] border border-slate-200 bg-white p-3 shadow-[0_12px_30px_rgba(15,23,42,0.06)]">
+          <img src={currentUser.avatar} alt={currentUser.name} className="h-9 w-9 rounded-full object-cover" />
           <div className="min-w-0 flex-1">
-            <div className="truncate text-[12px] font-semibold text-[#101828]">{currentUser.name}</div>
-            <div className="text-[10px] text-[#6d7483]">{currentUser.email}</div>
+            <div className="truncate text-[11px] font-semibold text-[#101828]">{currentUser.name}</div>
+            <div className="text-[9px] text-[#6d7483]">{currentUser.email}</div>
           </div>
           <button
             type="button"
             onClick={logout}
-            className="rounded-full bg-[#12203a] px-3 py-2 text-[11px] font-semibold text-white"
+            className="rounded-full bg-[#12203a] px-2.5 py-[6px] text-[10px] font-semibold text-white"
           >
             Cerrar sesión
           </button>
@@ -1197,7 +1175,7 @@ function LibraryPage() {
         <div className="fixed inset-0 z-30 bg-[#071120]/45 backdrop-blur-md lg:hidden" onClick={() => setSidebarOpen(false)} />
       ) : null}
 
-      <div className="lg:pl-[272px]">
+      <div className="lg:pl-[304px]">
         <main className="mx-auto w-full max-w-[1600px] px-4 py-4 md:px-6 lg:px-8">
           <DashboardHeader
             search={search}
