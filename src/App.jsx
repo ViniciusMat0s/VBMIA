@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 
-const topNavItems = ["Pack", "Nichos", "Cómo funciona", "Casos", "FAQ"];
+const topNavItems = ["Pack", "Nichos", "CÃ³mo funciona", "Casos", "FAQ"];
 
 const footerColumns = [
   {
     title: "Pack",
     links: [
-      "Qué incluye",
-      "Cómo funciona",
+      "QuÃ© incluye",
+      "CÃ³mo funciona",
       "Ejemplos",
       "Actualizaciones",
     ],
@@ -20,10 +20,10 @@ const footerColumns = [
   {
     title: "FAQ",
     links: [
-      "¿Necesito experiencia?",
-      "¿Sirve para varios nichos?",
-      "¿Puedo adaptarlo?",
-      "¿Funciona con herramientas de IA?",
+      "Â¿Necesito experiencia?",
+      "Â¿Sirve para varios nichos?",
+      "Â¿Puedo adaptarlo?",
+      "Â¿Funciona con herramientas de IA?",
     ],
   },
 ];
@@ -35,49 +35,49 @@ const courses = [
     text: "Prompts para retratos limpios, perfiles serios y piezas visuales que refuerzan tu presencia digital.",
     image:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
-    meta: "Perfil · marca",
+    meta: "Perfil Â· marca",
     price: "24 prompts",
   },
   {
     badge: "DESTACADO",
     title: "Marca personal y redes sociales",
-    text: "Imágenes naturales para Instagram, stories y contenido diario con un look más actual y coherente.",
+    text: "ImÃ¡genes naturales para Instagram, stories y contenido diario con un look mÃ¡s actual y coherente.",
     image:
       "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
-    meta: "Social · creadores",
+    meta: "Social Â· creadores",
     price: "22 prompts",
   },
   {
     badge: "PREMIUM",
     title: "Lifestyle, lujo y viajes",
-    text: "Escenas con aire editorial para coches, moda, belleza y un acabado más aspiracional.",
+    text: "Escenas con aire editorial para coches, moda, belleza y un acabado mÃ¡s aspiracional.",
     image:
       "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
-    meta: "Premium · editorial",
+    meta: "Premium Â· editorial",
     price: "20 prompts",
   },
   {
     badge: "PRO",
     title: "Negocios y publicidad",
-    text: "Sistemas listos para posts, anuncios y creatividades comerciales con una dirección visual clara.",
+    text: "Sistemas listos para posts, anuncios y creatividades comerciales con una direcciÃ³n visual clara.",
     image:
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=900&q=80",
-    meta: "Anuncios · negocio",
+    meta: "Anuncios Â· negocio",
     price: "18 prompts",
   },
 ];
 
 const testimonials = [
   {
-    name: "Laura Gómez",
+    name: "Laura GÃ³mez",
     role: "Marca personal",
     avatar:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&q=80",
     quote:
-      "Me ayudó a pasar de ideas sueltas a imágenes más coherentes para LinkedIn, Instagram y mi web.",
+      "Me ayudÃ³ a pasar de ideas sueltas a imÃ¡genes mÃ¡s coherentes para LinkedIn, Instagram y mi web.",
   },
   {
-    name: "Álvaro Martín",
+    name: "Ãlvaro MartÃ­n",
     role: "Lifestyle y redes",
     avatar:
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80",
@@ -89,15 +89,15 @@ const testimonials = [
     avatar:
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=160&q=80",
     quote:
-      "Me sirve para moda, viajes y escenas premium con un resultado mucho más cuidado.",
+      "Me sirve para moda, viajes y escenas premium con un resultado mucho mÃ¡s cuidado.",
   },
   {
-    name: "Javier López",
+    name: "Javier LÃ³pez",
     role: "Negocio y publicidad",
     avatar:
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=160&q=80",
     quote:
-      "Para campañas y contenido comercial me ahorra tiempo y me da una dirección visual mucho más clara.",
+      "Para campaÃ±as y contenido comercial me ahorra tiempo y me da una direcciÃ³n visual mucho mÃ¡s clara.",
   },
 ];
 
@@ -284,8 +284,43 @@ function App() {
 }
 
 function HeroSection() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navTargets = ["#courses", "#nichos", "#discovery", "#testimonials", "#faq"];
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    const handleResize = () => {
+      if (window.matchMedia("(min-width: 768px)").matches) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isMobileMenuOpen]);
+
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
   return (
-    <section className="theme-hero relative flex min-h-screen flex-col overflow-hidden">
+    <section id="top" className="theme-hero relative flex min-h-screen flex-col overflow-hidden">
       <div
         className="absolute inset-0"
         style={{
@@ -331,21 +366,20 @@ function HeroSection() {
         style={{ backgroundColor: "var(--hero-orb-3)" }}
       />
       <div className="fixed inset-x-0 top-4 z-50 px-4 md:top-6 md:px-6 lg:px-8">
-        <header className="mx-auto flex w-full max-w-[1240px] items-center justify-between gap-4 rounded-full border border-white/70 bg-white/75 px-4 py-3 shadow-[0_10px_30px_rgba(31,41,55,0.08)] backdrop-blur-md md:px-5">
-          <a href="#top" className="flex items-center gap-2.5">
-            <div className="grid h-8 w-8 place-items-center rounded-lg bg-[linear-gradient(135deg,#87e4ff_0%,#5d9bff_50%,#2f60ff_100%)] shadow-[0_10px_20px_rgba(73,120,255,0.26)]">
-              <span className="block h-3 w-3 rotate-45 rounded-[2px] border-r border-t border-white/90" />
-            </div>
-            <span className="text-[12px] font-semibold tracking-[0.34em] text-[#1a2842] md:text-[13px]">
-              CLASTRO
-            </span>
+        <header className="mx-auto flex w-full max-w-[1240px] items-center justify-between gap-3 rounded-full border border-white/70 bg-white/75 px-4 py-3 shadow-[0_10px_30px_rgba(31,41,55,0.08)] backdrop-blur-md md:grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:px-5">
+          <a href="#top" className="flex items-center gap-2.5 md:justify-self-start">
+            <img
+              src="/images/logo-vm.png"
+              alt="VBM Devs"
+              className="theme-logo block h-10 w-auto md:h-11"
+            />
           </a>
 
-          <nav className="hidden items-center gap-2 rounded-full border border-slate-200 bg-[#eff2f7] px-2 py-2 md:flex">
+          <nav className="hidden items-center gap-2 rounded-full border border-slate-200 bg-[#eff2f7] px-2 py-2 md:flex md:justify-self-center">
             {topNavItems.map((item, index) => (
               <a
                 key={item}
-                href="#top"
+                href={navTargets[index]}
                 className={`rounded-full px-4 py-2 text-[12px] font-medium tracking-[-0.01em] transition ${
                   index === 0
                     ? "bg-white text-[#101828] shadow-[0_4px_14px_rgba(15,23,42,0.08)]"
@@ -357,7 +391,7 @@ function HeroSection() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="hidden items-center gap-2 md:flex md:justify-self-end">
             <a
               href="#courses"
               className="inline-flex h-9 items-center rounded-full bg-[#1f57ff] px-4 text-[12px] font-semibold text-white shadow-[0_8px_18px_rgba(31,87,255,0.22)] transition hover:-translate-y-0.5"
@@ -371,7 +405,125 @@ function HeroSection() {
               Comprar
             </a>
           </div>
+
+          <button
+            type="button"
+            aria-label={isMobileMenuOpen ? "Cerrar menÃº" : "Abrir menÃº"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setIsMobileMenuOpen((current) => !current)}
+            className={`relative grid h-11 w-11 place-items-center rounded-full border shadow-[0_10px_20px_rgba(31,87,255,0.12)] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden ${
+              isMobileMenuOpen
+                ? "border-[#1f57ff] bg-[linear-gradient(135deg,#87e4ff_0%,#5d9bff_50%,#2f60ff_100%)] text-white shadow-[0_14px_28px_rgba(31,87,255,0.28)]"
+                : "border-slate-200 bg-white text-[#101828]"
+            }`}
+          >
+            <span
+              className={`absolute h-0.5 w-4 rounded-full bg-current transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                isMobileMenuOpen ? "translate-y-0 rotate-45" : "-translate-y-1.5"
+              }`}
+            />
+            <span
+              className={`absolute h-0.5 w-4 rounded-full bg-current transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                isMobileMenuOpen ? "scale-x-0 opacity-0" : "scale-x-100 opacity-100"
+              }`}
+            />
+            <span
+              className={`absolute h-0.5 w-4 rounded-full bg-current transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                isMobileMenuOpen ? "translate-y-0 -rotate-45" : "translate-y-1.5"
+              }`}
+            />
+          </button>
         </header>
+
+        <div
+          className={`fixed inset-0 z-[60] md:hidden transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            isMobileMenuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+          }`}
+        >
+          <button
+            type="button"
+            aria-label="Cerrar menÃº"
+            onClick={closeMobileMenu}
+            className="absolute inset-0 bg-[#071120]/45 backdrop-blur-md"
+          />
+
+          <div
+            id="mobile-menu"
+            className={`absolute left-4 right-4 top-[5.25rem] z-[70] origin-top rounded-[28px] border border-[var(--border-soft)] bg-[var(--surface-elevated)] p-4 text-[var(--page-text)] shadow-[0_28px_90px_rgba(15,23,42,0.18)] backdrop-blur-2xl transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:p-5 ${
+              isMobileMenuOpen
+                ? "translate-y-0 scale-100 opacity-100"
+                : "-translate-y-3 scale-[0.98] opacity-0"
+            }`}
+          >
+            <div className="flex items-center justify-between gap-3 border-b border-slate-200/80 pb-4">
+              <div className="flex items-center gap-3">
+                <img src="/images/logo-vm.png" alt="VBM Devs" className="theme-logo h-9 w-auto" />
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#1a2842]">
+                    NavegaciÃ³n
+                  </div>
+                  <div className="mt-1 text-[12px] text-[#6d7483]">
+                    MenÃº rÃ¡pido e interactivo
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                aria-label="Cerrar menÃº"
+                onClick={closeMobileMenu}
+                className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white text-[#101828] shadow-[0_8px_18px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5"
+              >
+                <span className="relative block h-4 w-4">
+                  <span className="absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full bg-current" />
+                  <span className="absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full bg-current" />
+                </span>
+              </button>
+            </div>
+
+            <nav className="mt-4 grid gap-2">
+              {topNavItems.map((item, index) => (
+                <a
+                  key={item}
+                  href={navTargets[index]}
+                  onClick={closeMobileMenu}
+                  className={`group flex items-center justify-between rounded-[20px] border px-4 py-3 text-[14px] font-medium transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                    isMobileMenuOpen
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-2 opacity-0"
+                  } ${
+                    index === 0
+                      ? "border-[#1f57ff]/20 bg-[#edf3ff] text-[#101828]"
+                      : "border-slate-200 bg-white/80 text-[#5f687b] hover:border-[#1f57ff]/20 hover:bg-[#edf3ff] hover:text-[#101828]"
+                  }`}
+                  style={{ transitionDelay: isMobileMenuOpen ? `${120 + index * 60}ms` : "0ms" }}
+                >
+                  <span>{item}</span>
+                  <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-[#1f57ff] shadow-[0_8px_18px_rgba(31,87,255,0.08)] transition group-hover:translate-x-0.5">
+                    <ArrowIcon />
+                  </span>
+                </a>
+              ))}
+            </nav>
+
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <a
+                href="#courses"
+                onClick={closeMobileMenu}
+                className="inline-flex h-11 items-center justify-center rounded-full bg-[#1f57ff] px-5 text-[12px] font-semibold text-white shadow-[0_10px_20px_rgba(31,87,255,0.18)] transition hover:-translate-y-0.5"
+              >
+                Ver pack
+              </a>
+              <a
+                href="#courses"
+                onClick={closeMobileMenu}
+                className="inline-flex h-11 items-center justify-center rounded-full border border-slate-200 bg-white/80 px-5 text-[12px] font-semibold text-[#101828] shadow-[0_10px_20px_rgba(15,23,42,0.06)] transition hover:-translate-y-0.5"
+              >
+                Comprar
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1360px] flex-1 flex-col px-4 pt-28 md:px-6 md:pt-32 lg:px-8 lg:pt-32">
@@ -379,7 +531,7 @@ function HeroSection() {
           <div className="relative z-10 mx-auto max-w-[1120px] text-center" data-reveal data-reveal-side="up">
             <h1 className="font-display text-[clamp(3.35rem,7.25vw,8.2rem)] leading-[0.88] tracking-[-0.055em] text-[#111a33] uppercase md:leading-[0.86]">
               <span className="block">La biblioteca de prompts</span>
-              <span className="block">de IA más completa</span>
+              <span className="block">de IA mÃ¡s completa</span>
             </h1>
           </div>
 
@@ -400,7 +552,7 @@ function HeroSection() {
 
 function DiscoverySection() {
   return (
-    <section className="bg-[#ffffff] px-4 py-18 text-[#101828] md:px-6 md:py-22 lg:px-8 lg:py-24">
+    <section id="discovery" className="bg-[#ffffff] px-4 py-18 text-[#101828] md:px-6 md:py-22 lg:px-8 lg:py-24">
       <div className="mx-auto max-w-[1260px]">
         <div className="mx-auto max-w-[820px] text-center">
           <h2
@@ -410,29 +562,29 @@ function DiscoverySection() {
           >
             Una biblioteca de prompts,
             <br className="hidden sm:block" />
-            múltiples posibilidades
+            mÃºltiples posibilidades
           </h2>
           <p
             className="mx-auto mt-5 max-w-[560px] text-[14px] leading-7 text-[#6d7483] md:text-[15px]"
             data-reveal
             data-reveal-delay="80"
           >
-            Prompts editables para crear imágenes realistas, estéticas y comerciales en varios
+            Prompts editables para crear imÃ¡genes realistas, estÃ©ticas y comerciales en varios
             estilos, nichos y objetivos.
           </p>
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1.26fr_0.94fr]">
           <div
-            className="theme-discovery-card relative overflow-hidden rounded-[24px] p-3 shadow-[0_18px_50px_rgba(14,23,48,0.16)]"
+            className="theme-discovery-card relative overflow-hidden rounded-[24px] p-3 shadow-[0_18px_50px_rgba(14,23,48,0.16)] lg:h-full"
             data-reveal
             data-reveal-side="left"
           >
-            <div className="relative overflow-hidden rounded-[18px] border border-slate-200/70">
+            <div className="relative h-[340px] overflow-hidden rounded-[18px] border border-slate-200/70 sm:h-[410px] lg:h-full">
               <img
                 src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80"
                 alt="Personas trabajando juntas"
-                className="h-[410px] w-full object-cover object-[center_30%]"
+                className="h-full w-full object-cover object-[center_30%]"
               />
               <div className="theme-discovery-overlay absolute inset-0" />
             </div>
@@ -447,7 +599,7 @@ function DiscoverySection() {
                 Prompts listos
               </h3>
               <p className="mt-4 max-w-[28ch] text-[14px] leading-7 text-[#6c7485]">
-                Elige el nicho, ajusta los detalles y genera imágenes con una dirección mucho más
+                Elige el nicho, ajusta los detalles y genera imÃ¡genes con una direcciÃ³n mucho mÃ¡s
                 clara desde el primer intento.
               </p>
             </div>
@@ -457,7 +609,7 @@ function DiscoverySection() {
                 02
               </div>
               <h3 className="mt-9 text-[24px] font-medium tracking-[-0.05em] text-[#101828]">
-                Fáciles de adaptar
+                FÃ¡ciles de adaptar
               </h3>
               <p className="mt-4 max-w-[30ch] text-[14px] leading-7 text-[#6c7485]">
                 Sirven para profesional, lifestyle, lujo, redes, moda y contenido comercial sin
@@ -475,7 +627,7 @@ function CoursesSection() {
   return (
     <section id="courses" className="bg-[#ffffff] px-4 pb-28 pt-8 md:px-6 md:pb-32 lg:px-8 lg:pb-36 lg:pt-10">
       <div className="mx-auto max-w-[1260px]">
-        <div className="mx-auto max-w-[760px] text-center">
+        <div id="nichos" className="mx-auto max-w-[760px] text-center">
           <h2
             className="text-[clamp(2.1rem,3.8vw,3.45rem)] font-medium leading-[0.92] tracking-[-0.06em] text-[#101828]"
             data-direction-reveal
@@ -519,7 +671,7 @@ function CoursesSection() {
 
 function TestimonialsSection() {
   return (
-    <section className="theme-testimonials theme-testimonials-panel relative overflow-hidden px-4 py-24 md:px-6 md:py-28 lg:px-8 lg:py-32">
+    <section id="testimonials" className="theme-testimonials theme-testimonials-panel relative overflow-hidden px-4 py-24 md:px-6 md:py-28 lg:px-8 lg:py-32">
       <h2
         className="pointer-events-none absolute inset-x-0 top-12 flex justify-center font-display text-center text-[clamp(4rem,10vw,8.4rem)] leading-[0.95] tracking-[0.04em] text-[#101828] md:top-20 lg:top-24"
         data-direction-reveal
@@ -554,7 +706,7 @@ function TestimonialsSection() {
 
 function Footer() {
   return (
-    <footer className="bg-white pb-10 pt-8">
+    <footer id="faq" className="bg-white pb-10 pt-8">
       <div
         className="w-full border border-slate-200 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)] md:p-8 lg:p-10"
         data-reveal
@@ -562,28 +714,27 @@ function Footer() {
         <div className="grid gap-10 xl:grid-cols-[1.05fr_1.2fr] xl:gap-12">
           <div className="space-y-6">
             <a href="#top" className="flex items-center gap-2.5">
-              <div className="grid h-8 w-8 place-items-center rounded-lg bg-[linear-gradient(135deg,#87e4ff_0%,#5d9bff_50%,#2f60ff_100%)] shadow-[0_10px_20px_rgba(73,120,255,0.24)]">
-                <span className="block h-3 w-3 rotate-45 rounded-[2px] border-r border-t border-white/90" />
-              </div>
-              <span className="text-[12px] font-semibold tracking-[0.34em] text-[#1a2842]">
-                CLASTRO
-              </span>
+              <img
+                src="/images/logo-vm.png"
+                alt="VBM Devs"
+                className="theme-logo block h-10 w-auto"
+              />
             </a>
 
             <p className="max-w-[360px] text-[13px] leading-7 text-[#677082]">
-              Una biblioteca de prompts de IA para crear imágenes en distintos nichos, estilos y
+              Una biblioteca de prompts de IA para crear imÃ¡genes en distintos nichos, estilos y
               objetivos sin empezar desde cero.
             </p>
 
             <div className="flex flex-wrap gap-2">
               <span className="inline-flex h-9 items-center rounded-full bg-[#edf3ff] px-4 text-[11px] font-semibold text-[#101828]">
-                Más de 100 prompts
+                MÃ¡s de 100 prompts
               </span>
               <span className="inline-flex h-9 items-center rounded-full bg-[#f1f4f9] px-4 text-[11px] font-semibold text-[#5f687b]">
                 Varios nichos
               </span>
               <span className="inline-flex h-9 items-center rounded-full bg-[#f1f4f9] px-4 text-[11px] font-semibold text-[#5f687b]">
-                Acceso instantáneo
+                Acceso instantÃ¡neo
               </span>
             </div>
 
@@ -609,11 +760,11 @@ function Footer() {
               <div className="flex flex-col gap-4 rounded-[24px] border border-slate-200 bg-[#edf3ff] p-5 shadow-[0_12px_28px_rgba(31,87,255,0.08)] md:flex-row md:items-center md:justify-between">
                 <div>
                   <div className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[#1a2842]">
-                    ¿Qué lo hace distinto?
+                    Â¿QuÃ© lo hace distinto?
                   </div>
                   <p className="mt-2 max-w-[42ch] text-[13px] leading-6 text-[#677082]">
-                    No es un pack centrado en un solo uso: reúne prompts para distintos
-                    objetivos y estilos en una sola biblioteca fácil de adaptar.
+                    No es un pack centrado en un solo uso: reÃºne prompts para distintos
+                    objetivos y estilos en una sola biblioteca fÃ¡cil de adaptar.
                   </p>
                 </div>
                 <a
@@ -630,8 +781,8 @@ function Footer() {
 
         <div className="mt-10 flex flex-col gap-4 border-t border-slate-200 pt-6 md:flex-row md:items-center md:justify-between">
           <p className="text-[12px] leading-6 text-[#677082]">
-            © 2026 CLASTRO. Todos los derechos reservados. Creado para quienes quieren generar
-            imágenes con IA de forma práctica y profesional.
+            © 2026 VBM Devs. Todos los derechos reservados. Creado para quienes quieren generar
+            imÃ¡genes con IA de forma prÃ¡ctica y profesional.
           </p>
 
           <div className="flex flex-wrap items-center gap-4 text-[12px] text-[#5f687b]">
@@ -641,8 +792,8 @@ function Footer() {
             <a href="#top" className="transition hover:text-[#101828]">
               Inicio
             </a>
-            <a href="mailto:hola@clastro.ai" className="transition hover:text-[#101828]">
-              hola@clastro.ai
+            <a href="mailto:contacto@vbmdevs.com" className="transition hover:text-[#101828]">
+              contacto@vbmdevs.com
             </a>
           </div>
         </div>
@@ -802,3 +953,6 @@ function SunIcon() {
 }
 
 export default App;
+
+
+
