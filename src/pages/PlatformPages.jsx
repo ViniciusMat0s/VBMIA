@@ -729,6 +729,14 @@ function DashboardIcon({ name, className = "" }) {
           <path d="m9 6 6 6-6 6" {...common} />
         </svg>
       );
+    case "logout":
+      return (
+        <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+          <path d="M10 17H6.5A2.5 2.5 0 0 1 4 14.5v-5A2.5 2.5 0 0 1 6.5 7H10" {...common} />
+          <path d="M14 8.5 18 12l-4 3.5" {...common} />
+          <path d="M18 12H10" {...common} />
+        </svg>
+      );
     default:
       return null;
   }
@@ -1158,9 +1166,11 @@ function LibraryPage() {
           <button
             type="button"
             onClick={logout}
-            className="rounded-full bg-[#12203a] px-2.5 py-[6px] text-[10px] font-semibold text-white"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#12203a] text-white shadow-[0_10px_20px_rgba(18,32,58,0.16)] transition hover:-translate-y-0.5"
+            aria-label="Cerrar sesión"
+            title="Cerrar sesión"
           >
-            Cerrar sesión
+            <DashboardIcon name="logout" className="h-4 w-4" />
           </button>
         </div>
       </div>
