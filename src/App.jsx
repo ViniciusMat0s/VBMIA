@@ -436,33 +436,6 @@ function DiscoverySection() {
               />
               <div className="theme-discovery-overlay absolute inset-0" />
             </div>
-
-            <div className="absolute bottom-4 left-4 w-[225px] rounded-[18px] bg-white p-4 shadow-[0_16px_38px_rgba(0,0,0,0.18)]" data-reveal data-reveal-delay="180">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="text-[34px] font-semibold leading-none tracking-[-0.08em] text-[#0f172a]">
-                    85%
-                  </div>
-                  <p className="mt-2 text-[11px] leading-5 text-[#6b7280]">
-                    de usuarios dice que una base clara les ayuda a ahorrar tiempo y mejorar el
-                    resultado final.
-                  </p>
-                </div>
-                <div className="grid h-9 w-9 place-items-center rounded-full bg-[#edf2ff] text-[#3b5cff]">
-                  <SparkIcon />
-                </div>
-              </div>
-
-              <div className="mt-3 flex items-end gap-1.5">
-                {Array.from({ length: 18 }).map((_, index) => (
-                  <span
-                    key={index}
-                    className="w-full rounded-sm bg-[linear-gradient(180deg,#9a8cff_0%,#8bc0ff_48%,#d9e3ff_100%)]"
-                    style={{ height: `${10 + ((index * 7) % 22)}px` }}
-                  />
-                ))}
-              </div>
-            </div>
           </div>
 
           <div className="grid gap-4">
@@ -581,9 +554,9 @@ function TestimonialsSection() {
 
 function Footer() {
   return (
-    <footer className="bg-[var(--page-bg)] pb-10 pt-8">
+    <footer className="bg-white pb-10 pt-8">
       <div
-        className="w-full border border-slate-200 bg-white/80 p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)] backdrop-blur-md md:p-8 lg:p-10"
+        className="w-full border border-slate-200 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)] md:p-8 lg:p-10"
         data-reveal
       >
         <div className="grid gap-10 xl:grid-cols-[1.05fr_1.2fr] xl:gap-12">
@@ -651,6 +624,7 @@ function Footer() {
                 </a>
               </div>
             </div>
+
           </div>
         </div>
 
@@ -788,17 +762,6 @@ function ArrowIcon() {
         strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function SparkIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
-      <path
-        d="M12 3.2 13.9 9l6.1 1.9-6.1 1.9L12 18.8l-1.9-6-6.1-1.9L10.1 9 12 3.2Z"
-        fill="currentColor"
       />
     </svg>
   );
