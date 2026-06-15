@@ -236,29 +236,3 @@ export const productCatalog = [
     ],
   },
 ];
-
-export const seedUsers = [
-  {
-    id: "user-admin",
-    name: "Admin de VBM",
-    email: "admin@vbmdevs.com",
-    password: "admin123",
-    role: "admin",
-    avatar:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80",
-  },
-  {
-    id: "user-student",
-    name: "Alumno de VBM",
-    email: "student@vbmdevs.com",
-    password: "student123",
-    role: "student",
-    avatar:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&q=80",
-  },
-];
-
-export const demoCredentials = {
-  admin: { email: "admin@vbmdevs.com", password: "admin123" },
-  student: { email: "student@vbmdevs.com", password: "student123" },
-};

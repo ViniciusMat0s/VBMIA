@@ -409,13 +409,9 @@ function AuthLayout({ title, subtitle, children, footerLink }) {
 }
 
 function LoginPage() {
-  const { login, demoCredentials, firebaseEnabled } = usePlatform();
+  const { login, firebaseEnabled } = usePlatform();
   const navigate = useNavigate();
-  const [form, setForm] = useState(
-    firebaseEnabled
-      ? { email: "", password: "" }
-      : { email: demoCredentials.student.email, password: demoCredentials.student.password },
-  );
+  const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -475,8 +471,8 @@ function LoginPage() {
 
         <div className="rounded-[20px] bg-[#edf3ff] p-4 text-[13px] text-[#677082]">
           {firebaseEnabled
-            ? "Inicia sesión con las cuentas creadas en Firebase Authentication."
-            : "Cuentas de demo: admin@vbmdevs.com / admin123, student@vbmdevs.com / student123"}
+            ? "Inicia sesión con tu cuenta de Firebase Authentication."
+            : "Configura las variables VITE_FIREBASE_* para activar el inicio de sesión con Firebase."}
         </div>
 
         <div className="flex flex-wrap gap-3 text-[13px]">
@@ -566,7 +562,7 @@ function SignupPage() {
 function ForgotPasswordPage() {
   const { requestPasswordReset, firebaseEnabled } = usePlatform();
   const [email, setEmail] = useState("");
-  const [token, setToken] = useState("");
+  const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -575,14 +571,10 @@ function ForgotPasswordPage() {
     setError("");
     setLoading(true);
     try {
-      const result = await requestPasswordReset(email);
-      if (result?.firebase) {
-        setToken("email-sent");
-      } else {
-        setToken(`${window.location.origin}/reset-password?token=${encodeURIComponent(result)}`);
-      }
+      await requestPasswordReset(email);
+      setSent(true);
     } catch (err) {
-      setToken("");
+      setSent(false);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -592,7 +584,7 @@ function ForgotPasswordPage() {
   return (
     <AuthLayout
       title="Recuperar acceso"
-      subtitle="Genera un token de restablecimiento y continúa con el proceso de cambio de contraseña."
+      subtitle="Recibe un correo de restablecimiento con Firebase Authentication y vuelve a entrar con seguridad."
       footerLink={<Link to="/login">Volver al inicio de sesión</Link>}
     >
       <div className="space-y-6">
@@ -602,13 +594,9 @@ function ForgotPasswordPage() {
         </div>
 
         {error ? <div className="rounded-[18px] bg-[#ffe5e5] px-4 py-3 text-[13px] text-[#b42318]">{error}</div> : null}
-        {token === "email-sent" ? (
+        {sent ? (
           <div className="rounded-[18px] bg-[#e7f7ee] px-4 py-3 text-[13px] text-[#0e7a42]">
             Te enviamos un correo con el enlace para restablecer tu contraseña.
-          </div>
-        ) : token ? (
-          <div className="rounded-[18px] bg-[#e7f7ee] px-4 py-3 text-[13px] text-[#0e7a42]">
-            Enlace de restablecimiento generado: <a className="underline" href={token}>{token}</a>
           </div>
         ) : null}
 
@@ -622,7 +610,7 @@ function ForgotPasswordPage() {
             required
           />
           <button disabled={loading} className="w-full rounded-full bg-[#1f57ff] px-5 py-3 text-[13px] font-semibold text-white disabled:opacity-60">
-            {loading ? "Enviando..." : firebaseEnabled ? "Enviar correo de restablecimiento" : "Generar enlace de restablecimiento"}
+            {loading ? "Enviando..." : "Enviar correo de restablecimiento"}
           </button>
         </form>
       </div>
@@ -633,7 +621,6 @@ function ForgotPasswordPage() {
 function ResetPasswordPage() {
   const { resetPassword, verifyResetEmail, firebaseEnabled } = usePlatform();
   const [params] = useSearchParams();
-  const token = params.get("token") || "";
   const oobCode = params.get("oobCode") || "";
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
@@ -642,7 +629,13 @@ function ResetPasswordPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!firebaseEnabled || !oobCode) {
+    if (!firebaseEnabled) {
+      setError("Firebase no está configurado en este entorno.");
+      return undefined;
+    }
+
+    if (!oobCode) {
+      setError("Este enlace necesita un código de restablecimiento válido de Firebase.");
       return undefined;
     }
 
@@ -669,7 +662,7 @@ function ResetPasswordPage() {
     setError("");
     setLoading(true);
     try {
-      await resetPassword({ token, oobCode, password });
+      await resetPassword({ oobCode, password });
       navigate("/login");
     } catch (err) {
       setError(err.message);
@@ -681,8 +674,8 @@ function ResetPasswordPage() {
   return (
     <AuthLayout
       title="Establece una nueva contraseña"
-      subtitle="Usa el token generado en el paso de recuperación y completa el restablecimiento."
-      footerLink={<Link to="/forgot-password">¿Necesitas un nuevo token?</Link>}
+      subtitle="Completa el restablecimiento usando el enlace enviado por Firebase Authentication."
+      footerLink={<Link to="/forgot-password">¿Necesitas otro correo de recuperación?</Link>}
     >
       <div className="space-y-6">
         <div>
@@ -699,14 +692,6 @@ function ResetPasswordPage() {
         ) : null}
 
         <form className="space-y-4" onSubmit={submit}>
-          {!firebaseEnabled ? (
-            <input
-              className="w-full rounded-[18px] border border-slate-200 bg-white px-4 py-3 text-[14px] outline-none focus:border-[#1f57ff]"
-              value={token}
-              readOnly
-              placeholder="Token de restablecimiento"
-            />
-          ) : null}
           <input
             className="w-full rounded-[18px] border border-slate-200 bg-white px-4 py-3 text-[14px] outline-none focus:border-[#1f57ff]"
             value={password}
