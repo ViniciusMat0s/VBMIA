@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import {
   confirmPasswordReset,
@@ -19,6 +19,7 @@ import {
   onSnapshot,
   serverTimestamp,
   setDoc,
+  writeBatch,
   updateDoc,
 } from "firebase/firestore";
 import { productCatalog } from "../data/platformData";
@@ -70,6 +71,15 @@ function normalizeProgressMap(value) {
   return isRecord(value) ? value : {};
 }
 
+function normalizeNumber(value, fallback = 0) {
+  const next = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(next) ? next : fallback;
+}
+
+function normalizeBoolean(value, fallback = false) {
+  return typeof value === "boolean" ? value : fallback;
+}
+
 function getClaimRole(claims) {
   if (claims?.role === "admin" || claims?.admin === true) {
     return "admin";
@@ -80,6 +90,10 @@ function getClaimRole(claims) {
 
 function getFirestoreUserRef(userId) {
   return doc(firebaseDb, "users", userId);
+}
+
+function getFirestoreProductRef(productId) {
+  return doc(firebaseDb, "products", productId);
 }
 
 function normalizeUserDoc(userId, data = {}) {
@@ -96,6 +110,69 @@ function normalizeUserDoc(userId, data = {}) {
     createdAt: data.createdAt || null,
     updatedAt: data.updatedAt || null,
   };
+}
+
+function normalizeProductDoc(productId, data = {}, fallback = {}) {
+  return {
+    id: productId,
+    slug: normalizeString(data.slug, fallback.slug || productId),
+    title: normalizeString(data.title, fallback.title || productId),
+    type: normalizeString(data.type, fallback.type || "pack"),
+    category: normalizeString(data.category, fallback.category || "packs"),
+    access: normalizeString(data.access, fallback.access || "owned"),
+    badge: normalizeString(data.badge, fallback.badge || "Nuevo"),
+    featured: normalizeBoolean(data.featured, fallback.featured || false),
+    locked: normalizeBoolean(data.locked, fallback.locked || false),
+    archived: normalizeBoolean(data.archived, fallback.archived || false),
+    duration: normalizeString(data.duration, fallback.duration || ""),
+    itemCount: normalizeNumber(data.itemCount, normalizeNumber(fallback.itemCount, 0)),
+    lessonsCount: normalizeNumber(data.lessonsCount, normalizeNumber(fallback.lessonsCount, 0)),
+    author: normalizeString(data.author, fallback.author || "VBM Devs"),
+    description: normalizeString(data.description, fallback.description || ""),
+    cover: normalizeString(data.cover, fallback.cover || ""),
+    tags: Array.isArray(data.tags) ? normalizeArray(data.tags) : normalizeArray(fallback.tags),
+    progress: normalizeNumber(data.progress, normalizeNumber(fallback.progress, 0)),
+    rating: normalizeNumber(data.rating, normalizeNumber(fallback.rating, 0)),
+    modules: Array.isArray(data.modules) ? data.modules : Array.isArray(fallback.modules) ? fallback.modules : [],
+    sortOrder: normalizeNumber(data.sortOrder, normalizeNumber(fallback.sortOrder, 0)),
+    createdAt: data.createdAt || fallback.createdAt || null,
+    updatedAt: data.updatedAt || fallback.updatedAt || null,
+  };
+}
+
+function buildProductDocPayload(product, fallback = {}) {
+  const normalized = normalizeProductDoc(product.id, product, fallback);
+
+  return {
+    ...normalized,
+    updatedAt: serverTimestamp(),
+    createdAt: normalized.createdAt || serverTimestamp(),
+  };
+}
+
+function mergeProducts(baseProducts, overrides) {
+  const baseIndex = baseProducts.reduce((acc, product, index) => {
+    acc[product.id] = { ...product, sortOrder: index };
+    return acc;
+  }, {});
+
+  const merged = baseProducts.map((product, index) =>
+    normalizeProductDoc(product.id, overrides[product.id] || {}, baseIndex[product.id] || { ...product, sortOrder: index }),
+  );
+
+  Object.entries(overrides).forEach(([productId, override]) => {
+    if (!baseIndex[productId]) {
+      merged.push(normalizeProductDoc(productId, override, override));
+    }
+  });
+
+  return merged.sort((a, b) => {
+    const sortDelta = normalizeNumber(a.sortOrder, 0) - normalizeNumber(b.sortOrder, 0);
+    if (sortDelta !== 0) {
+      return sortDelta;
+    }
+    return a.title.localeCompare(b.title, "es");
+  });
 }
 
 function buildUserDocPayload(authUser, claims, patch = {}) {
@@ -201,13 +278,15 @@ function readProductAccess(products, currentUserId, currentEntitlements, product
 
 export function PlatformProvider({ children }) {
   const [theme, setTheme] = useState(readTheme);
-  const [products, setProducts] = useState(() => productCatalog);
+  const [productOverrides, setProductOverrides] = useState({});
   const [profiles, setProfiles] = useState([]);
   const [currentProfileDoc, setCurrentProfileDoc] = useState(null);
   const [firebaseUser, setFirebaseUser] = useState(null);
   const [firebaseClaims, setFirebaseClaims] = useState(null);
   const [authReady, setAuthReady] = useState(!firebaseEnabled);
+  const seedingProductsRef = useRef(false);
   const currentRole = getClaimRole(firebaseClaims);
+  const products = useMemo(() => mergeProducts(productCatalog, productOverrides), [productOverrides]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -290,7 +369,63 @@ export function PlatformProvider({ children }) {
 
   useEffect(() => {
     if (!firebaseEnabled || !firebaseDb) {
+      setProductOverrides({});
+      seedingProductsRef.current = false;
       setProfiles([]);
+      return undefined;
+    }
+
+    const unsubscribe = onSnapshot(
+      collection(firebaseDb, "products"),
+      (snapshot) => {
+        const nextOverrides = {};
+        snapshot.docs.forEach((entry) => {
+          nextOverrides[entry.id] = normalizeProductDoc(entry.id, entry.data());
+        });
+        setProductOverrides(nextOverrides);
+
+        if (currentRole !== "admin" || seedingProductsRef.current) {
+          return;
+        }
+
+        const missingProducts = productCatalog.filter((product) => !snapshot.docs.some((entry) => entry.id === product.id));
+        if (missingProducts.length === 0) {
+          return;
+        }
+
+        seedingProductsRef.current = true;
+
+        void (async () => {
+          try {
+            const batch = writeBatch(firebaseDb);
+            missingProducts.forEach((product, index) => {
+              const seedProduct = { ...product, sortOrder: index };
+              batch.set(
+                getFirestoreProductRef(product.id),
+                buildProductDocPayload(seedProduct, seedProduct),
+                { merge: true },
+              );
+            });
+
+            await batch.commit();
+          } catch (error) {
+            console.error("Firestore product seed failed:", error);
+          } finally {
+            seedingProductsRef.current = false;
+          }
+        })();
+      },
+      (error) => {
+        console.error("Firestore products snapshot failed:", error);
+        setProductOverrides({});
+      },
+    );
+
+    return () => unsubscribe();
+  }, [currentRole, firebaseDb, firebaseEnabled]);
+
+  useEffect(() => {
+    if (!firebaseEnabled || !firebaseDb) {
       return undefined;
     }
 
@@ -517,18 +652,46 @@ export function PlatformProvider({ children }) {
   };
 
   const upsertProduct = (product) => {
-    setProducts((current) => {
-      const exists = current.some((entry) => entry.id === product.id);
-      if (exists) {
-        return current.map((entry) => (entry.id === product.id ? product : entry));
-      }
+    const fallback = products.find((entry) => entry.id === product.id) || {};
+    const nextProduct = normalizeProductDoc(product.id, product, fallback);
 
-      return [product, ...current];
-    });
+    setProductOverrides((current) => ({
+      ...current,
+      [product.id]: nextProduct,
+    }));
+
+    if (!firebaseDb) {
+      return;
+    }
+
+    return setDoc(
+      getFirestoreProductRef(product.id),
+      buildProductDocPayload(nextProduct, fallback),
+      { merge: true },
+    );
   };
 
   const archiveProduct = (productId) => {
-    setProducts((current) => current.map((entry) => (entry.id === productId ? { ...entry, archived: true } : entry)));
+    const currentProduct = products.find((entry) => entry.id === productId);
+    const nextProduct = normalizeProductDoc(productId, { archived: true }, currentProduct || {});
+
+    setProductOverrides((current) => ({
+      ...current,
+      [productId]: nextProduct,
+    }));
+
+    if (!firebaseDb) {
+      return;
+    }
+
+    return setDoc(
+      getFirestoreProductRef(productId),
+      {
+        archived: true,
+        updatedAt: serverTimestamp(),
+      },
+      { merge: true },
+    );
   };
 
   const trackProductVisit = async (productId) => {
