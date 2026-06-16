@@ -8,7 +8,8 @@ const DEFAULT_AVATAR =
 
 function getAdminEmails() {
   const fallback = ["admin@vbmdevs.com"];
-  const envValue = process.env.FIREBASE_ADMIN_EMAILS;
+  const configValue = functions.config()?.vbm?.admin_emails;
+  const envValue = process.env.FIREBASE_ADMIN_EMAILS || configValue;
 
   if (!envValue) {
     return new Set(fallback);

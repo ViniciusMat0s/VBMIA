@@ -203,9 +203,11 @@ export function PlatformProvider({ children }) {
   const [theme, setTheme] = useState(readTheme);
   const [products, setProducts] = useState(() => productCatalog);
   const [profiles, setProfiles] = useState([]);
+  const [currentProfileDoc, setCurrentProfileDoc] = useState(null);
   const [firebaseUser, setFirebaseUser] = useState(null);
   const [firebaseClaims, setFirebaseClaims] = useState(null);
   const [authReady, setAuthReady] = useState(!firebaseEnabled);
+  const currentRole = getClaimRole(firebaseClaims);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -262,7 +264,38 @@ export function PlatformProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    if (!firebaseEnabled || !firebaseDb || !firebaseUser) {
+      setCurrentProfileDoc(null);
+      return undefined;
+    }
+
+    const unsubscribe = onSnapshot(
+      getFirestoreUserRef(firebaseUser.uid),
+      (snapshot) => {
+        if (!snapshot.exists()) {
+          setCurrentProfileDoc(null);
+          return;
+        }
+
+        setCurrentProfileDoc(normalizeUserDoc(snapshot.id, snapshot.data()));
+      },
+      (error) => {
+        console.error("Firestore current profile snapshot failed:", error);
+        setCurrentProfileDoc(null);
+      },
+    );
+
+    return () => unsubscribe();
+  }, [firebaseUser]);
+
+  useEffect(() => {
     if (!firebaseEnabled || !firebaseDb) {
+      setProfiles([]);
+      return undefined;
+    }
+
+    if (currentRole !== "admin") {
+      setProfiles(currentProfileDoc ? [currentProfileDoc] : []);
       return undefined;
     }
 
@@ -286,25 +319,16 @@ export function PlatformProvider({ children }) {
     );
 
     return () => unsubscribe();
-  }, []);
-
-  const currentProfile = useMemo(() => {
-    if (!firebaseUser) {
-      return null;
-    }
-
-    return profiles.find((profile) => profile.id === firebaseUser.uid) || null;
-  }, [firebaseUser, profiles]);
+  }, [currentProfileDoc, currentRole, firebaseDb, firebaseEnabled]);
 
   const currentUser = useMemo(() => {
     if (!firebaseUser) {
       return null;
     }
 
-    const role = getClaimRole(firebaseClaims);
-    const email = normalizeString(currentProfile?.email, normalizeString(firebaseUser.email));
+    const email = normalizeString(currentProfileDoc?.email, normalizeString(firebaseUser.email));
     const name =
-      normalizeString(currentProfile?.name) ||
+      normalizeString(currentProfileDoc?.name) ||
       normalizeString(firebaseUser.displayName) ||
       (email ? email.split("@")[0] : "Usuario");
 
@@ -312,10 +336,10 @@ export function PlatformProvider({ children }) {
       id: firebaseUser.uid,
       name,
       email,
-      role,
-      avatar: normalizeString(currentProfile?.avatar, firebaseUser.photoURL || DEFAULT_AVATAR),
+      role: currentRole,
+      avatar: normalizeString(currentProfileDoc?.avatar, firebaseUser.photoURL || DEFAULT_AVATAR),
     };
-  }, [currentProfile, firebaseClaims, firebaseUser]);
+  }, [currentProfileDoc, currentRole, firebaseUser]);
 
   const users = useMemo(
     () =>
