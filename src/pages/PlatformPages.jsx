@@ -1793,7 +1793,17 @@ function ProfilePage() {
 }
 
 function AdminPage() {
-  const { isAdmin, products, users, entitlements, upsertProduct, archiveProduct, grantAccess, revokeAccess, currentUser } = usePlatform();
+  const {
+    isAdmin,
+    products,
+    users,
+    entitlements,
+    upsertProduct,
+    archiveProduct,
+    grantAccess,
+    revokeAccess,
+    currentUser,
+  } = usePlatform();
   const navigate = useNavigate();
   const [selectedId, setSelectedId] = useState(products[0]?.id || "");
   const selected = products.find((product) => product.id === selectedId) || products[0];
@@ -1827,7 +1837,7 @@ function AdminPage() {
   return (
     <PageFrame
       title="Panel de administración"
-      subtitle="Gestiona productos, permisos y metadatos del catálogo desde un solo lugar."
+      subtitle="Gestiona productos y permisos. Para promover un usuario a admin, usa el script local de claims."
       action={<button onClick={() => navigate("/library")} className="rounded-full bg-[#1f57ff] px-5 py-3 text-[13px] font-semibold text-white">Volver a la biblioteca</button>}
     >
       <div className="space-y-6">
@@ -1928,13 +1938,30 @@ function AdminPage() {
         </div>
 
         <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_14px_40px_rgba(15,23,42,0.06)]">
+          <div className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[#5f687b]">Promover admin sin Blaze</div>
+          <p className="mt-3 max-w-3xl text-[13px] leading-7 text-[#6d7483]">
+            Para transformar un usuario en admin, ejecuta el script local que asigna custom claims en Firebase Auth.
+            Después cierra sesión y vuelve a entrar para que el token refleje el nuevo rol.
+          </p>
+          <div className="mt-4 rounded-[18px] bg-[#f7f9ff] p-4 text-[13px] text-[#101828]">
+            <div className="font-semibold">Comando</div>
+            <pre className="mt-2 overflow-x-auto text-[12px] leading-6 text-[#1a2842]">node functions/scripts/set-admin-claim.cjs user@email.com</pre>
+          </div>
+        </div>
+
+        <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_14px_40px_rgba(15,23,42,0.06)]">
           <div className="text-[12px] font-semibold uppercase tracking-[0.28em] text-[#5f687b]">Accesos concedidos</div>
           <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {users.map((user) => (
               <div key={user.id} className="rounded-[18px] bg-[#f7f9ff] p-4">
-                <div className="font-semibold text-[#101828]">{user.name}</div>
-                <div className="text-[12px] text-[#6d7483]">{user.email}</div>
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="font-semibold text-[#101828]">{user.name}</div>
+                    <div className="text-[12px] text-[#6d7483]">{user.email}</div>
+                  </div>
+                  <Badge tone={user.role === "admin" ? "blue" : "soft"}>{user.role}</Badge>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
                   {(entitlements[user.id] || []).slice(0, 4).map((productId) => {
                     const item = products.find((entry) => entry.id === productId);
                     return item ? <Badge key={productId} tone="soft">{item.title}</Badge> : null;
